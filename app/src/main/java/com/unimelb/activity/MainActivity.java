@@ -1,4 +1,4 @@
-package com.unimelb.instagramlite;
+package com.unimelb.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 
 public class MainActivity extends AppCompatActivity {
