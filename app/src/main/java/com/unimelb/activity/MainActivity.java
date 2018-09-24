@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.DiscoverFragment;
+import com.unimelb.fragment.ShareFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        navigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        viewPager = findViewById(R.id.viewpager);
+        navigationView = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigationView);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -84,10 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(BaseFragment.newInstance("home"));
         adapter.addFragment(new DiscoverFragment());
-        adapter.addFragment(BaseFragment.newInstance("photo"));
+        adapter.addFragment(ShareFragment.newInstance("1","2"));
         adapter.addFragment(BaseFragment.newInstance("favourite"));
         adapter.addFragment(BaseFragment.newInstance("profile"));
         viewPager.setAdapter(adapter);
     }
-
 }
