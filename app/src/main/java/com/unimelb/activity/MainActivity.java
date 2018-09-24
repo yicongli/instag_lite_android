@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_discover:
                         viewPager.setCurrentItem(1);
                         return true;
-                    case R.id.navigation_upload:
+                    case R.id.navigation_share:
                         viewPager.setCurrentItem(2);
                         return true;
                     case R.id.navigation_favourite:
