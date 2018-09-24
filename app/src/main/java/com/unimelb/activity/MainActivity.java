@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent1 = new Intent(mContext, ShareActivity.class);
                         mContext.startActivity(intent1);
 
-                        return true;
+                        return false;
                     case R.id.navigation_favourite:
                         viewPager.setCurrentItem(2);
                         return true;
