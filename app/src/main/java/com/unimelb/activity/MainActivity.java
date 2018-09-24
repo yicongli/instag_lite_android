@@ -1,5 +1,7 @@
 package com.unimelb.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,7 +12,6 @@ import android.view.MenuItem;
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.DiscoverFragment;
-import com.unimelb.fragment.ShareFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private MenuItem menuItem;
+
+    private Context mContext = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +45,15 @@ public class MainActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(1);
                         return true;
                     case R.id.navigation_share:
-                        viewPager.setCurrentItem(2);
+                        Intent intent1 = new Intent(mContext, ShareActivity.class);
+                        mContext.startActivity(intent1);
+
                         return true;
                     case R.id.navigation_favourite:
-                        viewPager.setCurrentItem(3);
+                        viewPager.setCurrentItem(2);
                         return true;
                     case R.id.navigation_profile:
-                        viewPager.setCurrentItem(4);
+                        viewPager.setCurrentItem(3);
                         return true;
                 }
                 return false;
@@ -85,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(BaseFragment.newInstance("home"));
         adapter.addFragment(new DiscoverFragment());
-        adapter.addFragment(ShareFragment.newInstance("1","2"));
         adapter.addFragment(BaseFragment.newInstance("favourite"));
         adapter.addFragment(BaseFragment.newInstance("profile"));
         viewPager.setAdapter(adapter);
