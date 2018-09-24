@@ -105,6 +105,7 @@ public class ShareActivity extends AppCompatActivity {
         });
 
         setupViewPager(viewPager);
+        navigationView.setSelectedItemId(R.id.navigation_photo);
     }
 
     // setup the content of viewPager
