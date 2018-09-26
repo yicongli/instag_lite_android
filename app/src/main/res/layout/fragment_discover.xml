@@ -1,25 +1,86 @@
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.unimelb.fragment.DiscoverFragment">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search_black_24dp"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Search"
+            android:textSize="17sp"/>
+    </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"/>
+        android:layout_height="1dp"
+        android:background="#ccc"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</android.support.design.widget.CoordinatorLayout>
+        <TableLayout
+            android:id="@+id/search_table_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+            <TableRow>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#f5f"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#0f0"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#05f"/>
+            </TableRow>
+
+            <TableRow>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#f50"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#0f0"/>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="1"
+                    android:background="#05f"/>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
