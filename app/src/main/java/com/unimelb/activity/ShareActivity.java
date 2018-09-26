@@ -3,6 +3,7 @@ package com.unimelb.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,12 +16,15 @@ import android.widget.TextView;
 
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
+import com.unimelb.fragment.CameraFragment;
 import com.unimelb.fragment.DiscoverFragment;
+import com.unimelb.fragment.LibraryFragment;
+import com.unimelb.fragment.ShareFragmentsListener;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 import com.unimelb.utils.Permissions;
 
-public class ShareActivity extends AppCompatActivity {
+public class ShareActivity extends AppCompatActivity implements ShareFragmentsListener{
     private static final String TAG = "ShareActivity";
     private Context mContext = ShareActivity.this;
     private BottomNavigationView navigationView;
@@ -112,8 +116,8 @@ public class ShareActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(BaseFragment.newInstance("library"));
-        adapter.addFragment(BaseFragment.newInstance("photo"));
+        adapter.addFragment(LibraryFragment.newInstance());
+        adapter.addFragment(CameraFragment.newInstance());
         viewPager.setAdapter(adapter);
     }
 
@@ -163,4 +167,8 @@ public class ShareActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void selectedImage(Image image) {
+        // TODO: jump to filter fragment
+    }
 }
