@@ -34,7 +34,6 @@ public class CameraFragment extends Fragment {
      * this fragment using the provided parameters.
      * @return A new instance of fragment CameraFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static CameraFragment newInstance() {
         CameraFragment fragment = new CameraFragment();
         return fragment;
@@ -58,21 +57,13 @@ public class CameraFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            //mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof ShareFragmentsListener) {
             mListener = (ShareFragmentsListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
