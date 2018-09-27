@@ -20,7 +20,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_centerVertical="true"
-                android:id="@+id/libraryClose"
+                android:id="@+id/photoBack"
                 android:src="@drawable/ic_black_back"
                 android:contentDescription="@string/string_back"
                 />

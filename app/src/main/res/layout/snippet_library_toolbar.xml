@@ -20,7 +20,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_centerVertical="true"
-                android:id="@+id/libraryClose"
+                android:id="@+id/libraryBack"
                 android:src="@drawable/ic_black_back"
                 android:contentDescription="@string/string_back"
                 />
@@ -28,7 +28,7 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/libraryClose"
+                android:layout_toRightOf="@id/libraryBack"
                 android:id="@+id/librarySpinner"
                 android:textSize="20sp"
                 android:textColor="@color/black"

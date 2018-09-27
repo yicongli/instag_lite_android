@@ -4,9 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.unimelb.instagramlite.R;
 
@@ -19,50 +25,57 @@ import com.unimelb.instagramlite.R;
  * create an instance of this fragment.
  */
 public class LibraryFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private final static String TAG = "LibraryFragment";
+
+    private GridView    gridView;
+    private ImageView   libraryImageView;
+    private ProgressBar libraryProgressBar;
+    private Spinner     directorySpinner;
 
     private ShareFragmentsListener mListener;
-
-    public LibraryFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      * @return A new instance of fragment LibraryFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static LibraryFragment newInstance() {
         LibraryFragment fragment = new LibraryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, "");
-        args.putString(ARG_PARAM2, "");
-        fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false);
+        View view            = inflater.inflate(R.layout.fragment_library, container, false);
+        gridView            = view.findViewById(R.id.libraryGridVIew);
+        libraryImageView    = view.findViewById(R.id.libraryImageVIew);
+        libraryProgressBar  = view.findViewById(R.id.libraryProgressBar);
+        directorySpinner    = view.findViewById(R.id.librarySpinner);
+        directorySpinner.setVisibility(View.GONE);
+
+        ImageView backButton = view.findViewById(R.id.libraryBack);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "closing share activity");
+                getActivity().finish();
+            }
+        });
+
+        TextView nextView = view.findViewById(R.id.libraryNext);
+        nextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "go to modify activity");
+                // TODO: the logic of
+            }
+        });
+
+        Log.d(TAG, "create view");
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
