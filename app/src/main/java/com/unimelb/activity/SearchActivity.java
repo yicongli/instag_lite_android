@@ -13,9 +13,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ImageButton backBtn = findViewById(R.id.search_back);
-        backBtn.setOnClickListener((view) -> {
-            this.finish();
-        });
-
+        backBtn.setOnClickListener((view) -> this.finish());
     }
 }

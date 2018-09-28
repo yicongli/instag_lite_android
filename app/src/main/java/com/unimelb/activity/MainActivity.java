@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.unimelb.adapter.ViewPagerAdapter;
@@ -29,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        setContentView(R.layout.login);
+
+        loginAuth();
 
         viewPager = findViewById(R.id.viewpager);
         navigationView = findViewById(R.id.navigation);
@@ -84,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setupViewPager(viewPager);
+    }
+
+    /**
+     * user login logic, if there is not access token, navigate to login page
+     */
+    private void loginAuth(){
+
+        startActivity(new Intent(this, Login.class));
+        finish();
     }
 
     private void setupViewPager(ViewPager viewPager) {
