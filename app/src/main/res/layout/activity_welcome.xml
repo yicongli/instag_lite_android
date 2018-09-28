@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.unimelb.activity.WelcomeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"
+        android:text="Congratulation"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="24dp"
+        android:text="Welcome to intstagram"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="16dp">
+
+        <ImageView
+            android:id="@+id/logo_ImageView"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/main_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_toRightOf="@id/logo_ImageView"
+            android:fontFamily="cursive"
+            android:text="instagram"
+            android:textColor="@android:color/black"
+            android:textSize="48sp"
+            android:textStyle="italic" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_weight="1"
+        android:background="#dedede">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Statement:"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Enjoying a meal on the Colonial Tramcar Restaurant is guaranteed to be a highlight of your visit to Melbourne. The Colonial Tramcar Restaurant is one of Melbourne's star attractions, offering a sightseeing tour with a difference and two essential Melbourne experiences taking a tram ride and eating great food.
+You'll glide through the city streets and on to South Melbourne, St Kilda, Prahran and Malvern aboard the Melbourne Colonial Tramcar Restaurant, your privacy assured with one-way windows. Melbourne's tramcar restaurant-on-wheels is painted a distinctive glossy burgundy and is especially fitted out in velvet and brass like the luxurious Pullman-style European trains of the past. You'll be welcomed aboard your 1948 Melbourne tram restaurant by a smiling maitre d' and be served by a friendly, professional team of silver-service waiters. Choose from a four-course lunch aboard Melbourne's tramcar restaurant, an early three-course dinner or a more leisurely five-course dinner later in the evening. Delicious meals featuring fresh local produce are prepared onboard the tram, and a wide choice of alcoholic beverages is available from the fully stocked bar. Melbourne's Colonial Tramcar Restaurant has all the modern conveniences you'd expect to find in a first-class restaurant. It is air-conditioned, heated and fitted with piped music to make your Colonial Tramcar Restaurant experience truly memorable.Due to the popularity of this activity, availability changes on a daily basis. The booking request will not be guaranteed until you receive a confirmation voucher via email. Please advise any alternative travel dates at time of booking, so that we may request all available dates to maximize your chance of a confirmed booking."
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <CheckBox
+        android:id="@+id/remember_pas_CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="Accept all"
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimary" />
+
+
+    <Button
+
+        android:id="@+id/login_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorPrimary"
+        android:text="Login"
+        android:textColor="@android:color/white" />
+
+
+</LinearLayout>
+
+
