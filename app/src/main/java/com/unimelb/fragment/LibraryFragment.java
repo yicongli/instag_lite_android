@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -15,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.unimelb.instagramlite.R;
+import com.unimelb.utils.FIleSearch;
+import com.unimelb.utils.FilePaths;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +40,8 @@ public class LibraryFragment extends Fragment {
     private ProgressBar libraryProgressBar;
     private Spinner     directorySpinner;
 
+    private ArrayList<String> directories;
+
     private ShareFragmentsListener mListener;
 
     /**
@@ -49,11 +58,11 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view            = inflater.inflate(R.layout.fragment_library, container, false);
-        gridView            = view.findViewById(R.id.libraryGridVIew);
-        libraryImageView    = view.findViewById(R.id.libraryImageVIew);
-        libraryProgressBar  = view.findViewById(R.id.libraryProgressBar);
-        directorySpinner    = view.findViewById(R.id.librarySpinner);
+        View view = inflater.inflate(R.layout.fragment_library, container, false);
+        gridView = view.findViewById(R.id.libraryGridVIew);
+        libraryImageView = view.findViewById(R.id.libraryImageVIew);
+        libraryProgressBar = view.findViewById(R.id.libraryProgressBar);
+        directorySpinner = view.findViewById(R.id.librarySpinner);
         directorySpinner.setVisibility(View.GONE);
 
         ImageView backButton = view.findViewById(R.id.libraryBack);
@@ -70,7 +79,25 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "go to modify activity");
-                // TODO: the logic of
+                // TODO: the logic of go to photo operation
+            }
+        });
+
+        directories = initDataSource();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, directories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        directorySpinner.setAdapter(adapter);
+
+        directorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String path = directories.get(i);
+                Log.d(TAG, "spinner clicked" + path);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -78,12 +105,34 @@ public class LibraryFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            //mListener.selectedImage(uri);
+    private ArrayList<String> initDataSource () {
+
+        Log.d(TAG, "initDataSource");
+
+        FilePaths filePaths = new FilePaths();
+        ArrayList<String> tmpList = new ArrayList<>();
+
+        ArrayList picturePathList = FIleSearch.getDirectoryPaths(filePaths.PICTURE_PATH);
+        if (picturePathList.size() != 0 ) {
+            tmpList = picturePathList;
         }
+
+        tmpList.add(filePaths.CAMERA_PATH);
+
+        return  tmpList;
     }
+
+    // TODO:not finished
+    private void initGridView (String path) {
+        Log.d(TAG, "initGridView");
+
+        final ArrayList<String> picture = FIleSearch.getFilePaths(path);
+
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageViewWidth = gridWidth;
+
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -91,8 +140,7 @@ public class LibraryFragment extends Fragment {
         if (context instanceof ShareFragmentsListener) {
             mListener = (ShareFragmentsListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
