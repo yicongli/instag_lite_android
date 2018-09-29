@@ -1,16 +1,18 @@
 package com.unimelb.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.bm.library.PhotoView;
 import com.unimelb.instagramlite.R;
+import com.wonderkiln.camerakit.CameraView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +24,12 @@ import com.unimelb.instagramlite.R;
  */
 public class CameraFragment extends Fragment {
     private final static String TAG = "CameraFragment";
+
+    private CameraView mCameraView;
+    private ImageButton mTakePhoto;
+    private ImageButton mSwitchCamera;
+    private ImageButton mToggleFlash;
+    private PhotoView mImageView;
 
     private ShareFragmentsListener mListener;
 
@@ -54,8 +62,28 @@ public class CameraFragment extends Fragment {
             }
         });
 
+        mCameraView = view.findViewById(R.id.camera);
+        mTakePhoto = view.findViewById(R.id.btn_take_photo);
+        mSwitchCamera =  view.findViewById(R.id.btn_switch_camera);
+        mToggleFlash =  view.findViewById(R.id.btn_toggle_flash);
+        mImageView = view.findViewById(R.id.image_view);
+        mImageView.enable();
+
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCameraView.start();
+    }
+
+    @Override
+    public void onPause() {
+        mCameraView.stop();
+        super.onPause();
+    }
+
 
     @Override
     public void onAttach(Context context) {
