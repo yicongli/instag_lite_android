@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context="com.unimelb.activity.ShareActivity">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_camera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation_camera" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_camera"
         android:layout_width="0dp"
