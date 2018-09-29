@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(BaseFragment.newInstance("home"));
         adapter.addFragment(new DiscoverFragment());
         adapter.addFragment(BaseFragment.newInstance("favourite"));
-        adapter.addFragment(BaseFragment.newInstance("profile"));
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
