@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
                         mContext.startActivity(intent1);
                         return false;
                     case R.id.navigation_favourite:
-                        viewPager.setCurrentItem(2);
+                        viewPager.setCurrentItem(3);
                         return true;
                     case R.id.navigation_profile:
-                        viewPager.setCurrentItem(3);
+                        viewPager.setCurrentItem(4);
                         return true;
                 }
                 return false;
