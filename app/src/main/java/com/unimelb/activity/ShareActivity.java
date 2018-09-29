@@ -1,7 +1,6 @@
 package com.unimelb.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
@@ -12,51 +11,31 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.unimelb.adapter.ViewPagerAdapter;
-import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.CameraFragment;
-import com.unimelb.fragment.DiscoverFragment;
 import com.unimelb.fragment.LibraryFragment;
 import com.unimelb.fragment.ShareFragmentsListener;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 import com.unimelb.utils.Permissions;
 
+/**
+ * This activity is the module related to the photo and sharing activity
+ */
 public class ShareActivity extends AppCompatActivity implements ShareFragmentsListener{
-    private static final String TAG = "ShareActivity";
-    private Context mContext = ShareActivity.this;
-    private BottomNavigationView navigationView;
-    private ViewPager viewPager;
-    private MenuItem menuItem;
+    private static final String TAG = "ShareActivity";      // tag of current activity
+    private Context mContext        = ShareActivity.this;   // current context
+    private BottomNavigationView navigationView;            // the navigation view at the bottom
+    private ViewPager viewPager;                            // the pager to store the fragments
+    private MenuItem menuItem;                              // the menu item
 
-    //Constants
-    private static final int ACTIVITY_NUM = 2;
-    private static final int VERIFY_PERMISSION_REQUEST = 1;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_library:
-                    return true;
-                case R.id.navigation_photo:
-                    return true;
-            }
-            return false;
-        }
-    };
+    private static final int VERIFY_PERMISSION_REQUEST = 1; // the flag of verify permission request
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_camera);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Log.d(TAG, "onCreate: started");
 
@@ -69,16 +48,18 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         viewPager = findViewById(R.id.viewpager_camera);
         navigationView = findViewById(R.id.navigation_camera);
         BottomNavigationViewHelper.disableShiftMode(navigationView);
+
+        // the listener to handle the selecting operation of bottom navigation view
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_library:
-                        viewPager.setCurrentItem(0);
+                        viewPager.setCurrentItem(0);    // show library
                         return true;
                     case R.id.navigation_photo:
-                        viewPager.setCurrentItem(1);
+                        viewPager.setCurrentItem(1);    // show photo
                         return true;
                 }
 
@@ -96,9 +77,11 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
             public void onPageSelected(int position) {
                 if (menuItem != null) {
                     menuItem.setChecked(false);
-                } else {
+                }
+                else {
                     navigationView.getMenu().getItem(0).setChecked(false);
                 }
+
                 menuItem = navigationView.getMenu().getItem(position);
                 menuItem.setChecked(true);
             }
@@ -112,7 +95,10 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         navigationView.setSelectedItemId(R.id.navigation_photo);
     }
 
-    // setup the content of viewPager
+    /**
+     * setup the content of viewPager
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 

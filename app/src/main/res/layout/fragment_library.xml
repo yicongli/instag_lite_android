@@ -43,11 +43,11 @@
             android:layout_height="0dp"
             android:layout_weight="40"
             android:id="@+id/libraryGridVIew"
-            android:numColumns="4"
+            android:numColumns="3"
             android:verticalSpacing="1dp"
             android:horizontalSpacing="1dp"
-            android:stretchMode="none"
             android:gravity="center"
+            android:stretchMode="none"
             android:layout_marginTop="1dp">
 
         </GridView>

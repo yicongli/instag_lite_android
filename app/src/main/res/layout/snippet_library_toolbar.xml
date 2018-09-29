@@ -29,12 +29,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/libraryBack"
+                android:layout_toEndOf="@id/libraryBack"
                 android:id="@+id/librarySpinner"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                android:text="Library"
+                android:text="@string/title_library"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical">
+
 
             </Spinner>
 
