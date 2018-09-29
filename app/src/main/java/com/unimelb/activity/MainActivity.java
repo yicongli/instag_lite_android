@@ -7,12 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.DiscoverFragment;
+import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginAuth();
+//        loginAuth();
 
         viewPager = findViewById(R.id.viewpager);
         navigationView = findViewById(R.id.navigation);
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new DiscoverFragment());
         adapter.addFragment(BaseFragment.newInstance("favourite"));
         adapter.addFragment(BaseFragment.newInstance("profile"));
+        adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
 }
