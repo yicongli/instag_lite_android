@@ -41,19 +41,19 @@ public class DiscoverFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        IResponseHandler responseHandler = new IResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, String errMsg) {
-                Log.d("TAG", statusCode + "");
-                Log.d("TAG", errMsg);
-            }
-
-            @Override
-            public void onSuccess(String json) {
-                Log.d("TAG", json);
-            }
-        };
-        HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, responseHandler);
+//        IResponseHandler responseHandler = new IResponseHandler() {
+//            @Override
+//            public void onFailure(int statusCode, String errMsg) {
+//                Log.d("TAG", statusCode + "");
+//                Log.d("TAG", errMsg);
+//            }
+//
+//            @Override
+//            public void onSuccess(String json) {
+//                Log.d("TAG", json);
+//            }
+//        };
+//        HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, responseHandler);
     }
 
     public void initView(View view) {
@@ -61,13 +61,21 @@ public class DiscoverFragment extends Fragment {
         linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(), SearchActivity.class)));
 
         TableLayout tableLayout = view.findViewById(R.id.search_table_layout);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1.0f
+        );
         for (int i = 0; i < 5; i++) {
             TableRow row = new TableRow(getActivity());
-            ImageView imageView = new ImageView(getActivity());
-            ImageUtils.loadImage(getContext(), "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg", imageView);
-            imageView.setMaxWidth(30);
-            imageView.setMaxHeight(30);
-            row.addView(imageView);
+            for (int j = 0; j < 3; j++) {
+                LinearLayout layout = new LinearLayout(getActivity());
+                layout.setLayoutParams(param);
+                ImageView imageView = new ImageView(getActivity());
+                ImageUtils.loadImage(getContext(), "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg", imageView);
+                layout.addView(imageView);
+                row.addView(layout);
+            }
             tableLayout.addView(row);
         }
     }
