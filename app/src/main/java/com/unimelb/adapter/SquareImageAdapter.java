@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import com.unimelb.component.GridViewItem;
 import com.unimelb.utils.ImageUtils;
 
-public class ImageAdapter extends BaseAdapter {
+public class SquareImageAdapter extends BaseAdapter {
     private Context context;
     private String[] images;
 
-    public ImageAdapter(Context context, String[] images) {
+    public SquareImageAdapter(Context context, String[] images) {
         this.context = context;
         this.images = images;
     }

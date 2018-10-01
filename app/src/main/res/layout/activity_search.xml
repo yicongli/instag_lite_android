@@ -13,8 +13,9 @@
         android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/search_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="@null"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp"/>
         <EditText
             android:id="@+id/search_edit_text"
@@ -23,7 +24,8 @@
             android:hint="Search People"
             android:inputType="text"/>
     </LinearLayout>
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
