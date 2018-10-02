@@ -11,20 +11,50 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
  * Encapsulate the OkHttp library
+ *
+ * usage example:
+ *
+ * HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, new IResponseHandler(){
+ *     @Override
+ *     public void onFailure(int statusCode, String errMsg) {
+ *         Log.d("TAG", statusCode + "");
+ *         Log.d("TAG", errMsg);
+ *     }
+ *
+ *     @Override
+ *     public void onSuccess(String json) {
+ *         Log.d("TAG", json);
+ *     }
+ * });
+ *
  */
 public class HttpRequest {
+
+    /** JSON media type */
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    /** Create an instance of http client */
     private static OkHttpClient client;
+
+    /** Http request instance */
     private static HttpRequest instance;
 
+    /**
+     * Constructor method
+     */
     public HttpRequest() {
         client = new OkHttpClient();
     }
 
+    /**
+     * Instance
+     * @return
+     */
     public static HttpRequest getInstance() {
         if (instance == null) {
             instance = new HttpRequest();
@@ -47,12 +77,25 @@ public class HttpRequest {
     }
 
     /**
-     * Asynchronous post request
+     * Asynchronous json post request
+     * @param url
+     * @param jsonBody
+     * @param responseHandler
+     */
+    public void doPostRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler){
+        RequestBody body = RequestBody.create(JSON, jsonBody);
+        Request request = new Request.Builder().url(url).post(body).build();
+        newCall(request, responseHandler);
+    }
+
+
+    /**
+     * Asynchronous form post request
      * @param url
      * @param paramsMap
      * @param responseHandler
      */
-    public void doPostRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler){
+    public void doFormPostRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler){
         FormBody.Builder builder = new FormBody.Builder();
 
         if(paramsMap != null && paramsMap.size() > 0) {
@@ -66,6 +109,38 @@ public class HttpRequest {
     }
 
 
+    /**
+     * Asynchronous json put request
+     * @param url
+     * @param jsonBody
+     * @param responseHandler
+     */
+    public void doPutRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler){
+        RequestBody body = RequestBody.create(JSON, jsonBody);
+        Request request = new Request.Builder().url(url).put(body).build();
+        newCall(request, responseHandler);
+    }
+
+
+    /**
+     * Asynchronous delete request
+     * @param url
+     * @param paramsMap
+     * @param responseHandler
+     */
+    public void doDeleteRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler){
+        String requestUrl = handleGetParams(url, paramsMap);
+        Request request = new Request.Builder().url(requestUrl).delete().build();
+
+        newCall(request, responseHandler);
+    }
+
+
+    /**
+     * universal client call
+     * @param request
+     * @param responseHandler
+     */
     private void newCall(Request request, final IResponseHandler responseHandler){
         client.newCall(request).enqueue(new Callback() {
             @Override
