@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.DiscoverFragment;
+import com.unimelb.fragment.HomeFragment;
 import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(BaseFragment.newInstance("home"));
+        adapter.addFragment(new HomeFragment());
         adapter.addFragment(new DiscoverFragment());
         adapter.addFragment(BaseFragment.newInstance("favourite"));
         adapter.addFragment(new ProfileFragment());
