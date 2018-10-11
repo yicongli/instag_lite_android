@@ -39,7 +39,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
         holder.usernameTextView.setText(postList.get(position).getUsername());
-        holder.locationTextView.setText(postList.get(position).getLocation());
+        holder.locationTextView.setText(postList.get(position).getLocation().toString());
 
         ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
         holder.dateView.setText(postList.get(position).getDate());

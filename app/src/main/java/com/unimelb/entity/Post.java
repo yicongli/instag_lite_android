@@ -1,5 +1,7 @@
 package com.unimelb.entity;
 
+import android.location.Location;
+
 public class Post {
 
     /** user profile picture link */
@@ -12,7 +14,7 @@ public class Post {
     private String imageUrl;
 
     /** post location */
-    private String location;
+    private Location location;
 
     /** post time and date */
     private String date;
@@ -20,7 +22,7 @@ public class Post {
     /** post comments */
     private String comments;
 
-    public Post(String avatarUrl, String username, String imageUrl, String location, String date, String comments) {
+    public Post(String avatarUrl, String username, String imageUrl, Location location, String date, String comments) {
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.imageUrl = imageUrl;
@@ -53,11 +55,11 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

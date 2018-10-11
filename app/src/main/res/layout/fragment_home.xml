@@ -8,6 +8,15 @@
     android:orientation="vertical"
     tools:context="com.unimelb.fragment.HomeFragment">
 
+
+    <Switch
+        android:id="@+id/sortPostsSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by Date/Location"
+        android:textOn="@string/sort_switch_on"
+        android:textOff="@string/sort_switch_off"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/post_list"
         android:layout_width="match_parent"
