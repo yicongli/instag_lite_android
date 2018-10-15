@@ -30,4 +30,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to main feed-->
+    <string name="sort_switch_on">Sorted by location</string>
+    <string name="sort_switch_off">Sorted by date</string>
+
 </resources>

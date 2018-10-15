@@ -47,4 +47,7 @@ dependencies {
     //camerakit
     implementation 'com.wonderkiln:camerakit:0.12.0'
     implementation 'com.bm.photoview:library:1.4.1'
+
+    // location
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 }
