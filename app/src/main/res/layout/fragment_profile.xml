@@ -1,142 +1,149 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.unimelb.fragment.ProfileFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="16dp">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/userHead"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/user_head"/>
+
+        <LinearLayout
+            android:id="@+id/numbers"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp">
-
-            <ImageView
-                android:id="@+id/userHead"
-                android:layout_width="88dp"
-                android:layout_height="88dp"
-                android:layout_alignParentLeft="true"
-                android:src="@drawable/user_head" />
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/userHead">
 
             <LinearLayout
-                android:id="@+id/numbers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/userHead">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:orientation="vertical">
+                    android:layout_gravity="center"
+                    android:text="25"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="25"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="posts" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="55"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="followers" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="12"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="following" />
-                </LinearLayout>
+                    android:layout_gravity="center"
+                    android:text="posts"/>
             </LinearLayout>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/userHead"
-                android:text="Edit profile"
-                android:textSize="12sp"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:onClick="goToEditProfile"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="55"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="followers"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="12"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="following"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_below="@id/numbers"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/userHead"
+            android:background="@color/colorPrimary"
+            android:onClick="goToEditProfile"
+            android:text="Edit profile"
+            android:textColor="@color/white"
+            android:textSize="12sp"/>
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="D'Angelo Dinero"
-            android:layout_marginHorizontal="16dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="D'Angelo Dinero"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bio:Burke is a former Corrections Officer for the Jacksonville Sheriff's Office in Florida who would become an amateur boxer in Jacksonville's Club 5 and Club Plush where he had a 98–1 win/loss record. According to his WWE.com profile, Burke has a record of 103–1 with 102 knockouts in his amateur career."
-            android:layout_marginHorizontal="16dp"
-            android:textColor="@color/black"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginBottom="4dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://en.wikipedia.org/wiki/D%27Angelo_Dinero"
-            android:layout_marginHorizontal="16dp"
-            android:textColor="@color/colorPrimary"
-            android:clickable="true"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Bio:Burke is a former Corrections Officer for the Jacksonville Sheriff's Office in Florida who would become an amateur boxer in Jacksonville's Club 5 and Club Plush where he had a 98–1 win/loss record. According to his WWE.com profile, Burke has a record of 103–1 with 102 knockouts in his amateur career."
+        android:textColor="@color/black"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:clickable="true"
+        android:text="https://en.wikipedia.org/wiki/D%27Angelo_Dinero"
+        android:textColor="@color/colorPrimary"
+        />
 
-    </LinearLayout>
-
+    <GridView
+        android:id="@+id/profile_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:horizontalSpacing="2dp"
+        android:numColumns="3"
+        android:verticalSpacing="2dp"/>
+</LinearLayout>
 </ScrollView>

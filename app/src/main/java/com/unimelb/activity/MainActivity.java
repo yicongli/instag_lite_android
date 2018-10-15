@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.base.BaseFragment;
+import com.unimelb.fragment.ActivityFragment;
 import com.unimelb.fragment.DiscoverFragment;
 import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(BaseFragment.newInstance("home"));
         adapter.addFragment(new DiscoverFragment());
-        adapter.addFragment(BaseFragment.newInstance("favourite"));
+        adapter.addFragment(new ActivityFragment());
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
