@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.unimelb.adapter.ViewPagerAdapter;
-import com.unimelb.base.BaseFragment;
 import com.unimelb.fragment.ActivityFragment;
 import com.unimelb.fragment.DiscoverFragment;
 import com.unimelb.fragment.HomeFragment;
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        loginAuth();
+        loginAuth();
 
         viewPager = findViewById(R.id.viewpager);
         navigationView = findViewById(R.id.navigation);
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loginAuth(){
 
-        startActivity(new Intent(this, Login.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
