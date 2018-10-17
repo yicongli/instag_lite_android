@@ -2,14 +2,12 @@ package com.unimelb.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -22,7 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.unimelb.adapter.GridImageAdapter;
+import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.FIleSearch;
 import com.unimelb.utils.FilePaths;
@@ -167,6 +165,8 @@ public class LibraryFragment extends Fragment {
         Log.d(TAG, "initGridView" + path);
 
         final ArrayList<String> picturePaths = FIleSearch.getFilePaths(path);
+        String pathArray[] = new String[picturePaths.size()];
+        pathArray = picturePaths.toArray(pathArray);
 
         // set grid column width
         int gridWidth = getResources().getDisplayMetrics().widthPixels;
@@ -175,8 +175,8 @@ public class LibraryFragment extends Fragment {
         gridView.setColumnWidth(imageViewWidth);
 
         // adapter
-        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, picturePaths);
-        gridView.setAdapter(adapter);
+        SquareImageAdapter imageAdapter = new SquareImageAdapter(this.getContext(), pathArray);
+        gridView.setAdapter(imageAdapter);
 
         //set the first image to be displayed when the activity fragment view is inflated
         try {
