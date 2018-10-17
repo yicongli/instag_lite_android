@@ -2,7 +2,12 @@ package com.unimelb.entity;
 
 import android.location.Location;
 
+import java.util.List;
+
 public class Post {
+
+    /** post id*/
+    private int postId;
 
     /** user profile picture link */
     private String avatarUrl;
@@ -19,16 +24,29 @@ public class Post {
     /** post time and date */
     private String date;
 
-    /** post comments */
-    private String comments;
+    /** post likes */
+    private List<String> likes;
 
-    public Post(String avatarUrl, String username, String imageUrl, Location location, String date, String comments) {
+    /** post comments */
+    private List<Comment> comments;
+
+    public Post(int postId, String avatarUrl, String username, String imageUrl, Location location, String date, List<String> likes, List<Comment> comments) {
+        this.postId = postId;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.imageUrl = imageUrl;
         this.location = location;
         this.date = date;
+        this.likes = likes;
         this.comments = comments;
+    }
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
     public String getAvatarUrl() {
@@ -71,11 +89,19 @@ public class Post {
         this.date = date;
     }
 
-    public String getComments() {
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(String comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 }

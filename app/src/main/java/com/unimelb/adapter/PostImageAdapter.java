@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unimelb.entity.BasicUserProfile;
+import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.ImageUtils;
@@ -37,13 +39,14 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
         holder.usernameTextView.setText(postList.get(position).getUsername());
         holder.locationTextView.setText(postList.get(position).getLocation().toString());
 
         ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
         holder.dateView.setText(postList.get(position).getDate());
-        holder.commentView.setText(postList.get(position).getComments());
+        holder.likeBtn.setText("Like");
 
     }
 
@@ -63,7 +66,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         private ImageView postImageView;
         private TextView dateView;
-        private TextView commentView;
+        private Button likeBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -73,7 +76,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
             postImageView = itemView.findViewById(R.id.postImageView);
             dateView = itemView.findViewById(R.id.post_list_item_date);
-            commentView = itemView.findViewById(R.id.post_list_item_comment);
+            likeBtn = itemView.findViewById(R.id.post_list_item_likebutton);
         }
     }
 }

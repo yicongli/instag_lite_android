@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.unimelb.adapter.PostImageAdapter;
+import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
 
@@ -36,9 +38,16 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private List<Post> postList;
+    /** List of posts */
+    public List<Post> postList;
+
+    /** Date of the posts */
     Long date;
 
+    /** Post id */
+    int postId;
+
+    /** Get last known location */
     private FusedLocationProviderClient mFusedLocationClient;
 
     Location myLocation;
@@ -61,7 +70,7 @@ public class HomeFragment extends Fragment {
 
         initData();
 
-        // Sort by date initally
+        // Sort by date initially
         sortByDate();
 
         initView(view);
@@ -91,9 +100,13 @@ public class HomeFragment extends Fragment {
 //        });
     }
 
+    /**
+     * Initialize post data
+     */
     private void initData() {
         postList = new ArrayList<>();
         date = System.currentTimeMillis();
+        postId = 0;
 
 
         final String[] postImageUrls = new String[]{
@@ -114,10 +127,21 @@ public class HomeFragment extends Fragment {
                 "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
         };
 
+        List<String> testLikes = new ArrayList<>();
+        testLikes.add("username1");
+        testLikes.add("username2");
+
+        List<Comment> testComments = new ArrayList<>();
+        Comment comment = new Comment("Comment1", "username");
+        testComments.add(comment);
+
+
         for (String postUrl : postImageUrls) {
-            Post post = new Post("http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", postUrl, myLocation, sdf.format(date), "comments");
+            Post post = new Post(postId,"http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", postUrl, myLocation, sdf.format(date), testLikes,testComments);
             postList.add(post);
 
+
+            postId += 1;
             date -= 60000;
         }
 
@@ -129,6 +153,10 @@ public class HomeFragment extends Fragment {
         listView.setAdapter(new PostImageAdapter(this.getContext(), postList));
     }
 
+    /**
+     * Sort date/location switch
+     * @param view
+     */
     public void sortSwitchControl(View view) {
         sortSwitch = view.findViewById(R.id.sortPostsSwitch);
 
@@ -151,6 +179,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Sort by date
+     */
     public void sortByDate() {
         Collections.sort(postList, new Comparator<Post>() {
             @Override
@@ -161,6 +192,9 @@ public class HomeFragment extends Fragment {
 
     }
 
+    /**
+     * Sort by location
+     */
     public void sortByLocation() {
         //https://stackoverflow.com/questions/6927556/sorting-a-list-of-locations
 
@@ -174,6 +208,10 @@ public class HomeFragment extends Fragment {
 
     }
 
+    /**
+     * Get last known location
+     * @param view
+     */
     public void lastKnownLocation(View view) {
 
         myLocation = new Location("My location");
@@ -204,4 +242,5 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
 }
