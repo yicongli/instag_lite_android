@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView listView = view.findViewById(R.id.post_list);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        listView.setAdapter(new PostImageAdapter(this.getContext(), postList));
+        listView.setAdapter(new PostImageAdapter(this.getActivity(), postList));
     }
 
     /**
