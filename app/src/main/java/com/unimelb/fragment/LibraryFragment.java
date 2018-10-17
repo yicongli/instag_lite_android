@@ -47,7 +47,6 @@ public class LibraryFragment extends Fragment {
     private GridView    gridView;
     private ImageView   libraryImageView;
     private ProgressBar libraryProgressBar;
-    private Spinner     directorySpinner;
 
     private ArrayList<String> directories;
 
@@ -59,8 +58,7 @@ public class LibraryFragment extends Fragment {
      * @return A new instance of fragment LibraryFragment.
      */
     public static LibraryFragment newInstance() {
-        LibraryFragment fragment = new LibraryFragment();
-        return fragment;
+        return new LibraryFragment();
     }
 
     @Override
@@ -70,7 +68,7 @@ public class LibraryFragment extends Fragment {
         gridView = view.findViewById(R.id.libraryGridVIew);
         libraryImageView = view.findViewById(R.id.libraryImageVIew);
         libraryProgressBar = view.findViewById(R.id.libraryProgressBar);
-        directorySpinner = view.findViewById(R.id.librarySpinner);
+        Spinner directorySpinner = view.findViewById(R.id.librarySpinner);
 
         libraryProgressBar.setVisibility(View.GONE);
         // set the configuration of image loader
@@ -128,15 +126,14 @@ public class LibraryFragment extends Fragment {
 
         Log.d(TAG, "initDataSource");
 
-        FilePaths filePaths = new FilePaths();
         ArrayList<String> tmpList = new ArrayList<>();
 
-        ArrayList<String> picturePathList = FIleSearch.getDirectoryPaths(filePaths.PICTURE_PATH);
+        ArrayList<String> picturePathList = FIleSearch.getDirectoryPaths(FilePaths.PICTURE_PATH);
         if (picturePathList.size() != 0 ) {
             tmpList = picturePathList;
         }
 
-        tmpList.add(0,filePaths.CAMERA_PATH);
+        tmpList.add(0,FilePaths.CAMERA_PATH);
 
         return  tmpList;
     }
