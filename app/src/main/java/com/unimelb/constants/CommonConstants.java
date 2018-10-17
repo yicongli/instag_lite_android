@@ -5,5 +5,9 @@ package com.unimelb.constants;
  */
 public class CommonConstants {
 
-    public static final String IP = "http://127.0.0.1";
+    /** Server ip address */
+    public static final String IP = "http://23.101.223.173:9090";
+
+    /** User token */
+    public static String token = "";
 }

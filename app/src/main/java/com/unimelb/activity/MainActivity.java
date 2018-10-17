@@ -8,21 +8,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.unimelb.adapter.PostImageAdapter;
 import com.unimelb.adapter.ViewPagerAdapter;
-import com.unimelb.base.BaseFragment;
-import com.unimelb.entity.Post;
+import com.unimelb.fragment.ActivityFragment;
 import com.unimelb.fragment.DiscoverFragment;
 import com.unimelb.fragment.HomeFragment;
 import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
-
-import java.util.List;
+import com.unimelb.utils.TokenHelper;
 
 /**
  * Main portal
@@ -39,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        loginAuth();
+        loginAuth();
 
         viewPager = findViewById(R.id.viewpager);
         navigationView = findViewById(R.id.navigation);
@@ -99,9 +93,12 @@ public class MainActivity extends AppCompatActivity {
      * user login logic, if there is not access token, navigate to login page
      */
     private void loginAuth(){
-
-        startActivity(new Intent(this, Login.class));
-        finish();
+        TokenHelper th = new TokenHelper(this);
+//        th.deleteToken();
+        if(!th.isValidToken()){
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -109,33 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(new HomeFragment());
         adapter.addFragment(new DiscoverFragment());
-        adapter.addFragment(BaseFragment.newInstance("favourite"));
+        adapter.addFragment(new ActivityFragment());
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
-
-    public void btnLikeOnClick(View view) {
-        Toast toast = Toast.makeText(view.getContext(), "this is just a test", Toast.LENGTH_SHORT);
-        toast.show();
-
-
-    }
-
-    /**
-     * Like a post
-     * @param view
-     */
-    /*public void btnLikeOnClick(View view) {
-        HomeFragment hf = new HomeFragment();
-        TextView temp = view.findViewById(R.id.post_list_item_like);
-
-        List<Post> posts = hf.postList;
-
-        //temp.setText(posts.get());
-
-        temp.setText("test username");
-
-        Toast toast = Toast.makeText(view.getContext(), "this is just a test", Toast.LENGTH_SHORT);
-        toast.show();
-    }*/
 }

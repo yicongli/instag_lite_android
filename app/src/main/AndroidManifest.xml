@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.unimelb.activity.Login"
+            android:name="com.unimelb.activity.LoginActivity"
             android:label="@string/app_name" />
         <activity
             android:name="com.unimelb.activity.ShareActivity"
@@ -38,7 +38,7 @@
         <activity android:name="com.unimelb.activity.SearchActivity" />
         <activity
             android:name="com.unimelb.activity.RegisterActivity"
-            android:parentActivityName="com.unimelb.activity.Login" />
+            android:parentActivityName="com.unimelb.activity.LoginActivity" />
         <activity
             android:name="com.unimelb.activity.WelcomeActivity"
             android:parentActivityName="com.unimelb.activity.RegisterActivity" />
