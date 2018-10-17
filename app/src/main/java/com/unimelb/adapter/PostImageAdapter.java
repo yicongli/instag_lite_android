@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.unimelb.activity.CommentsActivity;
 import com.unimelb.activity.LikesActivity;
 import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.ImageUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -68,6 +71,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         private ImageView likeBtn;
         private TextView likeCountLabel;
         private ImageView ownerImageView;
+        private TextView commentBtn;
 
         public ViewHolder(Context context, View itemView) {
             super(itemView);
@@ -79,6 +83,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             likeBtn = itemView.findViewById(R.id.post_list_item_like_btn);
             likeCountLabel = itemView.findViewById(R.id.post_list_item_like_label);
             ownerImageView = itemView.findViewById(R.id.post_list_item_owner_avatar);
+            commentBtn = itemView.findViewById(R.id.post_list_item_view_comment_btn);
             EditText commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
             TextView postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
 
@@ -89,6 +94,10 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
             likeCountLabel.setOnClickListener((view) -> {
                 context.startActivity(new Intent(context, LikesActivity.class));
+            });
+
+            commentBtn.setOnClickListener((view)->{
+                context.startActivity(new Intent(context, CommentsActivity.class));
             });
 
             // detect edit text focus event, when it focused, display post button

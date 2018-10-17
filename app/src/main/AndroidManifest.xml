@@ -29,10 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.unimelb.activity.LoginActivity"/>
-        <activity
-            android:name="com.unimelb.activity.ShareActivity"/>
+        <activity android:name="com.unimelb.activity.LoginActivity"/>
+        <activity android:name="com.unimelb.activity.ShareActivity"/>
         <activity android:name="com.unimelb.activity.SearchActivity"/>
         <activity
             android:name="com.unimelb.activity.RegisterActivity"
@@ -42,6 +40,8 @@
             android:parentActivityName="com.unimelb.activity.RegisterActivity"/>
         <activity android:name="com.unimelb.activity.EditProfileActivity"/>
         <activity android:name="com.unimelb.activity.LikesActivity">
+        </activity>
+        <activity android:name="com.unimelb.activity.CommentsActivity">
         </activity>
     </application>
 
