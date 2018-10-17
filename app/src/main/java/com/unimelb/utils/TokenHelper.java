@@ -9,10 +9,14 @@ import android.content.SharedPreferences;
  */
 public class TokenHelper {
 
-    /** Context */
+    /**
+     * Context
+     */
     private Context context;
 
-    /** SharedPreferences instance **/
+    /**
+     * SharedPreferences instance
+     **/
     private SharedPreferences sp;
 
     public TokenHelper(Context context) {
@@ -22,6 +26,7 @@ public class TokenHelper {
 
     /**
      * Save token in the sharedPreference
+     *
      * @param token
      */
     public void saveToken(String token) {
@@ -32,6 +37,7 @@ public class TokenHelper {
 
     /**
      * Get token
+     *
      * @return
      */
     public String getToken() {
@@ -40,10 +46,20 @@ public class TokenHelper {
 
     /**
      * Validate whether the token is valid
+     *
      * @return
      */
     public boolean isValidToken() {
         String token = sp.getString("token", "");
         return token.length() > 0;
+    }
+
+    /**
+     * Remove token value
+     */
+    public void deleteToken() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("token");
+        editor.apply();
     }
 }

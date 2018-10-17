@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loginAuth(){
         TokenHelper th = new TokenHelper(this);
+//        th.deleteToken();
         if(!th.isValidToken()){
             startActivity(new Intent(this, LoginActivity.class));
             finish();
