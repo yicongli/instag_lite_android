@@ -25,6 +25,11 @@ android {
     sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/tempImage'] } }
 }
 
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url 'https://dl.bintray.com/flurgle/maven' }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -43,9 +48,10 @@ dependencies {
     //universal image loader
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //camerakit
-    implementation 'com.wonderkiln:camerakit:0.12.0'
+    implementation 'com.flurgle:camerakit:0.9.18'
     implementation 'com.bm.photoview:library:1.4.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     // location
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation files('libs/json-simple-1.1.1.jar')
 }

@@ -2,14 +2,12 @@ package com.unimelb.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -22,7 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.unimelb.adapter.GridImageAdapter;
+import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.FIleSearch;
 import com.unimelb.utils.FilePaths;
@@ -49,7 +47,6 @@ public class LibraryFragment extends Fragment {
     private GridView    gridView;
     private ImageView   libraryImageView;
     private ProgressBar libraryProgressBar;
-    private Spinner     directorySpinner;
 
     private ArrayList<String> directories;
 
@@ -61,8 +58,7 @@ public class LibraryFragment extends Fragment {
      * @return A new instance of fragment LibraryFragment.
      */
     public static LibraryFragment newInstance() {
-        LibraryFragment fragment = new LibraryFragment();
-        return fragment;
+        return new LibraryFragment();
     }
 
     @Override
@@ -72,7 +68,7 @@ public class LibraryFragment extends Fragment {
         gridView = view.findViewById(R.id.libraryGridVIew);
         libraryImageView = view.findViewById(R.id.libraryImageVIew);
         libraryProgressBar = view.findViewById(R.id.libraryProgressBar);
-        directorySpinner = view.findViewById(R.id.librarySpinner);
+        Spinner directorySpinner = view.findViewById(R.id.librarySpinner);
 
         libraryProgressBar.setVisibility(View.GONE);
         // set the configuration of image loader
@@ -130,15 +126,14 @@ public class LibraryFragment extends Fragment {
 
         Log.d(TAG, "initDataSource");
 
-        FilePaths filePaths = new FilePaths();
         ArrayList<String> tmpList = new ArrayList<>();
 
-        ArrayList<String> picturePathList = FIleSearch.getDirectoryPaths(filePaths.PICTURE_PATH);
+        ArrayList<String> picturePathList = FIleSearch.getDirectoryPaths(FilePaths.PICTURE_PATH);
         if (picturePathList.size() != 0 ) {
             tmpList = picturePathList;
         }
 
-        tmpList.add(0,filePaths.CAMERA_PATH);
+        tmpList.add(0,FilePaths.CAMERA_PATH);
 
         return  tmpList;
     }
@@ -167,6 +162,8 @@ public class LibraryFragment extends Fragment {
         Log.d(TAG, "initGridView" + path);
 
         final ArrayList<String> picturePaths = FIleSearch.getFilePaths(path);
+        String pathArray[] = new String[picturePaths.size()];
+        pathArray = picturePaths.toArray(pathArray);
 
         // set grid column width
         int gridWidth = getResources().getDisplayMetrics().widthPixels;
@@ -175,8 +172,8 @@ public class LibraryFragment extends Fragment {
         gridView.setColumnWidth(imageViewWidth);
 
         // adapter
-        GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, picturePaths);
-        gridView.setAdapter(adapter);
+        SquareImageAdapter imageAdapter = new SquareImageAdapter(this.getContext(), pathArray);
+        gridView.setAdapter(imageAdapter);
 
         //set the first image to be displayed when the activity fragment view is inflated
         try {
