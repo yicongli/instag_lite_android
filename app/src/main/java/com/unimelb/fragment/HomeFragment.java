@@ -34,24 +34,33 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 
 public class HomeFragment extends Fragment {
 
-    /** List of posts */
+    /**
+     * List of posts
+     */
     public List<Post> postList;
 
-    /** Date of the posts */
+    /**
+     * Date of the posts
+     */
     Long date;
 
-    /** Post id */
+    /**
+     * Post id
+     */
     int postId;
 
-    /** Get last known location */
+    /**
+     * Get last known location
+     */
     private FusedLocationProviderClient mFusedLocationClient;
 
     Location myLocation;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy hh:mm a");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy hh:mm a", Locale.US);
 
     Switch sortSwitch;
     Toast switchToast;
@@ -60,12 +69,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
-
         lastKnownLocation(view);
 
         initData();
@@ -79,25 +85,6 @@ public class HomeFragment extends Fragment {
         sortSwitchControl(view);
 
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-//        HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, new IResponseHandler(){
-//            @Override
-//            public void onFailure(int statusCode, String errMsg) {
-//                Log.d("TAG", statusCode + "");
-//                Log.d("TAG", errMsg);
-//            }
-//
-//            @Override
-//            public void onSuccess(String json) {
-//                Log.d("TAG", json);
-//            }
-//        });
     }
 
     /**
@@ -137,7 +124,7 @@ public class HomeFragment extends Fragment {
 
 
         for (String postUrl : postImageUrls) {
-            Post post = new Post(postId,"http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", postUrl, myLocation, sdf.format(date), testLikes,testComments);
+            Post post = new Post(postId, "http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", postUrl, myLocation, sdf.format(date), testLikes, testComments);
             postList.add(post);
 
 
@@ -155,6 +142,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * Sort date/location switch
+     *
      * @param view
      */
     public void sortSwitchControl(View view) {
@@ -210,6 +198,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * Get last known location
+     *
      * @param view
      */
     public void lastKnownLocation(View view) {
