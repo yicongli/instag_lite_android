@@ -16,6 +16,7 @@ import com.unimelb.fragment.HomeFragment;
 import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
+import com.unimelb.utils.TokenHelper;
 
 /**
  * Main portal
@@ -92,9 +93,11 @@ public class MainActivity extends AppCompatActivity {
      * user login logic, if there is not access token, navigate to login page
      */
     private void loginAuth(){
-
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        TokenHelper th = new TokenHelper(this);
+        if(!th.isValidToken()){
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
