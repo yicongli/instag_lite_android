@@ -37,30 +37,11 @@ public class DiscoverFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-//        HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, new IResponseHandler(){
-//            @Override
-//            public void onFailure(int statusCode, String errMsg) {
-//                Log.d("TAG", statusCode + "");
-//                Log.d("TAG", errMsg);
-//            }
-//
-//            @Override
-//            public void onSuccess(String json) {
-//                Log.d("TAG", json);
-//            }
-//        });
-    }
-
     public void initView(View view) {
         LinearLayout linearLayout = view.findViewById(R.id.search_bar);
         linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(), SearchActivity.class)));
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
         refreshLayout.setOnRefreshListener(layout -> {
             layout.finishRefresh(2000/*,false*/);// false means false

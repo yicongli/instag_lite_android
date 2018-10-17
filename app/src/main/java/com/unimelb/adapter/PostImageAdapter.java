@@ -6,11 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.unimelb.entity.BasicUserProfile;
 import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
@@ -18,15 +17,15 @@ import com.unimelb.utils.ImageUtils;
 
 import java.util.List;
 
-public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder>{
+public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
 
-    private Context context;
-    private LayoutInflater mInflater;
+    private static Context context;
+    //    private LayoutInflater inflater;
     private List<Post> postList;
 
     public PostImageAdapter(Context context, List<Post> postList) {
         this.context = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.postList = postList;
 
     }
@@ -46,8 +45,6 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
         holder.dateView.setText(postList.get(position).getDate());
-        holder.likeBtn.setText("Like");
-
     }
 
     @Override
@@ -66,17 +63,20 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         private ImageView postImageView;
         private TextView dateView;
-        private Button likeBtn;
+        private ImageView likeBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             avatarImageView = itemView.findViewById(R.id.post_list_item_avatar);
             usernameTextView = itemView.findViewById(R.id.post_list_item_username);
             locationTextView = itemView.findViewById(R.id.post_list_item_location);
-
-            postImageView = itemView.findViewById(R.id.postImageView);
+            postImageView = itemView.findViewById(R.id.post_image_view);
             dateView = itemView.findViewById(R.id.post_list_item_date);
-            likeBtn = itemView.findViewById(R.id.post_list_item_likebutton);
+            likeBtn = itemView.findViewById(R.id.post_list_item_like_btn);
+            likeBtn.setOnClickListener((view) -> {
+                Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
+                likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
+            });
         }
     }
 }

@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.scwang.smartrefresh.header.WaterDropHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.unimelb.adapter.PostImageAdapter;
 import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
@@ -97,21 +99,16 @@ public class HomeFragment extends Fragment {
 
 
         final String[] postImageUrls = new String[]{
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/24e3c68b-4042-4988-bfd9-694328a8b52c.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/24e3c68b-4042-4988-bfd9-694328a8b52c.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/24e3c68b-4042-4988-bfd9-694328a8b52c.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
+                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
         };
 
         List<String> testLikes = new ArrayList<>();
@@ -135,6 +132,15 @@ public class HomeFragment extends Fragment {
     }
 
     public void initView(View view) {
+        RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
+        refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
+        refreshLayout.setOnRefreshListener(layout -> {
+            layout.finishRefresh(2000/*,false*/);// false means false
+        });
+        refreshLayout.setOnLoadMoreListener(layout -> {
+            layout.finishLoadMore(2000/*,false*/);// false means false
+        });
+
         RecyclerView listView = view.findViewById(R.id.post_list);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         listView.setAdapter(new PostImageAdapter(this.getContext(), postList));
