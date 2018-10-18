@@ -15,6 +15,12 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+
+        ndk {
+            // Tells Gradle to build outputs for the following ABIs and package
+            // them into your APK.
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
@@ -47,10 +53,11 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
     //universal image loader
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    //camerakit
+    //camera
     implementation 'com.flurgle:camerakit:0.9.18'
     implementation 'com.bm.photoview:library:1.4.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.zomato:androidphotofilters:1.0.0'
     // location
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation files('libs/json-simple-1.1.1.jar')

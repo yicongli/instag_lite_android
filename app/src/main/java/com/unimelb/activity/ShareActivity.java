@@ -2,8 +2,8 @@ package com.unimelb.activity;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -11,9 +11,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.fragment.CameraFragment;
+import com.unimelb.fragment.EffectsFragment;
 import com.unimelb.fragment.LibraryFragment;
 import com.unimelb.fragment.ShareFragmentsListener;
 import com.unimelb.instagramlite.R;
@@ -29,6 +31,13 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     private BottomNavigationView navigationView;            // the navigation view at the bottom
     private ViewPager viewPager;                            // the pager to store the fragments
     private MenuItem menuItem;                              // the menu item
+    private String selectedImagePath;                       // the path of selected photo
+
+    private CameraFragment cameraFragment;
+    private LibraryFragment libraryFragment;
+    private EffectsFragment effectsFragment;
+
+    private int prePosition;   // the view position showed before effect element
 
     private static final int VERIFY_PERMISSION_REQUEST = 1; // the flag of verify permission request
 
@@ -82,8 +91,19 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
                     navigationView.getMenu().getItem(0).setChecked(false);
                 }
 
-                menuItem = navigationView.getMenu().getItem(position);
-                menuItem.setChecked(true);
+                if(position == 1) {
+                    cameraFragment.startCamera();
+                }
+                else {
+                    cameraFragment.stopCamera();
+                }
+
+                if (position == 2) {
+                    prePosition = position;
+                } else {
+                    menuItem = navigationView.getMenu().getItem(position);
+                    menuItem.setChecked(true);
+                }
             }
 
             @Override
@@ -102,9 +122,26 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(LibraryFragment.newInstance());
-        adapter.addFragment(CameraFragment.newInstance());
+        cameraFragment  = CameraFragment.newInstance();
+        libraryFragment = LibraryFragment.newInstance();
+        effectsFragment = EffectsFragment.newInstance();
+
+        adapter.addFragment(libraryFragment);
+        adapter.addFragment(cameraFragment);
+        adapter.addFragment(effectsFragment);
+
         viewPager.setAdapter(adapter);
+    }
+
+    private void showEffectsFragment()
+    {
+        viewPager.setCurrentItem(2,false);
+        navigationView.setVisibility(View.GONE);
+        new Handler().postDelayed(() -> {
+                if(effectsFragment != null) {
+                    effectsFragment.initUI();
+            }
+        }, 150);
     }
 
     /**
@@ -154,7 +191,13 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     }
 
     @Override
-    public void selectedImage(String imagePath) {
-        // TODO: jump to filter fragment
+    public void selectingImage(String imagePath) {
+        selectedImagePath = imagePath;
+        showEffectsFragment();
+    }
+
+    @Override
+    public String getSelectedImagePath () {
+        return  selectedImagePath;
     }
 }

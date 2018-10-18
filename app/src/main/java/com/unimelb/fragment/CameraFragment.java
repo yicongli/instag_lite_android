@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
@@ -88,7 +87,7 @@ public class CameraFragment extends Fragment {
         mNextView.setVisibility(View.GONE);
         mNextView.setOnClickListener(View -> {
             Log.d(TAG, "go to modify activity");
-            mListener.selectedImage(mSelectedImage);
+            mListener.selectingImage(mSelectedImage);
         });
 
         initCamera();
@@ -246,11 +245,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    public void setCameraViewVisibility(int visible) {
-        if(mCameraView != null)
-            mCameraView.setVisibility(visible);
-    }
-
     public void startCamera()
     {
         if(mCameraView != null)
@@ -266,7 +260,6 @@ public class CameraFragment extends Fragment {
             mCameraView.stop();
         }
     }
-
 
     @Override
     public void onAttach(Context context) {
