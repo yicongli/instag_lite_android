@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
@@ -25,6 +28,7 @@ import com.unimelb.instagramlite.R;
 import com.unimelb.constants.FilePaths;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +52,20 @@ public class EffectsFragment extends Fragment {
     private PhotoView mImageView;           // the photo view
     private FiltersAdapter filtersAdapter;  // effects list adapter
     private ArrayList<ThumbnailItem> images = new ArrayList<>(); // images for effects list
+
+    // control panels
+    private RelativeLayout filterPanel;
+    private RelativeLayout contrastPanel;
+    private RelativeLayout brightnessPanel;
+
+    // control buttons
+    private ImageView mBrightness;
+    private ImageView mContrast;
+    private ImageView mFilter;
+
+    // Labels to show the figure
+    private TextView mBrightnessLabel;
+    private TextView mContrastLabel;
 
     private ShareFragmentsListener mListener;   // parrent activity
 
@@ -78,6 +96,9 @@ public class EffectsFragment extends Fragment {
             // TODO: show the post fragment
         });
 
+        // initiate control button and control panel
+        initControlButtons(view);
+
         filtersAdapter = new FiltersAdapter(this,images);
 
         // layout of recyclerview
@@ -89,6 +110,118 @@ public class EffectsFragment extends Fragment {
         mRecyclerView.setAdapter(filtersAdapter);
 
         return view;
+    }
+
+    /**
+     * initiate control button and control panel
+     * @param view based view
+     */
+    private void initControlButtons (View view) {
+        filterPanel = view.findViewById(R.id.filter_panel);
+        contrastPanel = view.findViewById(R.id.contrast_panel);
+        brightnessPanel = view.findViewById(R.id.bright_panel);
+
+        mBrightness = view.findViewById(R.id.effect_bright);
+        mBrightness.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.VISIBLE);
+            filterPanel.setVisibility(android.view.View.GONE);
+            contrastPanel.setVisibility(android.view.View.GONE);
+            mBrightness.setBackgroundColor(0xFFBFBFBF);
+            mContrast.setBackgroundColor(0);
+            mFilter.setBackgroundColor(0);
+        });
+
+        mContrast = view.findViewById(R.id.effect_contrast);
+        mContrast.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.GONE);
+            filterPanel.setVisibility(android.view.View.GONE);
+            contrastPanel.setVisibility(android.view.View.VISIBLE);
+            mContrast.setBackgroundColor(0xFFBFBFBF);
+            mBrightness.setBackgroundColor(0);
+            mFilter.setBackgroundColor(0);
+        });
+
+        mFilter = view.findViewById(R.id.effect_filter);
+        mFilter.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.GONE);
+            filterPanel.setVisibility(android.view.View.VISIBLE);
+            contrastPanel.setVisibility(android.view.View.GONE);
+            mFilter.setBackgroundColor(0xFFBFBFBF);
+            mBrightness.setBackgroundColor(0);
+            mContrast.setBackgroundColor(0);
+        });
+
+        mFilter.setBackgroundColor(0xFFBFBFBF);
+        brightnessPanel.setVisibility(android.view.View.GONE);
+        contrastPanel.setVisibility(android.view.View.GONE);
+
+        // init brightness seek panel
+        mBrightnessLabel = view.findViewById(R.id.textView_bright);
+        SeekBar mSeekBarBrightness = view.findViewById(R.id.seekBar_bright);
+        mSeekBarBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                String text = "Brightness: " + (progress - 30);
+                mBrightnessLabel.setText(text);
+                Log.d(TAG, "Changing Brightness seekbar's progress");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Started Brightness tracking seekbar");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Stopped Brightness tracking seekbar");
+
+                Filter myFilter = new Filter();
+                // TODO: Adjust param
+                myFilter.addSubFilter(new BrightnessSubFilter(seekBar.getProgress() - 30));
+
+                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+
+                setImage(ouputImage);
+                bindDataToAdapter(ouputImage);
+            }
+        });
+
+        // init contrast seek panel
+        mContrastLabel = view.findViewById(R.id.textView_contrast);
+        SeekBar mSeekBarConstrast = view.findViewById(R.id.seekBar_contrast);
+        mSeekBarConstrast.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                String text = "Brightness: " + progress / 10.0;
+                mContrastLabel.setText(text);
+                Log.d(TAG, "Changing Constrast seekbar's progress");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Started Constrast tracking seekbar");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Stopped Constrast tracking seekbar");
+
+                Filter myFilter = new Filter();
+                // TODO: Adjust param
+                myFilter.addSubFilter(new ContrastSubFilter((float)(seekBar.getProgress() / 10.0)));
+
+                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+
+                setImage(ouputImage);
+                bindDataToAdapter(ouputImage);
+            }
+        });
     }
 
     /**

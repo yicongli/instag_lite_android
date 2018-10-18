@@ -34,5 +34,10 @@
     <!-- Strings related to main feed-->
     <string name="sort_switch_on">Sorted by location</string>
     <string name="sort_switch_off">Sorted by date</string>
+    <string name="string_brightness">Brightness</string>
+    <string name="string_contrast">Contrast</string>
+    <string name="string_crop">Crop</string>
+    <string name="string_constrast_1_0">Constrast: 1.0</string>
+    <string name="string_brightness_0">Brightness: 0</string>
 
 </resources>
