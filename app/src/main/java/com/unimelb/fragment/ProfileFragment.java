@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.GridView;
 
 import com.unimelb.activity.EditProfileActivity;
@@ -17,6 +18,7 @@ import com.unimelb.activity.LoginActivity;
 import com.unimelb.activity.RegisterActivity;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.instagramlite.R;
+import com.unimelb.utils.ExpandableGridView;
 import com.unimelb.utils.TokenHelper;
 
 /**
@@ -56,7 +58,7 @@ public class ProfileFragment extends Fragment {
                     .show();
         });
 
-        GridView gridView = view.findViewById(R.id.profile_grid_view);
+        ExpandableGridView gridView = view.findViewById(R.id.profile_grid_view);
         final String[] imageUrls = new String[]{
                 "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
                 "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",

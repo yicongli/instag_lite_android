@@ -24,7 +24,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name="com.unimelb.activity.MainActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
