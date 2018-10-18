@@ -50,13 +50,9 @@ public class CameraFragment extends Fragment {
 
     private boolean photoTaken = false;
 
-    private Uri pathImage = null;
+    private String mSelectedImage;
 
     private ShareFragmentsListener mListener;
-
-    public CameraFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -90,6 +86,10 @@ public class CameraFragment extends Fragment {
 
         mNextView = view.findViewById(R.id.photoNext);
         mNextView.setVisibility(View.GONE);
+        mNextView.setOnClickListener(View -> {
+            Log.d(TAG, "go to modify activity");
+            mListener.selectedImage(mSelectedImage);
+        });
 
         initCamera();
 
@@ -133,7 +133,7 @@ public class CameraFragment extends Fragment {
 
                 saveBitmapToPng(rotatedBitmap,file);
 
-                pathImage = Uri.fromFile(file);
+                mSelectedImage = file.getAbsolutePath();
                 Picasso.with(getActivity()).load(file).fit().centerCrop().into(mImageView);
             }
         });
@@ -249,11 +249,6 @@ public class CameraFragment extends Fragment {
     public void setCameraViewVisibility(int visible) {
         if(mCameraView != null)
             mCameraView.setVisibility(visible);
-    }
-
-
-    public Uri getPathImage() {
-        return pathImage;
     }
 
     public void startCamera()

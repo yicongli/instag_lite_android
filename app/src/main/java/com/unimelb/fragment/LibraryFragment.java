@@ -87,8 +87,8 @@ public class LibraryFragment extends Fragment {
         // go to filter view after touch next
         TextView nextView = view.findViewById(R.id.libraryNext);
         nextView.setOnClickListener(View -> {
-                Log.d(TAG, "go to modify activity");
-                // TODO: the logic of go to photo operation
+            Log.d(TAG, "go to modify activity");
+            mListener.selectedImage(mSelectedImage);
         });
 
         // initiate data source

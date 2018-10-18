@@ -154,7 +154,7 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     }
 
     @Override
-    public void selectedImage(Image image) {
+    public void selectedImage(String imagePath) {
         // TODO: jump to filter fragment
     }
 }
