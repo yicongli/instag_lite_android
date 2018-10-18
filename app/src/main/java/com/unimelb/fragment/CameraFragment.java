@@ -1,6 +1,7 @@
 package com.unimelb.fragment;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -63,8 +64,7 @@ public class CameraFragment extends Fragment {
      * @return A new instance of fragment CameraFragment.
      */
     public static CameraFragment newInstance() {
-        CameraFragment fragment = new CameraFragment();
-        return fragment;
+        return new CameraFragment();
     }
 
     @Override
@@ -74,12 +74,9 @@ public class CameraFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         ImageView backButton = view.findViewById(R.id.photoBack);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        backButton.setOnClickListener(View -> {
                 Log.d(TAG, "closing share activity");
                 getActivity().finish();
-            }
         });
 
         mCameraView   = view.findViewById(R.id.camera);
@@ -128,9 +125,13 @@ public class CameraFragment extends Fragment {
 
                 final File file = new File(FilePaths.CAMERA_PATH, fileName);
 
+                // get the result and rotate 90 degrees before save to local (the original one is not in correct direction)
                 Bitmap result = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(result, 0, 0, result.getWidth(), result.getHeight(), matrix, true);
 
-                saveBitmapToPng(result,file);
+                saveBitmapToPng(rotatedBitmap,file);
 
                 pathImage = Uri.fromFile(file);
                 Picasso.with(getActivity()).load(file).fit().centerCrop().into(mImageView);
