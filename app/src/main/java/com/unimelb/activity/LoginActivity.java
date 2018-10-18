@@ -76,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
                         // save the token
                         TokenHelper th = new TokenHelper(context);
                         th.saveToken(token);
-                        CommonConstants.token = token;
-//                        System.out.println(token);
 
                         // update UI
                         context.runOnUiThread(() -> {

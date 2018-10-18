@@ -28,12 +28,12 @@ public class ResponseModel {
         JSONObject obj = null;
         try {
             obj = (JSONObject) parser.parse(json);
+            data = (JSONObject) obj.get("data");
+            code = Integer.parseInt(obj.get("code").toString());
+            msg = (String) obj.get("msg");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        data = (JSONObject) obj.get("data");
-        code = Integer.parseInt(obj.get("code").toString());
-        msg = (String) obj.get("msg");
     }
 
     /********** Getter & Setter  *******/

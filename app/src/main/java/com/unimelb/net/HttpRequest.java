@@ -1,5 +1,8 @@
 package com.unimelb.net;
 
+import com.unimelb.constants.CommonConstants;
+import com.unimelb.utils.TokenHelper;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -40,7 +43,7 @@ public class HttpRequest {
     /**
      * Create an instance of http client
      */
-    private static OkHttpClient.Builder client;
+    private static OkHttpClient client;
 
     /**
      * Http request instance
@@ -51,17 +54,7 @@ public class HttpRequest {
      * Constructor method
      */
     public HttpRequest() {
-        client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .addHeader("Content-Type", "application/json; charset=utf-8")
-                        .addHeader("Authorization", "")
-                        .build();
-                return chain.proceed(request);
-            }
-        });
+        client = new OkHttpClient();
     }
 
     /**
@@ -162,7 +155,7 @@ public class HttpRequest {
      * @param responseHandler
      */
     private void newCall(Request request, final IResponseHandler responseHandler) {
-        client.build().newCall(request).enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 responseHandler.onFailure(-1, e.getMessage());
@@ -188,26 +181,23 @@ public class HttpRequest {
      * @return
      */
     private String handleGetParams(String url, Map<String, String> paramsMap) {
-        String requestUrl = url;
+        String requestUrl = url + "?access_token=" + CommonConstants.token;
 
         if (paramsMap != null && paramsMap.size() > 0) {
             StringBuilder tempParams = new StringBuilder();
-            int pos = 0;
             for (String key : paramsMap.keySet()) {
-                if (pos > 0) {
-                    tempParams.append("&");
-                }
+                tempParams.append("&");
                 //handle URLEncoder for the params
                 try {
                     tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                pos++;
             }
 
             //get fully request url
-            requestUrl = String.format("%s?%s", url, tempParams.toString());
+            requestUrl = String.format("%s%s", url, tempParams.toString());
+            System.out.println(requestUrl);
         }
         return requestUrl;
     }
