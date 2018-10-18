@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -176,6 +177,15 @@ public class EffectsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "Stopped Brightness tracking seekbar");
+
+                Filter myFilter = new Filter();
+                // TODO: Adjust param
+                myFilter.addSubFilter(new BrightnessSubFilter(seekBar.getProgress() - 30));
+
+                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+
+                setImage(ouputImage);
+                bindDataToAdapter(ouputImage);
             }
         });
 
@@ -201,6 +211,15 @@ public class EffectsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Log.d(TAG, "Stopped Constrast tracking seekbar");
+
+                Filter myFilter = new Filter();
+                // TODO: Adjust param
+                myFilter.addSubFilter(new ContrastSubFilter((float)(seekBar.getProgress() / 10.0)));
+
+                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+
+                setImage(ouputImage);
+                bindDataToAdapter(ouputImage);
             }
         });
     }
