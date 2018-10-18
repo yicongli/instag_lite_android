@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
@@ -51,13 +52,19 @@ public class EffectsFragment extends Fragment {
     private FiltersAdapter filtersAdapter;  // effects list adapter
     private ArrayList<ThumbnailItem> images = new ArrayList<>(); // images for effects list
 
+    // control panels
     private RelativeLayout filterPanel;
     private RelativeLayout contrastPanel;
     private RelativeLayout brightnessPanel;
 
+    // control buttons
     private ImageView mBrightness;
     private ImageView mContrast;
     private ImageView mFilter;
+
+    // Labels to show the figure
+    private TextView mBrightnessLabel;
+    private TextView mContrastLabel;
 
     private ShareFragmentsListener mListener;   // parrent activity
 
@@ -146,6 +153,56 @@ public class EffectsFragment extends Fragment {
         mFilter.setBackgroundColor(0xFFBFBFBF);
         brightnessPanel.setVisibility(android.view.View.GONE);
         contrastPanel.setVisibility(android.view.View.GONE);
+
+        // init brightness seek panel
+        mBrightnessLabel = view.findViewById(R.id.textView_bright);
+        SeekBar mSeekBarBrightness = view.findViewById(R.id.seekBar_bright);
+        mSeekBarBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                String text = "Brightness: " + (progress - 30);
+                mBrightnessLabel.setText(text);
+                Log.d(TAG, "Changing Brightness seekbar's progress");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Started Brightness tracking seekbar");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Stopped Brightness tracking seekbar");
+            }
+        });
+
+        // init contrast seek panel
+        mContrastLabel = view.findViewById(R.id.textView_contrast);
+        SeekBar mSeekBarConstrast = view.findViewById(R.id.seekBar_contrast);
+        mSeekBarConstrast.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                String text = "Brightness: " + progress / 10.0;
+                mContrastLabel.setText(text);
+                Log.d(TAG, "Changing Constrast seekbar's progress");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Started Constrast tracking seekbar");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Log.d(TAG, "Stopped Constrast tracking seekbar");
+            }
+        });
     }
 
     /**

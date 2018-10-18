@@ -37,5 +37,7 @@
     <string name="string_brightness">Brightness</string>
     <string name="string_contrast">Contrast</string>
     <string name="string_crop">Crop</string>
+    <string name="string_constrast_1_0">Constrast: 1.0</string>
+    <string name="string_brightness_0">Brightness: 0</string>
 
 </resources>
