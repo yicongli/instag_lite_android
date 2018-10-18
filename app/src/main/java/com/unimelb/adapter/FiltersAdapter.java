@@ -16,14 +16,13 @@ import com.zomato.photofilters.imageprocessors.Filter;
 import java.util.List;
 
 /**
- * Created by luca1897 on 25/06/17.
+ * The adapter to hold the effects showing on the effect view
  */
-
 public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.ViewHolder> {
 
-    private int selected = 0;
-    private List<ThumbnailItem> images;
-    private EffectsFragment effectsFragment;
+    private int selected = 0;                   // select flag
+    private List<ThumbnailItem> images;         // items of image
+    private EffectsFragment effectsFragment;    // parent fragment
 
 
     public FiltersAdapter(EffectsFragment effectsFragment, List<ThumbnailItem> images) {
@@ -64,6 +63,9 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.ViewHold
         return images.size();
     }
 
+    /**
+     * The effect view holder
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View view;
         public ImageView imageView;

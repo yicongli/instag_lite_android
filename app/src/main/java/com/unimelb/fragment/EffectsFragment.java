@@ -19,7 +19,7 @@ import com.bm.library.PhotoView;
 import com.unimelb.adapter.FiltersAdapter;
 import com.unimelb.component.ThumbnailItem;
 import com.unimelb.instagramlite.R;
-import com.unimelb.utils.FilePaths;
+import com.unimelb.constants.FilePaths;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 
@@ -32,20 +32,19 @@ import java.util.Date;
 
 
 /**
- * Created by luca1897 on 23/06/17.
+ * Effect Fragment for editing the image
  */
-
 public class EffectsFragment extends Fragment {
 
     static {
         System.loadLibrary("NativeImageProcessor");
     }
 
-    private PhotoView mImageView;
-    private FiltersAdapter filtersAdapter;
-    private ArrayList<ThumbnailItem> images = new ArrayList<>();
+    private PhotoView mImageView;           // the photo view
+    private FiltersAdapter filtersAdapter;  // effects list adapter
+    private ArrayList<ThumbnailItem> images = new ArrayList<>(); // images for effects list
 
-    private ShareFragmentsListener mListener;
+    private ShareFragmentsListener mListener;   // parrent activity
 
     public static EffectsFragment newInstance() {
         return new EffectsFragment();
@@ -56,11 +55,13 @@ public class EffectsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_effects, container, false);
 
+        // initiate image view to show the effect of modification
         mImageView = rootView.findViewById(R.id.image_view);
         RecyclerView mRecyclerView = rootView.findViewById(R.id.recyclerView);
 
         filtersAdapter = new FiltersAdapter(this,images);
 
+        // layout of recyclerview
         LinearLayoutManager llFilters = new LinearLayoutManager(rootView.getContext());
         llFilters.setOrientation(LinearLayoutManager.HORIZONTAL);
 
@@ -71,36 +72,46 @@ public class EffectsFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * bind the data to the adatpter
+     * @param bmp scource image
+     */
     private void bindDataToAdapter(final Bitmap bmp) {
         Handler handler = new Handler();
-        Runnable r = new Runnable() {
-            public void run() {
+        Runnable r = () -> {
+            ThumbnailItem t1 = new ThumbnailItem("Original",bmp,null);
+            ThumbnailItem t2 = new ThumbnailItem("Star Lit", bmp,SampleFilters.getStarLitFilter());
+            ThumbnailItem t3 = new ThumbnailItem("Blue Mess", bmp,SampleFilters.getBlueMessFilter());
+            ThumbnailItem t4 = new ThumbnailItem("Awe Struck Vibe", bmp,SampleFilters.getAweStruckVibeFilter());
+            ThumbnailItem t5 = new ThumbnailItem("Lime Stutter", bmp, SampleFilters.getLimeStutterFilter());
+            ThumbnailItem t6 = new ThumbnailItem("Night Wisper", bmp,SampleFilters.getNightWhisperFilter());
 
-                ThumbnailItem t1 = new ThumbnailItem("Original",bmp,null);
-                ThumbnailItem t2 = new ThumbnailItem("Star Lit", bmp,SampleFilters.getStarLitFilter());
-                ThumbnailItem t3 = new ThumbnailItem("Blue Mess", bmp,SampleFilters.getBlueMessFilter());
-                ThumbnailItem t4 = new ThumbnailItem("Awe Struck Vibe", bmp,SampleFilters.getAweStruckVibeFilter());
-                ThumbnailItem t5 = new ThumbnailItem("Lime Stutter", bmp, SampleFilters.getLimeStutterFilter());
-                ThumbnailItem t6 = new ThumbnailItem("Night Wisper", bmp,SampleFilters.getNightWhisperFilter());
+            images.clear();
+            images.add(t1); // Original Image
+            images.add(t2);
+            images.add(t3);
+            images.add(t4);
+            images.add(t5);
+            images.add(t6);
 
-                images.clear();
-                images.add(t1); // Original Image
-                images.add(t2);
-                images.add(t3);
-                images.add(t4);
-                images.add(t5);
-                images.add(t6);
-
-                filtersAdapter.notifyDataSetChanged();
-            }
+            filtersAdapter.notifyDataSetChanged();
         };
+
         handler.post(r);
     }
 
+    /**
+     * set image showing in the imageView
+     * @param bmp scource image
+     */
     public void setImage(Bitmap bmp) {
         mImageView.setImageBitmap(bmp);
     }
 
+    /**
+     * save modified image to local
+     * @return image absolute path
+     */
     public String saveImage()
     {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -122,6 +133,11 @@ public class EffectsFragment extends Fragment {
         return file.getAbsolutePath();
     }
 
+    /**
+     * save Bmp file to the local as png
+     * @param file target path
+     * @param bmp  image source
+     */
     private void saveBmpToFile(File file, Bitmap bmp)
     {
         FileOutputStream out = null;
@@ -142,6 +158,7 @@ public class EffectsFragment extends Fragment {
         }
     }
 
+    // initiate the presenting page after everytime select different page
     public void initUI() {
         String path = mListener.getSelectedImagePath();
         path = Uri.parse(path).getPath();
@@ -150,8 +167,7 @@ public class EffectsFragment extends Fragment {
             opts.inMutable = true;
             opts.inJustDecodeBounds = false;
 
-
-
+            // fit image to the imageview
             Bitmap originaBitmap = BitmapFactory.decodeFile(path,opts);
             opts.inSampleSize = calculateInSampleSize(opts,300,300);
 
@@ -176,6 +192,13 @@ public class EffectsFragment extends Fragment {
 
     }
 
+    /**
+     * calculate the Size of sample view
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -199,6 +222,11 @@ public class EffectsFragment extends Fragment {
         return inSampleSize;
     }
 
+    /**
+     * adjust orientation
+     * @param exifOrientation orientation
+     * @return the degree need to rotate
+     */
     private int exifToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
         else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
@@ -210,7 +238,7 @@ public class EffectsFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof ShareFragmentsListener) {
-            mListener = (ShareFragmentsListener) context;
+            mListener = (ShareFragmentsListener) context; // get context
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }

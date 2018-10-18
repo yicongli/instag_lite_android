@@ -98,6 +98,7 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
                     cameraFragment.stopCamera();
                 }
 
+                // if current show effect Fragment, then recode previous pages
                 if (position == 2) {
                     prePosition = position;
                 } else {
@@ -133,9 +134,13 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * show effects fragment when touch next on the library or camera page.
+     */
     private void showEffectsFragment()
     {
         viewPager.setCurrentItem(2,false);
+        // Hide navigationView when show the effect view
         navigationView.setVisibility(View.GONE);
         new Handler().postDelayed(() -> {
                 if(effectsFragment != null) {
@@ -190,12 +195,20 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         }
     }
 
+    /**
+     * show effect fragment after selecting image on library / camera view
+     * @param imagePath
+     */
     @Override
     public void selectingImage(String imagePath) {
         selectedImagePath = imagePath;
         showEffectsFragment();
     }
 
+    /**
+     * return current selected image path
+     * @return current selected image path
+     */
     @Override
     public String getSelectedImagePath () {
         return  selectedImagePath;

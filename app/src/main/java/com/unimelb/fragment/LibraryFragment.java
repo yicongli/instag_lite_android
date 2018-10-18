@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.FIleSearch;
-import com.unimelb.utils.FilePaths;
+import com.unimelb.constants.FilePaths;
 
 import java.util.ArrayList;
 

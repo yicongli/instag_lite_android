@@ -6,10 +6,8 @@ import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
 
 /**
- * Created by luca1897 on 10/07/17.
+ * The class for holding the picture of each effect item
  */
-
-
 public class ThumbnailItem {
     public Bitmap image;
     public Filter filter;
