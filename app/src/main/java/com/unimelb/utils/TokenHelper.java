@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.unimelb.constants.CommonConstants;
+
 /**
  * Token management
  */
@@ -30,6 +32,7 @@ public class TokenHelper {
      * @param token
      */
     public void saveToken(String token) {
+        CommonConstants.token = token;
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("token", token);
         editor.apply();
@@ -51,6 +54,8 @@ public class TokenHelper {
      */
     public boolean isValidToken() {
         String token = sp.getString("token", "");
+        System.out.println(token);
+        CommonConstants.token = token;
         return token.length() > 0;
     }
 
