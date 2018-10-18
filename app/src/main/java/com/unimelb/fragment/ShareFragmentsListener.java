@@ -18,4 +18,6 @@ public interface ShareFragmentsListener {
     void selectingImage(String imagePath);
 
     String getSelectedImagePath();
+
+    void backToPreviousView();
 }

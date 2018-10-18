@@ -11,9 +11,12 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.unimelb.adapter.FiltersAdapter;
@@ -36,6 +39,8 @@ import java.util.Date;
  */
 public class EffectsFragment extends Fragment {
 
+    private final static String TAG = "EffectsFragment";
+
     static {
         System.loadLibrary("NativeImageProcessor");
     }
@@ -53,23 +58,37 @@ public class EffectsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_effects, container, false);
+        View view = inflater.inflate(R.layout.fragment_effects, container, false);
 
         // initiate image view to show the effect of modification
-        mImageView = rootView.findViewById(R.id.image_view);
-        RecyclerView mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        mImageView = view.findViewById(R.id.image_view);
+        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
+
+        // close the activity when touch the back button
+        ImageView backButton = view.findViewById(R.id.effectBack);
+        backButton.setOnClickListener(View -> {
+                Log.d(TAG, "back to previous view");
+                mListener.backToPreviousView();
+        });
+
+        // go to filter view after touch next
+        TextView nextView = view.findViewById(R.id.effectNext);
+        nextView.setOnClickListener(View -> {
+            Log.d(TAG, "go to Post view");
+            // TODO: show the post fragment
+        });
 
         filtersAdapter = new FiltersAdapter(this,images);
 
         // layout of recyclerview
-        LinearLayoutManager llFilters = new LinearLayoutManager(rootView.getContext());
+        LinearLayoutManager llFilters = new LinearLayoutManager(view.getContext());
         llFilters.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         mRecyclerView.setLayoutManager(llFilters);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(filtersAdapter);
 
-        return rootView;
+        return view;
     }
 
     /**
