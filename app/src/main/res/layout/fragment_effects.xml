@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="#F8F8F8"
-            android:layout_weight="0.3">
+            android:layout_weight="0.3"
+            android:id="@+id/filter_panel">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_marginTop="20dp"
@@ -51,5 +52,66 @@
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#F8F8F8"
+            android:layout_weight="0.3"
+            android:id="@+id/bright_panel">
+
+            <SeekBar
+                android:id="@+id/seekBar_bright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="40dp"
+                android:max="61"
+                android:progress="31" />
+
+            <TextView
+                android:id="@+id/textView_bright"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBar_bright"
+                android:layout_centerHorizontal="true"
+                android:text="@string/string_brightness"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#F8F8F8"
+            android:layout_weight="0.3"
+            android:id="@+id/contrast_panel">
+
+            <SeekBar
+                android:id="@+id/seekBar_contrast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="40dp"
+                android:max="21"
+                android:progress="11" />
+
+            <TextView
+                android:id="@+id/textView_contrast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBar_contrast"
+                android:layout_centerHorizontal="true"
+                android:text="@string/string_contrast"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp" />
+        </RelativeLayout>
+
+
     </LinearLayout>
 </RelativeLayout>

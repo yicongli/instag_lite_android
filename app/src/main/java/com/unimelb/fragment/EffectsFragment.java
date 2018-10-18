@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bm.library.PhotoView;
@@ -25,6 +26,7 @@ import com.unimelb.instagramlite.R;
 import com.unimelb.constants.FilePaths;
 import com.zomato.photofilters.SampleFilters;
 import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,6 +50,14 @@ public class EffectsFragment extends Fragment {
     private PhotoView mImageView;           // the photo view
     private FiltersAdapter filtersAdapter;  // effects list adapter
     private ArrayList<ThumbnailItem> images = new ArrayList<>(); // images for effects list
+
+    private RelativeLayout filterPanel;
+    private RelativeLayout contrastPanel;
+    private RelativeLayout brightnessPanel;
+
+    private ImageView mBrightness;
+    private ImageView mContrast;
+    private ImageView mFilter;
 
     private ShareFragmentsListener mListener;   // parrent activity
 
@@ -78,6 +88,9 @@ public class EffectsFragment extends Fragment {
             // TODO: show the post fragment
         });
 
+        // initiate control button and control panel
+        initControlButtons(view);
+
         filtersAdapter = new FiltersAdapter(this,images);
 
         // layout of recyclerview
@@ -89,6 +102,50 @@ public class EffectsFragment extends Fragment {
         mRecyclerView.setAdapter(filtersAdapter);
 
         return view;
+    }
+
+    /**
+     * initiate control button and control panel
+     * @param view based view
+     */
+    private void initControlButtons (View view) {
+        filterPanel = view.findViewById(R.id.filter_panel);
+        contrastPanel = view.findViewById(R.id.contrast_panel);
+        brightnessPanel = view.findViewById(R.id.bright_panel);
+
+        mBrightness = view.findViewById(R.id.effect_bright);
+        mBrightness.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.VISIBLE);
+            filterPanel.setVisibility(android.view.View.GONE);
+            contrastPanel.setVisibility(android.view.View.GONE);
+            mBrightness.setBackgroundColor(0xFFBFBFBF);
+            mContrast.setBackgroundColor(0);
+            mFilter.setBackgroundColor(0);
+        });
+
+        mContrast = view.findViewById(R.id.effect_contrast);
+        mContrast.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.GONE);
+            filterPanel.setVisibility(android.view.View.GONE);
+            contrastPanel.setVisibility(android.view.View.VISIBLE);
+            mContrast.setBackgroundColor(0xFFBFBFBF);
+            mBrightness.setBackgroundColor(0);
+            mFilter.setBackgroundColor(0);
+        });
+
+        mFilter = view.findViewById(R.id.effect_filter);
+        mFilter.setOnClickListener(View -> {
+            brightnessPanel.setVisibility(android.view.View.GONE);
+            filterPanel.setVisibility(android.view.View.VISIBLE);
+            contrastPanel.setVisibility(android.view.View.GONE);
+            mFilter.setBackgroundColor(0xFFBFBFBF);
+            mBrightness.setBackgroundColor(0);
+            mContrast.setBackgroundColor(0);
+        });
+
+        mFilter.setBackgroundColor(0xFFBFBFBF);
+        brightnessPanel.setVisibility(android.view.View.GONE);
+        contrastPanel.setVisibility(android.view.View.GONE);
     }
 
     /**
