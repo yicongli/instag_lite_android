@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.widget.TextView;
 
 import com.bm.library.PhotoView;
 import com.squareup.picasso.Picasso;
@@ -43,9 +44,8 @@ public class CameraFragment extends Fragment {
     private ImageButton mSwitchCamera;
     private ImageButton mToggleFlash;
     private PhotoView mImageView;
-
-    private static int DEFAULT_FLASH_MODE = 0;
-    private static int DEFAULT_CAMERA_MODE = 0;
+    private TextView mNextView;
+    private ImageView mGridView;
 
     private boolean photoTaken = false;
 
@@ -82,12 +82,17 @@ public class CameraFragment extends Fragment {
             }
         });
 
-        mCameraView = view.findViewById(R.id.camera);
-        mTakePhoto = view.findViewById(R.id.btn_take_photo);
-        mSwitchCamera =  view.findViewById(R.id.btn_switch_camera);
-        mToggleFlash =  view.findViewById(R.id.btn_toggle_flash);
+        mCameraView   = view.findViewById(R.id.camera);
+        mGridView     = view.findViewById(R.id.grid_camera_view);
+        mTakePhoto    = view.findViewById(R.id.btn_take_photo);
+        mSwitchCamera = view.findViewById(R.id.btn_switch_camera);
+        mToggleFlash  = view.findViewById(R.id.btn_toggle_flash);
+
         mImageView = view.findViewById(R.id.image_view);
         mImageView.enable();
+
+        mNextView = view.findViewById(R.id.photoNext);
+        mNextView.setVisibility(View.GONE);
 
         initCamera();
 
@@ -107,6 +112,9 @@ public class CameraFragment extends Fragment {
     }
 
 
+    /**
+     * initiate camera module
+     */
     public void initCamera()
     {
         mCameraView.setCameraListener(new CameraListener() {
@@ -118,57 +126,45 @@ public class CameraFragment extends Fragment {
                 Date now = new Date();
                 String fileName = "IMG_" + formatter.format(now) + ".png";
 
-                final File file = new File(
-                        FilePaths.CAMERA_PATH,
-                        fileName
-                );
+                final File file = new File(FilePaths.CAMERA_PATH, fileName);
 
                 Bitmap result = BitmapFactory.decodeByteArray(picture, 0, picture.length);
 
                 saveBitmapToPng(result,file);
 
                 pathImage = Uri.fromFile(file);
-                Picasso.with(getActivity()).load(file).fit().centerCrop()
-                        .into(mImageView);
+                Picasso.with(getActivity()).load(file).fit().centerCrop().into(mImageView);
+            }
+        });
+
+        mTakePhoto.setOnClickListener(view -> {
+            if(!photoTaken) {
+                mCameraView.captureImage();
+
                 mCameraView.setVisibility(View.INVISIBLE);
+                mGridView.setVisibility(View.INVISIBLE);
                 mSwitchCamera.setVisibility(View.GONE);
                 mToggleFlash.setVisibility(View.GONE);
-                //awCamera.setContinueButtonVisibility(View.VISIBLE); // TODO:
+                mNextView.setVisibility(View.VISIBLE);
                 mImageView.setVisibility(View.VISIBLE);
-                mTakePhoto.setImageDrawable(getResources().getDrawable(R.drawable.ic_refresh));
+                mTakePhoto.setBackgroundResource(R.drawable.ic_refresh_black_24dp);
+            }
+            else{
+                mTakePhoto.setBackgroundResource(R.drawable.ic_photo_camera_black_24dp);
+                photoTaken = false;
+                mCameraView.setVisibility(View.VISIBLE);
+                mGridView.setVisibility(View.VISIBLE);
+                mSwitchCamera.setVisibility(View.VISIBLE);
+                mImageView.setVisibility(View.GONE);
+                mToggleFlash.setVisibility(View.VISIBLE);
+                mNextView.setVisibility(View.GONE);
+
             }
         });
 
-        mTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!photoTaken)
-                    mCameraView.captureImage();
-                else{
-                    mTakePhoto.setImageDrawable(null);
-                    photoTaken = false;
-                    mCameraView.setVisibility(View.VISIBLE);
-                    mSwitchCamera.setVisibility(View.VISIBLE);
-                    mImageView.setVisibility(View.GONE);
-                    mToggleFlash.setVisibility(View.VISIBLE);
-                    //awCamera.setContinueButtonVisibility(View.GONE); // TODO:
-                }
-            }
-        });
+        mToggleFlash.setOnClickListener(View -> toggleFlash());
 
-        mToggleFlash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleFlash();
-            }
-        });
-
-        mSwitchCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchCamera();
-            }
-        });
+        mSwitchCamera.setOnClickListener(View -> switchCamera());
 
         mCameraView.setFlash(CameraKit.Constants.FACING_BACK);
         setFlashIcon(CameraKit.Constants.FACING_BACK);
@@ -196,7 +192,6 @@ public class CameraFragment extends Fragment {
         }
     }
 
-
     private void switchCamera() {
         if(mCameraView != null)
         {
@@ -219,9 +214,9 @@ public class CameraFragment extends Fragment {
     {
         if(mode == CameraKit.Constants.FACING_BACK)
         {
-            mSwitchCamera.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_camera_rear));
+            mSwitchCamera.setImageDrawable(getResources().getDrawable(R.drawable.ic_camera_rear));
         }else{
-            mSwitchCamera.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_camera_front));
+            mSwitchCamera.setImageDrawable(getResources().getDrawable(R.drawable.ic_camera_front));
         }
     }
 
@@ -229,15 +224,15 @@ public class CameraFragment extends Fragment {
     {
         if(mode == CameraKit.Constants.FLASH_OFF)
         {
-            mToggleFlash.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_flash_off));
+            mToggleFlash.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
         }else if(mode == CameraKit.Constants.FLASH_ON)
         {
-            mToggleFlash.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_flash_on));
+            mToggleFlash.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on));
         }else if(mode == CameraKit.Constants.FLASH_AUTO)
         {
-            mToggleFlash.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_flash_auto));
+            mToggleFlash.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_auto));
         }else{
-            mToggleFlash.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_flash_on));
+            mToggleFlash.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on));
         }
     }
 
