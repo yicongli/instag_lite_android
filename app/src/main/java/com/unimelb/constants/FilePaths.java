@@ -1,4 +1,4 @@
-package com.unimelb.utils;
+package com.unimelb.constants;
 
 import android.os.Environment;
 

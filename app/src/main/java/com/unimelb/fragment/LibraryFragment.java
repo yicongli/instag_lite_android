@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.FIleSearch;
-import com.unimelb.utils.FilePaths;
+import com.unimelb.constants.FilePaths;
 
 import java.util.ArrayList;
 
@@ -76,19 +76,16 @@ public class LibraryFragment extends Fragment {
 
         // close the activity when touch the back button
         ImageView backButton = view.findViewById(R.id.libraryBack);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        backButton.setOnClickListener(View -> {
                 Log.d(TAG, "closing share activity");
                 getActivity().finish();
-            }
         });
 
         // go to filter view after touch next
         TextView nextView = view.findViewById(R.id.libraryNext);
         nextView.setOnClickListener(View -> {
             Log.d(TAG, "go to modify activity");
-            mListener.selectedImage(mSelectedImage);
+            mListener.selectingImage(mSelectedImage);
         });
 
         // initiate data source
@@ -174,7 +171,15 @@ public class LibraryFragment extends Fragment {
 
         //set the first image to be displayed when the activity fragment view is inflated
         try {
-            String imageUrl = picturePaths.size() == 0 ? "" : picturePaths.get(0);
+            String imageUrl;
+            if (picturePaths.size() == 0 ) {
+                imageUrl = "";
+            } else if (mSelectedImage != null) {
+                imageUrl = mSelectedImage;
+            } else {
+                imageUrl = picturePaths.get(0);
+            }
+
             setImage(imageUrl, libraryImageView, mAppend);
             mSelectedImage = imageUrl;
         } catch (ArrayIndexOutOfBoundsException e) {

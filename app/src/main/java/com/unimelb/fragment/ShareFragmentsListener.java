@@ -15,5 +15,9 @@ import android.media.Image;
 
 public interface ShareFragmentsListener {
 
-    void selectedImage(String imagePath);
+    void selectingImage(String imagePath);
+
+    String getSelectedImagePath();
+
+    void backToPreviousView();
 }
