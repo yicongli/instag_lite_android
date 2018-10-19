@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ import com.unimelb.net.ErrorHandler;
 import com.unimelb.net.HttpRequest;
 import com.unimelb.net.IResponseHandler;
 import com.unimelb.utils.ImageUtils;
+
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
@@ -75,6 +78,33 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
                 }
             });
         });
+
+        holder.postBtn.setOnClickListener((view) -> {
+            //close keyboard
+            holder.commentEditText.clearFocus();
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+            //get edit text value and send data
+            final String comment = holder.commentEditText.getText().toString();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("content", comment);
+            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/comments", jsonObject.toJSONString(), new IResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, String errJson) {
+                    new ErrorHandler(context).handle(statusCode, errJson);
+                }
+
+                @Override
+                public void onSuccess(String json) {
+                    context.runOnUiThread(() -> {
+                        Toast.makeText(context, "Leave comments successful", Toast.LENGTH_LONG).show();
+                        holder.commentBtn.setText("View all " + (postList.get(position).getCommentsCount() + 1) + " comments");
+                        holder.commentEditText.setText("");
+                    });
+                }
+            });
+        });
     }
 
     @Override
@@ -96,6 +126,8 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         private TextView likeCountLabel;
         private ImageView ownerImageView;
         private TextView commentBtn;
+        private EditText commentEditText;
+        private TextView postBtn;
 
         public ViewHolder(Context context, View itemView) {
             super(itemView);
@@ -108,8 +140,8 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             likeCountLabel = itemView.findViewById(R.id.post_list_item_like_label);
             ownerImageView = itemView.findViewById(R.id.post_list_item_owner_avatar);
             commentBtn = itemView.findViewById(R.id.post_list_item_view_comment_btn);
-            EditText commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
-            TextView postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
+            commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
+            postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
 
             likeCountLabel.setOnClickListener((view) -> {
                 context.startActivity(new Intent(context, LikesActivity.class));
