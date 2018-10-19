@@ -34,6 +34,8 @@ android {
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven { url 'https://dl.bintray.com/flurgle/maven' }
+    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -57,7 +59,8 @@ dependencies {
     implementation 'com.flurgle:camerakit:0.9.18'
     implementation 'com.bm.photoview:library:1.4.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.github.zomato:androidphotofilters:1.0.0'
+    implementation 'com.github.zomato:androidphotofilters:1.0.1'
+    implementation 'com.github.yalantis:ucrop:2.2.2'
     // location
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation files('libs/json-simple-1.1.1.jar')

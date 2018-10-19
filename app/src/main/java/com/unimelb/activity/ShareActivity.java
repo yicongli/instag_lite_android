@@ -1,9 +1,13 @@
 package com.unimelb.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +25,12 @@ import com.unimelb.fragment.ShareFragmentsListener;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 import com.unimelb.utils.Permissions;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropFragmentCallback;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 4 kinds of fragment type in share activity
@@ -35,8 +45,10 @@ enum FragmentType {
 /**
  * This activity is the module related to the photo and sharing activity
  */
-public class ShareActivity extends AppCompatActivity implements ShareFragmentsListener{
+public class ShareActivity extends AppCompatActivity implements ShareFragmentsListener {
     private static final String TAG = "ShareActivity";      // tag of current activity
+    private static final int CROP_CODE = 100;               // the request code for crop activity
+
     private Context mContext        = ShareActivity.this;   // current context
     private BottomNavigationView navigationView;            // the navigation view at the bottom
     private ViewPager viewPager;                            // the pager to store the fragments
@@ -211,7 +223,7 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
 
     /**
      * show effect fragment after selecting image on library / camera view
-     * @param imagePath
+     * @param imagePath file path of selected image
      */
     @Override
     public void selectingImage(String imagePath) {
@@ -238,6 +250,54 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         // Show navigationView when show the library or photo fragment
         if (currentPos < FragmentType.Effects.ordinal()) {
             navigationView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * show corp view
+     * @param image source image
+     */
+    @Override
+    public void startCrop (Bitmap image) {
+        Uri uri = getImageUri(ShareActivity.this, image);
+        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), "temCropImage.png")));
+        uCrop.useSourceImageAspectRatio();
+        uCrop.start(ShareActivity.this, UCrop.REQUEST_CROP);
+    }
+
+    /**
+     * Generate Uri for bitmap image
+     * @param inContext context
+     * @param inImage image source
+     * @return Uri
+     */
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    /**
+     * Get data from crop view
+     * @param requestCode request code
+     * @param resultCode  result code
+     * @param data        data from crop view
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode, data);
+
+        if (requestCode == UCrop.REQUEST_CROP) {
+            if (resultCode == RESULT_OK) {
+                final Uri resultUri = UCrop.getOutput(data);
+                try {
+                    Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                    effectsFragment.setImage(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

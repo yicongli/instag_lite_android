@@ -183,8 +183,7 @@ public class EffectsFragment extends Fragment {
                 Log.d(TAG, "Stopped Brightness tracking seekbar");
 
                 Filter myFilter = new Filter();
-                // TODO: Adjust param
-                myFilter.addSubFilter(new BrightnessSubFilter(seekBar.getProgress() - progress));
+                myFilter.addSubFilter(new BrightnessSubfilter(seekBar.getProgress() - progress));
                 Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
                 Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
@@ -219,8 +218,7 @@ public class EffectsFragment extends Fragment {
                 Log.d(TAG, "Stopped Constrast tracking seekbar");
 
                 Filter myFilter = new Filter();
-                // TODO: Adjust param
-                myFilter.addSubFilter(new ContrastSubFilter((float)((seekBar.getProgress() - progress) / 10.0)));
+                myFilter.addSubFilter(new ContrastSubfilter((float)((seekBar.getProgress() - progress) / 10.0)));
                 Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
                 Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
@@ -229,6 +227,12 @@ public class EffectsFragment extends Fragment {
 
                 progress = seekBar.getProgress();
             }
+        });
+
+        ImageView mCrop = view.findViewById(R.id.effect_crop);
+        mCrop.setOnClickListener(View -> {
+            mListener.startCrop(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+            Log.d(TAG, "show corp activity");
         });
     }
 
@@ -359,9 +363,9 @@ public class EffectsFragment extends Fragment {
 
     /**
      * calculate the Size of sample view
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
+     * @param options factory options
+     * @param reqWidth req width
+     * @param reqHeight req width
      * @return
      */
     public static int calculateInSampleSize(

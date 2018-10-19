@@ -1,6 +1,6 @@
 package com.unimelb.fragment;
 
-import android.media.Image;
+import android.graphics.Bitmap;
 
 /**
  * This interface must be implemented by activities that contain this
@@ -20,4 +20,6 @@ public interface ShareFragmentsListener {
     String getSelectedImagePath();
 
     void backToPreviousView();
+
+    void startCrop(Bitmap image);
 }
