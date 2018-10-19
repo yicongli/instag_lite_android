@@ -7,7 +7,8 @@
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/postToolbar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,7 +20,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_centerVertical="true"
-                android:id="@+id/photoBack"
+                android:id="@+id/post_toolbar_back"
                 android:src="@drawable/ic_black_back"
                 android:contentDescription="@string/string_back"
                 />
@@ -27,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_photo"
+                android:text="@string/string_post"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="25sp"
@@ -36,15 +37,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/string_next"
+                android:text="@string/string_share"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="15dp"
                 android:layout_marginEnd="15dp"
                 android:textSize="20sp"
-                android:textColor="@color/black"
+                android:textColor="@color/colorPrimary"
                 android:layout_centerVertical="true"
-                android:id="@+id/photoNext"/>
+                android:id="@+id/post_share"/>
 
         </RelativeLayout>
 

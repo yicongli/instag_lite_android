@@ -16,6 +16,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="string_back">Back</string>
+    <string name="string_post">New Post</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -39,5 +40,7 @@
     <string name="string_crop">Crop</string>
     <string name="string_constrast_1_0">Constrast: 1.0</string>
     <string name="string_brightness_0">Brightness: 0</string>
+    <string name="string_share">Share</string>
+    <string name="string_post_image">PostImage</string>
 
 </resources>
