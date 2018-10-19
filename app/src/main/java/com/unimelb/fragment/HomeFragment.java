@@ -4,9 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -25,14 +22,21 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.scwang.smartrefresh.header.WaterDropHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.unimelb.adapter.PostImageAdapter;
+import com.unimelb.constants.CommonConstants;
 import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
+import com.unimelb.net.ErrorHandler;
+import com.unimelb.net.HttpRequest;
+import com.unimelb.net.IResponseHandler;
+import com.unimelb.net.ResponseModel;
+import com.unimelb.net.model.Medium;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -40,11 +44,14 @@ import java.util.Locale;
 
 
 public class HomeFragment extends Fragment {
+    private HomeFragment homeFragment;
+
+    private RecyclerView postListView;
 
     /**
      * List of posts
      */
-    public List<Post> postList;
+    private List<Post> postList;
 
     /**
      * Date of the posts
@@ -67,83 +74,85 @@ public class HomeFragment extends Fragment {
     Switch sortSwitch;
     Toast switchToast;
 
-    public HomeFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        homeFragment = this;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
-        lastKnownLocation(view);
-
-        initData();
-
-        // Sort by date initially
-        sortByDate();
 
         initView(view);
+        initData();
 
-
-        sortSwitchControl(view);
+        lastKnownLocation(view);
+        // Sort by date initially
+//        sortByDate();
+//        sortSwitchControl(view);
 
         return view;
     }
 
     /**
-     * Initialize post data
+     * Initialise views
+     *
+     * @param view
      */
-    private void initData() {
-        postList = new ArrayList<>();
-        date = System.currentTimeMillis();
-        postId = 0;
-
-
-        final String[] postImageUrls = new String[]{
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-                "http://pgr1ie9ou.sabkt.gdipper.com/cd4fe26a-4ac5-499b-97dc-fcaf73c12235.jpeg",
-        };
-
-        List<String> testLikes = new ArrayList<>();
-        testLikes.add("username1");
-        testLikes.add("username2");
-
-        List<Comment> testComments = new ArrayList<>();
-        Comment comment = new Comment("Comment1", "username");
-        testComments.add(comment);
-
-
-        for (String postUrl : postImageUrls) {
-            Post post = new Post(postId, "http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", postUrl, myLocation, sdf.format(date), testLikes, testComments);
-            postList.add(post);
-
-
-            postId += 1;
-            date -= 60000;
-        }
-
-    }
-
     public void initView(View view) {
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
         refreshLayout.setOnRefreshListener(layout -> {
             layout.finishRefresh(2000/*,false*/);// false means false
         });
-        refreshLayout.setOnLoadMoreListener(layout -> {
-            layout.finishLoadMore(2000/*,false*/);// false means false
-        });
+//        refreshLayout.setOnLoadMoreListener(layout -> {
+//            layout.finishLoadMore(2000/*,false*/);// false means false
+//        });
 
-        RecyclerView listView = view.findViewById(R.id.post_list);
-        listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        listView.setAdapter(new PostImageAdapter(this.getActivity(), postList));
+        postListView = view.findViewById(R.id.post_list);
+    }
+
+    /**
+     * Initialize post data
+     */
+    private void initData() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent", null, new IResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, String errJson) {
+                new ErrorHandler(homeFragment.getActivity()).handle(statusCode, errJson);
+            }
+
+            @Override
+            public void onSuccess(String json) {
+                System.out.println(json);
+                ResponseModel rm = new ResponseModel(json);
+                JSONObject data = rm.getData();
+                JSONArray media = (JSONArray) data.get("media");
+                List<Medium> mediumList = new ArrayList<>();
+
+                for (Object mediumObj : media) {
+                    Medium medium = new Medium(mediumObj.toString());
+                    mediumList.add(medium);
+                }
+
+
+                Activity context = homeFragment.getActivity();
+
+                postList = new ArrayList<>();
+                date = System.currentTimeMillis();
+                postId = 0;
+
+
+                for (Medium medium : mediumList) {
+                    Post post = new Post(postId, "http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", medium.getPhotoUrl(), myLocation, "08/09/18", 5, 10);
+                    postList.add(post);
+
+                    postId += 1;
+                    date -= 60000;
+                }
+
+
+                postListView.setLayoutManager(new LinearLayoutManager(context));
+                postListView.setAdapter(new PostImageAdapter(context, postList));
+            }
+        });
     }
 
     /**

@@ -1,11 +1,13 @@
-package com.unimelb.entity;
+package com.unimelb.net.model;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.util.List;
 
+/**
+ * Medium Entity
+ */
 public class Medium {
     private String photoUrl;
     private List<String> tags;

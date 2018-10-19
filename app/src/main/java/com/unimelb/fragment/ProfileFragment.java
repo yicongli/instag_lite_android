@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.unimelb.activity.LoginActivity;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.constants.CommonConstants;
-import com.unimelb.entity.Medium;
+import com.unimelb.net.model.Medium;
 import com.unimelb.instagramlite.R;
 import com.unimelb.net.ErrorHandler;
 import com.unimelb.net.HttpRequest;

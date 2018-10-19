@@ -25,20 +25,20 @@ public class Post {
     private String date;
 
     /** post likes */
-    private List<String> likes;
+    private int likesCount;
 
     /** post comments */
-    private List<Comment> comments;
+    private int commentsCount;
 
-    public Post(int postId, String avatarUrl, String username, String imageUrl, Location location, String date, List<String> likes, List<Comment> comments) {
+    public Post(int postId, String avatarUrl, String username, String imageUrl, Location location, String date, int likesCount, int commentsCount) {
         this.postId = postId;
         this.avatarUrl = avatarUrl;
         this.username = username;
         this.imageUrl = imageUrl;
         this.location = location;
         this.date = date;
-        this.likes = likes;
-        this.comments = comments;
+        this.likesCount = likesCount;
+        this.commentsCount = commentsCount;
     }
 
     public int getPostId() {
@@ -89,19 +89,19 @@ public class Post {
         this.date = date;
     }
 
-    public List<String> getLikes() {
-        return likes;
+    public int getLikesCount() {
+        return likesCount;
     }
 
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public int getCommentsCount() {
+        return commentsCount;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
     }
 }

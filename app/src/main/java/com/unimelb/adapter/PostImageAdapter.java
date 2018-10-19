@@ -11,16 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.unimelb.activity.CommentsActivity;
 import com.unimelb.activity.LikesActivity;
-import com.unimelb.entity.Comment;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.ImageUtils;
-
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
@@ -45,7 +40,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
         holder.usernameTextView.setText(postList.get(position).getUsername());
-        holder.locationTextView.setText(postList.get(position).getLocation().toString());
+//        holder.locationTextView.setText(postList.get(position).getLocation().toString());
 
         ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
         holder.dateView.setText(postList.get(position).getDate());
