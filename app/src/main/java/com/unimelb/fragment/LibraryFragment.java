@@ -85,7 +85,7 @@ public class LibraryFragment extends Fragment {
         TextView nextView = view.findViewById(R.id.libraryNext);
         nextView.setOnClickListener(View -> {
             Log.d(TAG, "go to modify activity");
-            mListener.selectingImage(mSelectedImage);
+            mListener.showEffectsFragment(mSelectedImage);
         });
 
         // initiate data source

@@ -99,7 +99,9 @@ public class EffectsFragment extends Fragment {
         TextView nextView = view.findViewById(R.id.effectNext);
         nextView.setOnClickListener(View -> {
             Log.d(TAG, "go to Post view");
-            // TODO: show the post fragment
+            // save image to local and go to post fragment
+            String imagePath = saveImage();
+            mListener.showPostFragment(imagePath);
         });
 
         // initiate control button and control panel
@@ -192,7 +194,6 @@ public class EffectsFragment extends Fragment {
 
                 progress = seekBar.getProgress();
 
-
             }
         });
 
@@ -283,16 +284,9 @@ public class EffectsFragment extends Fragment {
         String fileName = "IMG_" + formatter.format(now) + ".png";
 
         final File file = new File(FilePaths.PICTURE_PATH, fileName);
-        String path = mListener.getSelectedImagePath();
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inMutable = true;
-        Bitmap bmp = BitmapFactory.decodeFile(Uri.parse(path).getPath(),opts);
-        Filter fSel = filtersAdapter.getFilterSelected();
-        if(fSel != null)
-        {
-            bmp = fSel.processFilter(bmp);
-        }
-        saveBmpToFile(file,bmp);
+
+        Bitmap bmp = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+        saveBmpToFile(file, bmp);
 
         return file.getAbsolutePath();
     }

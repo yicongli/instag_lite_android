@@ -15,11 +15,18 @@ import android.graphics.Bitmap;
 
 public interface ShareFragmentsListener {
 
-    void selectingImage(String imagePath);
+    // show EffectsFragment after selecting image in Library/Camera fragment
+    void showEffectsFragment(String imagePath);
 
+    // get selected image path
     String getSelectedImagePath();
 
+    // go back to previous shown view
     void backToPreviousView();
 
+    // show Post Fragment
+    void showPostFragment(String imagePath);
+
+    // show crop activity
     void startCrop(Bitmap image);
 }

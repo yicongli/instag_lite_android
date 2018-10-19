@@ -90,7 +90,7 @@ public class CameraFragment extends Fragment {
         mNextView.setVisibility(View.GONE);
         mNextView.setOnClickListener(View -> {
             Log.d(TAG, "go to modify activity");
-            mListener.selectingImage(mSelectedImage);
+            mListener.showEffectsFragment(mSelectedImage);
         });
 
         initCamera();

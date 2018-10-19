@@ -10,12 +10,12 @@
         android:id="@+id/libraryRelaLayout1">
 
         <include layout="@layout/snippet_camera_toolbar"
-            android:id="@+id/libraryToolbar"/>
+            android:id="@+id/cameraToolbar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/libraryToolbar"
+            android:layout_below="@id/cameraToolbar"
             android:orientation="vertical"
             android:weightSum="1">
 

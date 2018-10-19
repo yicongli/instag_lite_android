@@ -21,33 +21,33 @@ import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.fragment.CameraFragment;
 import com.unimelb.fragment.EffectsFragment;
 import com.unimelb.fragment.LibraryFragment;
+import com.unimelb.fragment.PostFragment;
 import com.unimelb.fragment.ShareFragmentsListener;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
 import com.unimelb.utils.Permissions;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropFragmentCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-
-/**
- * 4 kinds of fragment type in share activity
- */
-enum FragmentType {
-    Library,
-    Camera,
-    Effects,
-    Post
-}
+import java.util.ArrayList;
 
 /**
  * This activity is the module related to the photo and sharing activity
  */
 public class ShareActivity extends AppCompatActivity implements ShareFragmentsListener {
+    /**
+     * 4 kinds of fragment type in share activity
+     */
+    enum FragmentType {
+        Library,
+        Camera,
+        Effects,
+        Post
+    }
+
     private static final String TAG = "ShareActivity";      // tag of current activity
-    private static final int CROP_CODE = 100;               // the request code for crop activity
 
     private Context mContext        = ShareActivity.this;   // current context
     private BottomNavigationView navigationView;            // the navigation view at the bottom
@@ -55,11 +55,11 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     private MenuItem menuItem;                              // the menu item
     private String selectedImagePath;                       // the path of selected photo
 
-    private CameraFragment cameraFragment;
+    private CameraFragment  cameraFragment;
     private EffectsFragment effectsFragment;
+    private PostFragment    postFragment;
 
-    private int currentPos = FragmentType.Camera.ordinal();    // currentView position
-    private int prePosition = currentPos;   // the view position showed before effect element
+    private ArrayList<FragmentType> mViewStack = new ArrayList<>();
 
     // TODO: check if It works
     private static final int VERIFY_PERMISSION_REQUEST = 1; // the flag of verify permission request
@@ -121,16 +121,22 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
                     cameraFragment.stopCamera();
                 }
 
-                // recode previous pages
-                if (currentPos != position) {
-                    prePosition = currentPos;
-                    currentPos = position;
-                }
-
                 // if current show library or camera, then set selected menu button
                 if (position < FragmentType.Effects.ordinal()) {
                     menuItem = navigationView.getMenu().getItem(position);
                     menuItem.setChecked(true);
+
+                    // if current show library or camera, update the
+                    // bottom view identify according to current type
+                    if (mViewStack.size() > 0) {
+                        mViewStack.remove(0);
+                        int cameraPos = FragmentType.Camera.ordinal();
+                        if (position == cameraPos) {
+                            mViewStack.add(0, FragmentType.Camera);
+                        } else {
+                            mViewStack.add(0, FragmentType.Library);
+                        }
+                    }
                 }
             }
 
@@ -141,6 +147,7 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
 
         setupViewPager(viewPager);
         navigationView.setSelectedItemId(R.id.navigation_photo);
+        mViewStack.add(FragmentType.Camera);
     }
 
     /**
@@ -152,10 +159,12 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
 
         cameraFragment  = CameraFragment.newInstance();
         effectsFragment = EffectsFragment.newInstance();
+        postFragment    = PostFragment.newInstance();
 
         adapter.addFragment(LibraryFragment.newInstance());
         adapter.addFragment(cameraFragment);
         adapter.addFragment(effectsFragment);
+        adapter.addFragment(postFragment);
 
         viewPager.setAdapter(adapter);
     }
@@ -226,9 +235,11 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
      * @param imagePath file path of selected image
      */
     @Override
-    public void selectingImage(String imagePath) {
+    public void showEffectsFragment(String imagePath) {
         selectedImagePath = imagePath;
         showEffectsFragment();
+
+        mViewStack.add(FragmentType.Effects);
     }
 
     /**
@@ -245,12 +256,30 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
      */
     @Override
     public void backToPreviousView() {
-        viewPager.setCurrentItem(prePosition,false);
+        mViewStack.remove(mViewStack.size()-1);
+        FragmentType type = mViewStack.get(mViewStack.size()-1);
+
+        viewPager.setCurrentItem(type.ordinal(),false);
 
         // Show navigationView when show the library or photo fragment
-        if (currentPos < FragmentType.Effects.ordinal()) {
+        if (type.ordinal() < FragmentType.Effects.ordinal()) {
             navigationView.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * Show post fragment
+     * @param imagePath
+     */
+    @Override
+    public void showPostFragment(String imagePath) {
+        viewPager.setCurrentItem(FragmentType.Post.ordinal(),false);
+
+        if(postFragment != null) {
+            // TODO initiate post fragment
+        }
+
+        mViewStack.add(FragmentType.Post);
     }
 
     /**
