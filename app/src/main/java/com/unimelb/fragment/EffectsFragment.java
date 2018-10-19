@@ -67,7 +67,13 @@ public class EffectsFragment extends Fragment {
     private TextView mBrightnessLabel;
     private TextView mContrastLabel;
 
+    // seek bar
+    private SeekBar mSeekBarBrightness;
+    private SeekBar mSeekBarConstrast;
+
     private ShareFragmentsListener mListener;   // parrent activity
+
+    private Bitmap originalImage; // the origin image from library / camera
 
     public static EffectsFragment newInstance() {
         return new EffectsFragment();
@@ -157,16 +163,14 @@ public class EffectsFragment extends Fragment {
 
         // init brightness seek panel
         mBrightnessLabel = view.findViewById(R.id.textView_bright);
-        SeekBar mSeekBarBrightness = view.findViewById(R.id.seekBar_bright);
+        mSeekBarBrightness = view.findViewById(R.id.seekBar_bright);
         mSeekBarBrightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                String text = "Brightness: " + (progress - 30);
+                String text = "Brightness: " + (progresValue - 30);
                 mBrightnessLabel.setText(text);
-                Log.d(TAG, "Changing Brightness seekbar's progress");
             }
 
             @Override
@@ -179,28 +183,29 @@ public class EffectsFragment extends Fragment {
                 Log.d(TAG, "Stopped Brightness tracking seekbar");
 
                 Filter myFilter = new Filter();
-                // TODO: Adjust param
-                myFilter.addSubFilter(new BrightnessSubFilter(seekBar.getProgress() - 30));
+                myFilter.addSubFilter(new BrightnessSubfilter(seekBar.getProgress() - progress));
+                Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
+                Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
-                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+                bindDataToAdapter(ouputOriginalImage);
+                setImage(ouputShowingImage);
 
-                setImage(ouputImage);
-                bindDataToAdapter(ouputImage);
+                progress = seekBar.getProgress();
+
+
             }
         });
 
         // init contrast seek panel
         mContrastLabel = view.findViewById(R.id.textView_contrast);
-        SeekBar mSeekBarConstrast = view.findViewById(R.id.seekBar_contrast);
+        mSeekBarConstrast = view.findViewById(R.id.seekBar_contrast);
         mSeekBarConstrast.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
-                String text = "Brightness: " + progress / 10.0;
+                String text = "Brightness: " + progresValue / 10.0;
                 mContrastLabel.setText(text);
-                Log.d(TAG, "Changing Constrast seekbar's progress");
             }
 
             @Override
@@ -213,14 +218,21 @@ public class EffectsFragment extends Fragment {
                 Log.d(TAG, "Stopped Constrast tracking seekbar");
 
                 Filter myFilter = new Filter();
-                // TODO: Adjust param
-                myFilter.addSubFilter(new ContrastSubFilter((float)(seekBar.getProgress() / 10.0)));
+                myFilter.addSubFilter(new ContrastSubfilter((float)((seekBar.getProgress() - progress) / 10.0)));
+                Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
+                Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
-                Bitmap ouputImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+                bindDataToAdapter(ouputOriginalImage);
+                setImage(ouputShowingImage);
 
-                setImage(ouputImage);
-                bindDataToAdapter(ouputImage);
+                progress = seekBar.getProgress();
             }
+        });
+
+        ImageView mCrop = view.findViewById(R.id.effect_crop);
+        mCrop.setOnClickListener(View -> {
+            mListener.startCrop(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+            Log.d(TAG, "show corp activity");
         });
     }
 
@@ -338,17 +350,22 @@ public class EffectsFragment extends Fragment {
                 e.printStackTrace();
             }
 
+            originalImage = originaBitmap;
+
             setImage(originaBitmap);
             bindDataToAdapter(originaBitmap);
+
+            mSeekBarBrightness.setProgress(30);
+            mSeekBarConstrast.setProgress(10);
         }
 
     }
 
     /**
      * calculate the Size of sample view
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
+     * @param options factory options
+     * @param reqWidth req width
+     * @param reqHeight req width
      * @return
      */
     public static int calculateInSampleSize(
