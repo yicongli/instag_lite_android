@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.unimelb.activity.EditProfileActivity;
 import com.unimelb.activity.LoginActivity;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.constants.CommonConstants;
+import com.unimelb.entity.Medium;
 import com.unimelb.instagramlite.R;
 import com.unimelb.net.ErrorHandler;
 import com.unimelb.net.HttpRequest;
@@ -28,19 +27,22 @@ import com.unimelb.utils.TokenHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Profile fragment
  */
 public class ProfileFragment extends Fragment {
+    /** Context */
     private ProfileFragment profileFragment;
 
+    /** View component */
     private TextView postCountTv;
     private TextView followerCountTv;
     private TextView followingCountTv;
     private ImageView avatarIv;
-
-    public ProfileFragment() {
-    }
+    private ExpandableGridView gridView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +53,10 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Initialise view
+     * @param view
+     */
     public void initView(View view) {
         //logout button
         view.findViewById(R.id.logout_btn).setOnClickListener((imageView) -> {
@@ -73,19 +78,14 @@ public class ProfileFragment extends Fragment {
         followerCountTv = view.findViewById(R.id.profile_user_follower_count);
         followingCountTv = view.findViewById(R.id.profile_user_following_count);
         avatarIv = view.findViewById(R.id.profile_user_avatar);
-
-        ExpandableGridView gridView = view.findViewById(R.id.profile_grid_view);
-        final String[] imageUrls = new String[]{
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/1dbbf32d-8a1f-4194-a797-075dfcdbba38.jpeg",
-                "http://pf3on5bei.sabkt.gdipper.com/24e3c68b-4042-4988-bfd9-694328a8b52c.jpeg",
-        };
-
-        SquareImageAdapter adapter = new SquareImageAdapter(this.getContext(), imageUrls);
-        gridView.setAdapter(adapter);
+        gridView = view.findViewById(R.id.profile_grid_view);
     }
 
+    /**
+     * Fetch data and map data into views
+     */
     public void initData() {
+        // get user basic info
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/users/self", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
@@ -102,13 +102,27 @@ public class ProfileFragment extends Fragment {
                 JSONArray media = (JSONArray) data.get("media");
                 JSONArray followings = (JSONArray) data.get("followed_by");
                 String avatarUrl = data.get("profile_picture").toString();
+                List<Medium> mediumList = new ArrayList<>();
+                for (Object mediumObj : media) {
+                    Medium medium = new Medium(mediumObj.toString());
+                    mediumList.add(medium);
+                }
 
                 //update UI
-                profileFragment.getActivity().runOnUiThread(() -> {
-                    ImageUtils.loadRoundedImage(profileFragment.getActivity(), avatarUrl, avatarIv);
+                Activity context = profileFragment.getActivity();
+                context.runOnUiThread(() -> {
+                    ImageUtils.loadRoundedImage(context, avatarUrl, avatarIv);
                     postCountTv.setText(String.valueOf(media.size()));
                     followerCountTv.setText(String.valueOf(followers.size()));
                     followingCountTv.setText(String.valueOf(followings.size()));
+
+                    List<String> imageUrls = new ArrayList<>();
+                    for (Medium medium : mediumList) {
+                        imageUrls.add(medium.getPhotoUrl());
+                    }
+
+                    SquareImageAdapter adapter = new SquareImageAdapter(context, imageUrls.toArray(new String[0]));
+                    gridView.setAdapter(adapter);
                 });
             }
         });
