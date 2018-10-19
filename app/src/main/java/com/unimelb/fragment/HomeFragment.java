@@ -2,6 +2,7 @@ package com.unimelb.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -84,9 +86,6 @@ public class HomeFragment extends Fragment {
         initData();
 
         lastKnownLocation(view);
-        // Sort by date initially
-//        sortByDate();
-//        sortSwitchControl(view);
 
         return view;
     }
@@ -100,13 +99,33 @@ public class HomeFragment extends Fragment {
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
         refreshLayout.setOnRefreshListener(layout -> {
-            layout.finishRefresh(2000/*,false*/);// false means false
+            layout.finishRefresh(2000);// false means false
         });
 //        refreshLayout.setOnLoadMoreListener(layout -> {
 //            layout.finishLoadMore(2000/*,false*/);// false means false
 //        });
 
         postListView = view.findViewById(R.id.post_list);
+
+        // Sort button onClick listener
+        view.findViewById(R.id.home_sort_btn).setOnClickListener((btnView) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setMessage("Select sort method?")
+                    .setNegativeButton("by Date", (dialog, which) -> {
+                        sortByDate();
+                    })
+                    .setPositiveButton("by Location", (dialog, which) -> {
+                        sortByLocation();
+                    })
+                    .setNeutralButton("Cancel", null)
+                    .create()
+                    .show();
+        });
+
+        // Bluetooth button onClick listener
+        view.findViewById(R.id.home_bluetooth_btn).setOnClickListener((bluetoothView) -> {
+
+        });
     }
 
     /**
@@ -139,48 +158,21 @@ public class HomeFragment extends Fragment {
                 date = System.currentTimeMillis();
                 postId = 0;
 
+                context.runOnUiThread(() -> {
+                    for (Medium medium : mediumList) {
+                        Post post = new Post(postId, medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), myLocation, medium.getPostDateString(), medium.getLikes().size(), medium.getComments().size());
+                        postList.add(post);
 
-                for (Medium medium : mediumList) {
-                    Post post = new Post(postId, "http://pf3on5bei.sabkt.gdipper.com/profile18.jpg", "Test", medium.getPhotoUrl(), myLocation, "08/09/18", 5, 10);
-                    postList.add(post);
-
-                    postId += 1;
-                    date -= 60000;
-                }
-
-
-                postListView.setLayoutManager(new LinearLayoutManager(context));
-                postListView.setAdapter(new PostImageAdapter(context, postList));
+                        postId += 1;
+                        date -= 60000;
+                    }
+                    postListView.setLayoutManager(new LinearLayoutManager(context));
+                    postListView.setAdapter(new PostImageAdapter(context, postList));
+                });
             }
         });
     }
 
-    /**
-     * Sort date/location switch
-     *
-     * @param view
-     */
-    public void sortSwitchControl(View view) {
-        sortSwitch = view.findViewById(R.id.sortPostsSwitch);
-
-        sortSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (sortSwitch.isChecked()) {
-                    sortByLocation();
-                    initView(view);
-                    switchToast = Toast.makeText(view.getContext(), sortSwitch.getTextOn(), Toast.LENGTH_SHORT);
-                    switchToast.show();
-                } else {
-                    sortByDate();
-                    initView(view);
-                    switchToast = Toast.makeText(view.getContext(), sortSwitch.getTextOff(), Toast.LENGTH_SHORT);
-                    switchToast.show();
-
-                }
-            }
-        });
-    }
 
     /**
      * Sort by date

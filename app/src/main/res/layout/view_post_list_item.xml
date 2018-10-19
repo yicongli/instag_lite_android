@@ -5,6 +5,7 @@
     android:id="@+id/post_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
@@ -77,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
-                android:text="5 likes"
+                android:text="0 like"
                 android:textColor="#222"
                 android:textSize="14sp"/>
         </LinearLayout>
@@ -86,7 +87,7 @@
             android:id="@+id/post_list_item_view_comment_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View all 10 comments"
+            android:text="View all 0 comments"
             android:textSize="13sp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="3dp"
@@ -140,7 +141,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#999"
-            android:textSize="11sp"/>
+            android:textSize="12sp"
+            android:textAllCaps="true"/>
     </LinearLayout>
 
 </LinearLayout>

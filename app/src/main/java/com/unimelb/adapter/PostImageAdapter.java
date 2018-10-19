@@ -46,6 +46,9 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         holder.dateView.setText(postList.get(position).getDate());
 
         ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/di.jpg", holder.ownerImageView);
+
+        holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
+        holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");
     }
 
     @Override
