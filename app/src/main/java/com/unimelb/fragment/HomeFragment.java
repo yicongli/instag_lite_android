@@ -151,7 +151,6 @@ public class HomeFragment extends Fragment {
                     mediumList.add(medium);
                 }
 
-
                 Activity context = homeFragment.getActivity();
 
                 postList = new ArrayList<>();
@@ -160,7 +159,7 @@ public class HomeFragment extends Fragment {
 
                 context.runOnUiThread(() -> {
                     for (Medium medium : mediumList) {
-                        Post post = new Post(postId, medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), myLocation, medium.getPostDateString(), medium.getLikes().size(), medium.getComments().size());
+                        Post post = new Post(medium.getMediumId(), medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), myLocation, medium.getPostDateString(), medium.getLikes().size(), medium.getComments().size());
                         postList.add(post);
 
                         postId += 1;

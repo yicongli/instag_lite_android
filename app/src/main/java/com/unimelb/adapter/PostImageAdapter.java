@@ -1,5 +1,7 @@
 package com.unimelb.adapter;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,22 +13,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.unimelb.activity.CommentsActivity;
 import com.unimelb.activity.LikesActivity;
+import com.unimelb.constants.CommonConstants;
 import com.unimelb.entity.Post;
 import com.unimelb.instagramlite.R;
+import com.unimelb.net.ErrorHandler;
+import com.unimelb.net.HttpRequest;
+import com.unimelb.net.IResponseHandler;
 import com.unimelb.utils.ImageUtils;
+
 import java.util.List;
 
 public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
 
-    private Context context;
+    private Activity context;
     private List<Post> postList;
 
-    public PostImageAdapter(Context context, List<Post> postList) {
+    public PostImageAdapter(Activity context, List<Post> postList) {
         this.context = context;
         this.postList = postList;
-
     }
 
     @NonNull
@@ -35,6 +42,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         return new ViewHolder(context, LayoutInflater.from(context).inflate(R.layout.view_post_list_item, parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -49,6 +57,24 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
         holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");
+
+        holder.likeBtn.setOnClickListener((view) -> {
+            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/likes", null, new IResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, String errJson) {
+                    new ErrorHandler(context).handle(statusCode, errJson);
+                }
+
+                @Override
+                public void onSuccess(String json) {
+                    context.runOnUiThread(() -> {
+                        Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
+                        holder.likeCountLabel.setText(postList.get(position).getLikesCount() + 1 + " likes");
+                        holder.likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    });
+                }
+            });
+        });
     }
 
     @Override
@@ -85,16 +111,11 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             EditText commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
             TextView postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
 
-            likeBtn.setOnClickListener((view) -> {
-                Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
-                likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
-            });
-
             likeCountLabel.setOnClickListener((view) -> {
                 context.startActivity(new Intent(context, LikesActivity.class));
             });
 
-            commentBtn.setOnClickListener((view)->{
+            commentBtn.setOnClickListener((view) -> {
                 context.startActivity(new Intent(context, CommentsActivity.class));
             });
 

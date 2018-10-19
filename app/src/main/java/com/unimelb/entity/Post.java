@@ -2,12 +2,10 @@ package com.unimelb.entity;
 
 import android.location.Location;
 
-import java.util.List;
-
 public class Post {
 
     /** post id*/
-    private int postId;
+    private String postId;
 
     /** user profile picture link */
     private String avatarUrl;
@@ -30,7 +28,7 @@ public class Post {
     /** post comments */
     private int commentsCount;
 
-    public Post(int postId, String avatarUrl, String username, String imageUrl, Location location, String date, int likesCount, int commentsCount) {
+    public Post(String postId, String avatarUrl, String username, String imageUrl, Location location, String date, int likesCount, int commentsCount) {
         this.postId = postId;
         this.avatarUrl = avatarUrl;
         this.username = username;
@@ -41,11 +39,11 @@ public class Post {
         this.commentsCount = commentsCount;
     }
 
-    public int getPostId() {
+    public String getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 

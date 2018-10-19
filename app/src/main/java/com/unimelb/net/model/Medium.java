@@ -16,6 +16,7 @@ import java.util.Locale;
  * Map json to Medium object
  */
 public class Medium {
+    private String mediumId;
     private String photoUrl;
     private List<String> tags = new ArrayList<>();
     private List<String> comments = new ArrayList<>();
@@ -28,6 +29,7 @@ public class Medium {
         JSONObject obj;
         try {
             obj = (JSONObject) parser.parse(json);
+            mediumId = obj.get("_id").toString();
             photoUrl = obj.get("image").toString();
 
             String createdAt = obj.get("createdAt").toString();
@@ -64,10 +66,13 @@ public class Medium {
         }
     }
 
+    public String getMediumId() {
+        return mediumId;
+    }
+
     public String getPhotoUrl() {
         return photoUrl;
     }
-
 
     public List<String> getTags() {
         return tags;

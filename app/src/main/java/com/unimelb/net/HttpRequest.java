@@ -92,8 +92,8 @@ public class HttpRequest {
      * @param responseHandler
      */
     public void doPostRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler) {
-        RequestBody body = RequestBody.create(JSON, jsonBody);
-        Request request = new Request.Builder().url(url).post(body).build();
+        RequestBody body = RequestBody.create(JSON, jsonBody == null ? "" : jsonBody);
+        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(body).build();
         newCall(request, responseHandler);
     }
 
@@ -114,7 +114,7 @@ public class HttpRequest {
             }
         }
 
-        Request request = new Request.Builder().url(url).post(builder.build()).build();
+        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(builder.build()).build();
         newCall(request, responseHandler);
     }
 
@@ -128,7 +128,7 @@ public class HttpRequest {
      */
     public void doPutRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler) {
         RequestBody body = RequestBody.create(JSON, jsonBody);
-        Request request = new Request.Builder().url(url).put(body).build();
+        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).put(body).build();
         newCall(request, responseHandler);
     }
 
