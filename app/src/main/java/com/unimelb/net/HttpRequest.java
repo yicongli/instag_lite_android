@@ -3,6 +3,7 @@ package com.unimelb.net;
 import com.unimelb.constants.CommonConstants;
 import com.unimelb.utils.TokenHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -13,6 +14,7 @@ import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -105,19 +107,23 @@ public class HttpRequest {
      * @param paramsMap
      * @param responseHandler
      */
-    public void doFormPostRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler) {
-        FormBody.Builder builder = new FormBody.Builder();
+    public void doFilePostRequestAsync(String url, Map<String, Object> paramsMap, final IResponseHandler responseHandler) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
 
-        if (paramsMap != null && paramsMap.size() > 0) {
-            for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-                builder.add(entry.getKey(), entry.getValue());
+        for (String key : paramsMap.keySet()) {
+            Object object = paramsMap.get(key);
+            if (!(object instanceof File)) {
+                builder.addFormDataPart(key, object.toString());
+            } else {
+                File file = (File) object;
+                builder.addFormDataPart(key, file.getName(), RequestBody.create(MediaType.parse("image/png"), file));
             }
         }
-
-        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(builder.build()).build();
+        RequestBody body = builder.build();
+        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(body).build();
         newCall(request, responseHandler);
     }
-
 
     /**
      * Asynchronous json put request
@@ -131,7 +137,6 @@ public class HttpRequest {
         Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).put(body).build();
         newCall(request, responseHandler);
     }
-
 
     /**
      * Asynchronous delete request

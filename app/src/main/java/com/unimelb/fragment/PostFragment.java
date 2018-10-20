@@ -11,10 +11,18 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.unimelb.constants.CommonConstants;
 import com.unimelb.instagramlite.R;
+import com.unimelb.net.ErrorHandler;
+import com.unimelb.net.HttpRequest;
+import com.unimelb.net.IResponseHandler;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,17 +34,21 @@ import java.util.Set;
  * create an instance of this fragment.
  */
 public class PostFragment extends Fragment {
+    private PostFragment context;
 
     private final static String TAG = "PostFragment";
 
-    private ImageView   postImageView;
-    private EditText    postEditText;
+    private ImageView postImageView;
+    private EditText postEditText;
 
     private ShareFragmentsListener mListener;
+
+    private String imagePath;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment LibraryFragment.
      */
     public static PostFragment newInstance() {
@@ -45,10 +57,11 @@ public class PostFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        context = this;
         // initiate the properties of the class
         View view = inflater.inflate(R.layout.fragment_post, container, false);
         postImageView = view.findViewById(R.id.post_image_view);
-        postEditText  = view.findViewById(R.id.post_image_caption);
+        postEditText = view.findViewById(R.id.post_image_caption);
 
         postEditText.setHint(R.string.string_post_hint);
 
@@ -63,10 +76,31 @@ public class PostFragment extends Fragment {
         // go to filter view after touch next
         TextView nextView = view.findViewById(R.id.post_share);
         nextView.setOnClickListener(View -> {
-            Set tags = extractTags(postEditText.getText().toString());
+            String tags = extractTags(postEditText.getText().toString());
 
-            Log.d(TAG, "post data to server");
             // TODO post data to the server
+            File file = new File(imagePath);
+            System.out.println(file);
+            Map<String, Object> hashBodyMap = new HashMap<>();
+            hashBodyMap.put("image", file);
+            hashBodyMap.put("tags", tags);
+            hashBodyMap.put("location", "132, 92");
+
+            HttpRequest.getInstance().doFilePostRequestAsync(CommonConstants.IP + "/api/v1/media/self", hashBodyMap, new IResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, String errJson) {
+                    new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
+                }
+
+                @Override
+                public void onSuccess(String json) {
+                    System.out.println(json);
+                    context.getActivity().runOnUiThread(() -> {
+                        Toast.makeText(context.getActivity(), "Share successful", Toast.LENGTH_LONG).show();
+                        context.getActivity().finish();
+                    });
+                }
+            });
         });
 
         postEditText.setOnClickListener(View -> {
@@ -83,18 +117,21 @@ public class PostFragment extends Fragment {
 
     /**
      * set image of image view with image path
+     *
      * @param imagePath
      */
-    public void setImageViewWithImagePath (String imagePath) {
+    public void setImageViewWithImagePath(String imagePath) {
+        this.imagePath = imagePath;
         postImageView.setImageURI(Uri.fromFile(new File(imagePath)));
     }
 
     /**
      * Extract the tags in the caption before send the
+     *
      * @param captionStr
      */
-    public Set extractTags(String captionStr) {
-        Set tags = new HashSet();
+    public String extractTags(String captionStr) {
+        String tags = "";
 
         // split string by #
         String[] split = captionStr.split("#");
@@ -102,9 +139,12 @@ public class PostFragment extends Fragment {
         // add tag to the tag set
         for (int i = 1; i < split.length; i++) {
             String tag = split[i];
-            tag = tag.replaceAll("\\s","");
+            tag = tag.replaceAll("\\s", "");
 
-            tags.add(tag);
+            if (i > 1) {
+                tags += ", ";
+            }
+            tags += tag;
         }
 
         return tags;
