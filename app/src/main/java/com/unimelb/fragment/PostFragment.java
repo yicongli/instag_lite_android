@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.unimelb.instagramlite.R;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +63,8 @@ public class PostFragment extends Fragment {
         // go to filter view after touch next
         TextView nextView = view.findViewById(R.id.post_share);
         nextView.setOnClickListener(View -> {
+            Set tags = extractTags(postEditText.getText().toString());
+
             Log.d(TAG, "post data to server");
             // TODO post data to the server
         });
@@ -89,8 +93,21 @@ public class PostFragment extends Fragment {
      * Extract the tags in the caption before send the
      * @param captionStr
      */
-    public void extractTags(String captionStr) {
+    public Set extractTags(String captionStr) {
+        Set tags = new HashSet();
 
+        // split string by #
+        String[] split = captionStr.split("#");
+
+        // add tag to the tag set
+        for (int i = 1; i < split.length; i++) {
+            String tag = split[i];
+            tag = tag.replaceAll("\\s","");
+
+            tags.add(tag);
+        }
+
+        return tags;
     }
 
 
