@@ -48,6 +48,8 @@ public class PostFragment extends Fragment {
         postImageView = view.findViewById(R.id.post_image_view);
         postEditText  = view.findViewById(R.id.post_image_caption);
 
+        postEditText.setHint(R.string.string_post_hint);
+
 
         // close the activity when touch the back button
         ImageView backButton = view.findViewById(R.id.post_toolbar_back);
@@ -75,6 +77,10 @@ public class PostFragment extends Fragment {
         return view;
     }
 
+    /**
+     * set image of image view with image path
+     * @param imagePath
+     */
     public void setImageViewWithImagePath (String imagePath) {
         postImageView.setImageURI(Uri.fromFile(new File(imagePath)));
     }
