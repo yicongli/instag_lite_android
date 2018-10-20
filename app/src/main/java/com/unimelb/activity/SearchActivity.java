@@ -26,10 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /*
-*  an activity for searching any user by userName
-*
-* */
+ *  an activity for searching any user by userName
+ *
+ * */
 public class SearchActivity extends AppCompatActivity {
     /* context */
     private SearchActivity context;
@@ -37,6 +38,10 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView listView;
     /* a editText for input search */
     private EditText editText;
+
+    private SearchListAdapter searchListAdapter;
+
+    private List<BasicUserProfile> searchResultList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +51,17 @@ public class SearchActivity extends AppCompatActivity {
         initView();
         initData();
     }
+
     /* initialize Views by R.id */
     private void initView() {
         findViewById(R.id.search_back).setOnClickListener((view) -> finish());
         editText = findViewById(R.id.search_edit_text);
         listView = findViewById(R.id.search_list);
         listView.setLayoutManager(new LinearLayoutManager(this));
+        searchListAdapter = new SearchListAdapter(context, searchResultList);
+        listView.setAdapter(searchListAdapter);
     }
+
     /*initialize the data for communicate to the server */
     private void initData() {
         editText.addTextChangedListener(new TextWatcher() {
@@ -71,7 +80,6 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                List<BasicUserProfile> searchResultList = new ArrayList<>();
                 timer.cancel();
                 timer = new Timer();
                 timer.schedule(
@@ -102,14 +110,14 @@ public class SearchActivity extends AppCompatActivity {
                                                     BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
                                                     searchResultList.add(profile);
                                                 }
-                                                listView.setAdapter(new SearchListAdapter(context, searchResultList));
+                                                searchListAdapter.notifyDataSetChanged();
                                             });
                                         }
                                     });
                                 } else {
-                                    context.runOnUiThread(()->{
+                                    context.runOnUiThread(() -> {
                                         searchResultList.clear();
-                                        listView.setAdapter(new SearchListAdapter(context, searchResultList));
+                                        searchListAdapter.notifyDataSetChanged();
                                     });
                                 }
                             }

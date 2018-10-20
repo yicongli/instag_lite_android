@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +46,8 @@ public class HomeFragment extends Fragment {
     private boolean sortDateOrder = true;
 
     private TextView emptyTipTv;
+
+    private PostImageAdapter postListAdapter;
 
     /**
      * List of posts
@@ -130,7 +133,8 @@ public class HomeFragment extends Fragment {
                         postList.add(post);
                     }
                     postListView.setLayoutManager(new LinearLayoutManager(context));
-                    postListView.setAdapter(new PostImageAdapter(context, postList));
+                    postListAdapter = new PostImageAdapter(context, postList);
+                    postListView.setAdapter(postListAdapter);
 
                     if(postList.size() == 0){
                         emptyTipTv.setVisibility(View.VISIBLE);
@@ -151,6 +155,7 @@ public class HomeFragment extends Fragment {
             Collections.sort(postList, (post1, post2) -> post1.getDate().compareTo(post2.getDate()));
         }
         sortDateOrder = !sortDateOrder;
+        postListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -158,5 +163,6 @@ public class HomeFragment extends Fragment {
      */
     public void sortByLocation() {
         Collections.sort(postList, (post1, post2) -> (int) (post1.getDistance() - post2.getDistance()));
+        postListAdapter.notifyDataSetChanged();
     }
 }
