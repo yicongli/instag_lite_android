@@ -39,6 +39,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/search_list_item_follow_btn"
         android:layout_weight="0"
         android:layout_width="70dp"
         android:layout_height="25dp"

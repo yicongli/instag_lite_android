@@ -85,7 +85,7 @@ public class DiscoverFragment extends Fragment {
 
         RecyclerView listView = view.findViewById(R.id.search_suggestion_list);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        listView.setAdapter(new SearchListAdapter(this.getContext(), suggestionList));
+        listView.setAdapter(new SearchListAdapter(this.getActivity(), suggestionList));
     }
 
 
