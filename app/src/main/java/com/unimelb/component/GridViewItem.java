@@ -3,7 +3,7 @@ package com.unimelb.component;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-
+/* Customized GridViewItem for show pictures in a grid*/
 public class GridViewItem extends android.support.v7.widget.AppCompatImageView {
     public GridViewItem(Context context) {
         super(context);
