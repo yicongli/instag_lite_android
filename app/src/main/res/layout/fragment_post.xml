@@ -58,7 +58,6 @@
                 android:maxLines="10"
                 android:minLines="6"
                 android:scrollbars="vertical"
-                android:text="@string/string_post_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
