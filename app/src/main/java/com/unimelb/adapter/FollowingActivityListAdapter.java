@@ -35,7 +35,11 @@ public class FollowingActivityListAdapter extends RecyclerView.Adapter<Following
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.descTextView.setText(list.get(position).getActivityDesc());
         ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(), holder.avatarImageView);
-        ImageUtils.loadImage(context, list.get(position).getPhotoUrl(), holder.photoImageView);
+        if (list.get(position).getPhotoUrl().length() > 0) {
+            ImageUtils.loadImage(context, list.get(position).getPhotoUrl(), holder.photoImageView);
+        } else {
+            holder.photoImageView.setVisibility(View.GONE);
+        }
     }
 
     @Override
