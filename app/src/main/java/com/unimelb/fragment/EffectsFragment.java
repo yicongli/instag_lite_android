@@ -283,7 +283,7 @@ public class EffectsFragment extends Fragment {
         Date now = new Date();
         String fileName = "IMG_" + formatter.format(now) + ".png";
 
-        final File file = new File(FilePaths.PICTURE_PATH, fileName);
+        final File file = new File(FilePaths.CAMERA_PATH, fileName);
 
         Bitmap bmp = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
         saveBmpToFile(file, bmp);
