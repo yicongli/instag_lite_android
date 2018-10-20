@@ -98,9 +98,9 @@ public class ProfileFragment extends Fragment {
                 System.out.println(json);
                 ResponseModel rm = new ResponseModel(json);
                 JSONObject data = rm.getData();
-                JSONArray followers = (JSONArray) data.get("follows");
+                JSONArray followers = (JSONArray) data.get("followed_by");
                 JSONArray media = (JSONArray) data.get("media");
-                JSONArray followings = (JSONArray) data.get("followed_by");
+                JSONArray followings = (JSONArray) data.get("follows");
                 String avatarUrl = data.get("profile_picture").toString();
                 List<Medium> mediumList = new ArrayList<>();
                 for (Object mediumObj : media) {

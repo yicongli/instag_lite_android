@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        initGPS();
         loginAuth();
 
         viewPager = findViewById(R.id.viewpager);
@@ -109,5 +109,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new ActivityFragment());
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
+    }
+
+    private void initGPS(){
+
     }
 }
