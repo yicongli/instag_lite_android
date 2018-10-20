@@ -20,7 +20,7 @@ import com.unimelb.instagramlite.R;
  */
 public class LoadingDialog {
     /**
-     * 显示Dialog
+     * Display Dialog
      * @param context
      * @return
      */

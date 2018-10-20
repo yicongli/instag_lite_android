@@ -37,20 +37,27 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class CameraFragment extends Fragment {
+    /* Tag to identify CameraGragment */
     private final static String TAG = "CameraFragment";
-
+    /* CameraView */
     private CameraView mCameraView;
+    /* button to take a picture */
     private ImageButton mTakePhoto;
+    /* swith between back and front Camera button */
     private ImageButton mSwitchCamera;
+    /* Toggle Flash button */
     private ImageButton mToggleFlash;
+    /* Image View to show the photo */
     private PhotoView mImageView;
+    /* Next View to show some text */
     private TextView mNextView;
+    /* ImageView to show a 3*3 grid cover the photo view */
     private ImageView mGridView;
-
+    /* is photo have be taken */
     private boolean photoTaken = false;
-
+    /* String of path which Image user selected */
     private String mSelectedImage;
-
+    /* ShareFragmentsListener */
     private ShareFragmentsListener mListener;
 
     /**

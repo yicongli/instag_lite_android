@@ -3,7 +3,9 @@ package com.unimelb.utils;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
-
+/*
+* a view can be expand based on GridView
+* */
 public class ExpandableGridView extends GridView {
     public ExpandableGridView(Context context) {
         super(context);
