@@ -25,8 +25,6 @@ import java.util.List;
 public class LikesActivity extends AppCompatActivity {
     private LikesActivity context;
 
-    private List<BasicUserProfile> likeList = new ArrayList<>();
-
     private RecyclerView listView;
 
     @Override
@@ -50,7 +48,7 @@ public class LikesActivity extends AppCompatActivity {
     private void initData() {
         Intent intent = getIntent();
         String postId = intent.getStringExtra("postId");
-        System.out.println(postId);
+//        System.out.println(postId);
         List<User> userList = new ArrayList<>();
 
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/" + postId + "/likes", null, new IResponseHandler() {
@@ -70,6 +68,7 @@ public class LikesActivity extends AppCompatActivity {
                 }
 
                 context.runOnUiThread(() -> {
+                    List<BasicUserProfile> likeList = new ArrayList<>();
                     for (User user : userList) {
                         BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
                         likeList.add(profile);
@@ -78,7 +77,5 @@ public class LikesActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 }

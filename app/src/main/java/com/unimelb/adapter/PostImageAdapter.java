@@ -113,7 +113,9 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         });
 
         holder.commentBtn.setOnClickListener((view) -> {
-            context.startActivity(new Intent(context, CommentsActivity.class));
+            Intent intent = new Intent(context, CommentsActivity.class);
+            intent.putExtra("postId", postList.get(position).getPostId());
+            context.startActivity(intent);
         });
     }
 

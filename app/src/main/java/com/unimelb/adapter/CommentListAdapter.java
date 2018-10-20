@@ -6,37 +6,36 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.unimelb.entity.Comment;
 import com.unimelb.instagramlite.R;
-
-import org.w3c.dom.Text;
+import com.unimelb.utils.ImageUtils;
 
 import java.util.List;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
 
     private Context context;
-    private LayoutInflater mInflater;
     private List<Comment> commentList;
 
     public CommentListAdapter(Context context, List<Comment> commentList) {
         this.context = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.commentList = commentList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_post_comments_items,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_comment_list_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.usernameTextView.setText(commentList.get(position).getUsername());
-        holder.commentTextView.setText(commentList.get(position).getComment());
+        holder.commentTv.setText(commentList.get(position).getComment());
+        holder.dateTv.setText(commentList.get(position).getDate());
+        ImageUtils.loadRoundedImage(context, commentList.get(position).getAvatarUrl(), holder.avatarIv);
     }
 
     @Override
@@ -46,13 +45,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView usernameTextView;
-        private TextView commentTextView;
+        private TextView commentTv;
+        private ImageView avatarIv;
+        private TextView dateTv;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            usernameTextView = itemView.findViewById(R.id.post_comment_username);
-            commentTextView = itemView.findViewById(R.id.post_comment);
+            commentTv = itemView.findViewById(R.id.comment_item_content);
+            avatarIv = itemView.findViewById(R.id.comment_item_avatar);
+            dateTv = itemView.findViewById(R.id.comment_item_date);
         }
     }
 }

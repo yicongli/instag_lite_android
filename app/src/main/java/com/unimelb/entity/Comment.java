@@ -2,30 +2,40 @@ package com.unimelb.entity;
 
 public class Comment {
 
-    /** post comment*/
+    /**
+     * post comment
+     */
     private String comment;
 
-    /** user who writes the comment*/
+    /**
+     * user who writes the comment
+     */
     private String username;
 
-    public Comment(String comment, String username) {
+    private String avatarUrl;
+
+    private String date;
+
+    public Comment(String comment, String username, String avatarUrl, String date) {
         this.comment = comment;
         this.username = username;
+        this.avatarUrl = avatarUrl;
+        this.date = date;
     }
 
     public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+        return username + ": " + comment;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getDate() {
+        return date;
     }
 }
