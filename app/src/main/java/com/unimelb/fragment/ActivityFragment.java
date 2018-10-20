@@ -30,7 +30,9 @@ import java.util.List;
  * Activity Tab Fragment.
  */
 public class ActivityFragment extends Fragment {
+    /* context */
     private ActivityFragment context;
+    /* listView */
     private RecyclerView listView;
 
     @Override

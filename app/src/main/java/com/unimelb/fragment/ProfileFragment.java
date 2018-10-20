@@ -31,17 +31,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Profile fragment
+ * Profile fragment to show the information of user himself
  */
 public class ProfileFragment extends Fragment {
     /** Context */
     private ProfileFragment profileFragment;
 
-    /** View component */
+    /* the number of user's post */
     private TextView postCountTv;
+    /* the number of people who followed on user */
     private TextView followerCountTv;
+    /* the number of people user are following */
     private TextView followingCountTv;
+    /* user's head picture */
     private ImageView avatarIv;
+    /* gridView to show user's post history */
     private ExpandableGridView gridView;
 
     @Override

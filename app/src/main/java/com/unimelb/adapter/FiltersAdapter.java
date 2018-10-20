@@ -19,10 +19,12 @@ import java.util.List;
  * The adapter to hold the effects showing on the effect view
  */
 public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.ViewHolder> {
-
-    private int selected = 0;                   // select flag
-    private List<ThumbnailItem> images;         // items of image
-    private EffectsFragment effectsFragment;    // parent fragment
+    /* select flag */
+    private int selected = 0;
+    /* items of image */
+    private List<ThumbnailItem> images;
+    /* parent fragment */
+    private EffectsFragment effectsFragment;
 
 
     public FiltersAdapter(EffectsFragment effectsFragment, List<ThumbnailItem> images) {
@@ -67,9 +69,13 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.ViewHold
      * The effect view holder
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        /* view */
         public View view;
+        /* imageView */
         public ImageView imageView;
+        /* filterName TextView */
         private TextView filterName;
+
         private ViewHolder(final View v) {
             super(v);
             imageView  = v.findViewById(R.id.imageView);

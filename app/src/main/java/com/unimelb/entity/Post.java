@@ -1,9 +1,12 @@
 package com.unimelb.entity;
 
 import com.unimelb.constants.CommonConstants;
-
 import java.util.Date;
 
+/*
+* Post Class for each posted picture
+*
+* */
 public class Post {
 
     /**

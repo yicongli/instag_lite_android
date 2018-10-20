@@ -47,19 +47,25 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         Effects,
         Post
     }
-
-    private static final String TAG = "ShareActivity";      // tag of current activity
-
-    private Context mContext        = ShareActivity.this;   // current context
-    private BottomNavigationView navigationView;            // the navigation view at the bottom
-    private ViewPager viewPager;                            // the pager to store the fragments
-    private MenuItem menuItem;                              // the menu item
-    private String selectedImagePath;                       // the path of selected photo
-
+    /* tag of current activity */
+    private static final String TAG = "ShareActivity";
+    /* current context */
+    private Context mContext        = ShareActivity.this;
+    /* the navigation view at the bottom */
+    private BottomNavigationView navigationView;
+    /* the pager to store the fragments */
+    private ViewPager viewPager;
+    /* the menu item */
+    private MenuItem menuItem;
+    /* the path of selected photo */
+    private String selectedImagePath;
+    /* cameraFragment */
     private CameraFragment  cameraFragment;
+    /* effectsFragment */
     private EffectsFragment effectsFragment;
+    /* postFragment */
     private PostFragment    postFragment;
-
+    /* mViewStack */
     private ArrayList<FragmentType> mViewStack = new ArrayList<>();
 
     // TODO: check if It works

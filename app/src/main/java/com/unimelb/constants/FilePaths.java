@@ -1,7 +1,10 @@
 package com.unimelb.constants;
 
 import android.os.Environment;
-
+/*
+*
+* FilePaths class to storage the filePath parameter
+* */
 public class FilePaths {
 
     // get the root directory

@@ -24,10 +24,14 @@ import com.unimelb.utils.ImageUtils;
 import org.json.simple.JSONObject;
 
 import java.util.List;
-
+/*
+* An adapter to show the list of search result, each item is a user
+* including a userHead and userName
+* */
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
-
+    /* context */
     private Activity context;
+    /* list of user porfile */
     private List<BasicUserProfile> list;
 
     public SearchListAdapter(Activity context, List<BasicUserProfile> list) {
@@ -75,10 +79,13 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        /* user head ImageView */
         private ImageView avatarImageView;
+        /* tile TextView to show userName */
         private TextView titleTextView;
+        /* subtitle textView to show user profile */
         private TextView subtitleTextView;
+        /* follow button */
         private Button followBtn;
 
         public ViewHolder(View itemView) {

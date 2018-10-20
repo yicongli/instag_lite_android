@@ -3,10 +3,13 @@ package com.unimelb.net;
 import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
-
+/*
+* Error Handler
+* */
 public class ErrorHandler {
+    /* context */
     private Activity context;
-
+    /* ErrorHandler */
     public ErrorHandler(Activity context) {
         this.context = context;
     }

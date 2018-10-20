@@ -30,6 +30,7 @@ import java.util.List;
  * Discover fragment.
  */
 public class DiscoverFragment extends Fragment {
+    /* suggestionList for search input */
     private List<BasicUserProfile> suggestionList;
 
     public DiscoverFragment() {
@@ -70,6 +71,9 @@ public class DiscoverFragment extends Fragment {
         }
     }
 
+    /*
+    * Initialize Views
+    * */
     public void initView(View view) {
         LinearLayout linearLayout = view.findViewById(R.id.search_bar);
         linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(), SearchActivity.class)));
