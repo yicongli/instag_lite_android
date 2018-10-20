@@ -17,13 +17,14 @@ import com.unimelb.utils.TokenHelper;
 import org.json.simple.JSONObject;
 
 /**
- * Login Activity
+ * Login Activity for user login using "username" and "password"
  */
 public class LoginActivity extends AppCompatActivity {
+    /* context */
     private LoginActivity context;
-
+    /* longin button */
     private Button loginBtn;
-
+    /* a login button, just can be pressed only once, prevent user login multiple time */
     private boolean isEnableBtn = true;
 
     @Override

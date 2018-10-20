@@ -14,10 +14,14 @@ import com.unimelb.net.IResponseHandler;
 import com.unimelb.net.ResponseModel;
 
 import org.json.simple.JSONObject;
-
+/*
+* An activity for a new user register an account
+*
+* */
 public class RegisterActivity extends AppCompatActivity {
+    /* context */
     private RegisterActivity context;
-
+    /* Button for submit complete registration */
     private Button registerBtn;
 
     private boolean isEnableBtn = true;

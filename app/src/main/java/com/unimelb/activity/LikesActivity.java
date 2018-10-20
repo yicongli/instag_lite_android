@@ -21,10 +21,13 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+* An activity to show a list of users who "like" this post.
+* */
 public class LikesActivity extends AppCompatActivity {
+    /*context*/
     private LikesActivity context;
-
+    /*listView*/
     private RecyclerView listView;
 
     @Override
@@ -44,7 +47,9 @@ public class LikesActivity extends AppCompatActivity {
         listView = findViewById(R.id.like_list);
         listView.setLayoutManager(new LinearLayoutManager(this));
     }
-
+    /*
+    * Initialise data
+    * */
     private void initData() {
         Intent intent = getIntent();
         String postId = intent.getStringExtra("postId");

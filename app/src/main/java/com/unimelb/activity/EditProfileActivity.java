@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.unimelb.instagramlite.R;
-
+/*
+* An activity for user edit his own profile page content.
+*/
 public class EditProfileActivity extends AppCompatActivity {
 
     @Override

@@ -22,10 +22,13 @@ import com.unimelb.utils.TokenHelper;
  * Main portal
  */
 public class MainActivity extends AppCompatActivity {
+    /* navigation view to show a list of button for different fragments*/
     private BottomNavigationView navigationView;
+    /* viewPager */
     private ViewPager viewPager;
+    /* menuItem */
     private MenuItem menuItem;
-
+    /* mContext */
     private Context mContext = MainActivity.this;
 
     @Override
@@ -101,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* Setup a ViewPager including:
+    * HomeFragment
+    * DiscoverFragment
+    * ActivityFragment
+    * ProfileFragment
+    * */
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -110,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
-
+    /*
+    * Initialize Gps function
+    * */
     private void initGPS(){
 
     }

@@ -24,9 +24,13 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An activity shows the comments from other users for each post.
+ */
 public class CommentsActivity extends AppCompatActivity {
+    /* context */
     private CommentsActivity context;
-
+    /* listView */
     private RecyclerView listView;
 
     @Override
