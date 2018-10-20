@@ -17,13 +17,23 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity {
     private List<BasicUserProfile> searchResultList;
 
+    private RecyclerView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        initData();
         initView();
+        initData();
+    }
+
+    private void initView() {
+        findViewById(R.id.search_back).setOnClickListener((view) -> finish());
+        EditText editText = findViewById(R.id.search_edit_text);
+        listView = findViewById(R.id.search_list);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void initData() {
@@ -46,17 +56,9 @@ public class SearchActivity extends AppCompatActivity {
                 "http://pf3on5bei.sabkt.gdipper.com/profile10.jpg",
         };
         for (String url : imageUrls) {
-            BasicUserProfile profile = new BasicUserProfile(url, "Test", "test username");
+            BasicUserProfile profile = new BasicUserProfile("0", url, "Test", "test username");
             searchResultList.add(profile);
         }
-    }
-
-    private void initView() {
-        ImageButton backBtn = findViewById(R.id.search_back);
-        backBtn.setOnClickListener((view) -> this.finish());
-        EditText editText = findViewById(R.id.search_edit_text);
-        RecyclerView listView = findViewById(R.id.search_list);
-        listView.setLayoutManager(new LinearLayoutManager(this));
         listView.setAdapter(new SearchListAdapter(this, searchResultList));
     }
 

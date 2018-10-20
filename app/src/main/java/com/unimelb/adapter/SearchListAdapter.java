@@ -34,7 +34,7 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titleTextView.setText(list.get(position).getUsername());
-        holder.subtitleTextView.setText(list.get(position).getName());
+        holder.subtitleTextView.setText(list.get(position).getBio());
         ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(), holder.avatarImageView);
     }
 

@@ -31,16 +31,19 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.register_btn);
         registerBtn.setOnClickListener((view) -> {
             EditText usernameEditText = findViewById(R.id.username_edit_text);
+            EditText emailEditText = findViewById(R.id.email_edit_text);
             EditText passwordEditText = findViewById(R.id.password_edit_text);
             EditText confirmEditText = findViewById(R.id.confirm_password_edit_text);
 
             final String username = usernameEditText.getText().toString();
+            final String email = emailEditText.getText().toString();
             final String password = passwordEditText.getText().toString();
             final String confirm = confirmEditText.getText().toString();
 
             if (password.equals(confirm)) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("email", username);
+                jsonObject.put("email", email);
+                jsonObject.put("username", username);
                 jsonObject.put("pwd", password);
 
                 HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/register", jsonObject.toJSONString(), new IResponseHandler() {

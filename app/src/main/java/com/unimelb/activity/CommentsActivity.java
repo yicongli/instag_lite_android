@@ -11,5 +11,13 @@ public class CommentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
+        initView();
+    }
+
+    /**
+     * Initialise views
+     */
+    public void initView() {
+        findViewById(R.id.comment_back_btn).setOnClickListener((view) -> finish());
     }
 }

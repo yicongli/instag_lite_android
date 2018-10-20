@@ -105,6 +105,16 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
                 }
             });
         });
+
+        holder.likeCountLabel.setOnClickListener((view) -> {
+            Intent intent = new Intent(context, LikesActivity.class);
+            intent.putExtra("postId", postList.get(position).getPostId());
+            context.startActivity(intent);
+        });
+
+        holder.commentBtn.setOnClickListener((view) -> {
+            context.startActivity(new Intent(context, CommentsActivity.class));
+        });
     }
 
     @Override
@@ -142,14 +152,6 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             commentBtn = itemView.findViewById(R.id.post_list_item_view_comment_btn);
             commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
             postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
-
-            likeCountLabel.setOnClickListener((view) -> {
-                context.startActivity(new Intent(context, LikesActivity.class));
-            });
-
-            commentBtn.setOnClickListener((view) -> {
-                context.startActivity(new Intent(context, CommentsActivity.class));
-            });
 
             // detect edit text focus event, when it focused, display post button
             commentEditText.setOnFocusChangeListener((view, hasFocus) -> {

@@ -6,24 +6,33 @@ package com.unimelb.entity;
  */
 public class BasicUserProfile {
 
-    /** user profile picture link */
+    /**
+     * user profile picture link
+     */
     private String avatarUrl;
 
-    /** user name */
-    private String name;
+    /**
+     * user email
+     */
+    private String bio;
 
-    /** user account name */
+    /**
+     * user account name
+     */
     private String username;
 
     /**
-     * Constructor function
-     * @param avatarUrl
-     * @param name
-     * @param username
+     * user id
      */
-    public BasicUserProfile(String avatarUrl, String name, String username){
+    private String userId;
+
+    /**
+     * Constructor function
+     */
+    public BasicUserProfile(String userId, String avatarUrl, String username, String bio) {
+        this.userId = userId;
         this.avatarUrl = avatarUrl;
-        this.name = name;
+        this.bio = bio;
         this.username = username;
     }
 
@@ -31,23 +40,15 @@ public class BasicUserProfile {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public String getBio() {
+        return bio;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUserId() {
+        return userId;
     }
 }

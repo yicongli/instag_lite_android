@@ -1,10 +1,7 @@
 package com.unimelb.net.model;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import java.util.List;
 
 /**
  * Map json to User object
@@ -14,6 +11,12 @@ public class User {
     private String avatarUrl;
 
     private String username;
+
+    private String email;
+
+    private String bio;
+
+    private String id;
 
 //    private List<String> media;
 //
@@ -25,8 +28,11 @@ public class User {
         JSONParser parser = new JSONParser();
         try {
             JSONObject obj = (JSONObject) parser.parse(json);
+            id = obj.get("_id").toString();
             avatarUrl = obj.get("profile_picture").toString();
-            username = obj.get("email").toString();
+            email = obj.get("email").toString();
+            username = obj.get("username").toString();
+            bio = obj.get("bio").toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,15 +42,19 @@ public class User {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getId() {
+        return id;
     }
 }

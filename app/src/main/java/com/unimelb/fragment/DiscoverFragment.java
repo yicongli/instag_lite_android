@@ -65,7 +65,7 @@ public class DiscoverFragment extends Fragment {
                 "http://pf3on5bei.sabkt.gdipper.com/profile10.jpg",
         };
         for (String url : imageUrls) {
-            BasicUserProfile profile = new BasicUserProfile(url, "Test", "test username");
+            BasicUserProfile profile = new BasicUserProfile("0", url, "Test", "test username");
             suggestionList.add(profile);
         }
     }
