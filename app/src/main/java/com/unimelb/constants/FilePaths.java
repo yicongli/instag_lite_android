@@ -11,7 +11,7 @@ public class FilePaths {
     public static String PICTURE_PATH = ROOT_DIRECTORY + "/Pictures";
 
     // "/storage/emulated/0/DCIM/camera"
-    public static String CAMERA_PATH = ROOT_DIRECTORY + "/DCIM/camera";
+    public static String CAMERA_PATH = ROOT_DIRECTORY + "/DCIM";
 
 
 }

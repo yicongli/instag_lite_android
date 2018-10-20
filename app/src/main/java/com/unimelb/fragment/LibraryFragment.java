@@ -180,8 +180,11 @@ public class LibraryFragment extends Fragment {
                 imageUrl = picturePaths.get(0);
             }
 
-            setImage(imageUrl, libraryImageView, mAppend);
-            mSelectedImage = imageUrl;
+            if (picturePaths.size() != 0) {
+                setImage(imageUrl, libraryImageView, mAppend);
+                mSelectedImage = imageUrl;
+            }
+
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.e(TAG, "ArrayIndexOutOfBoundsException: " + e.getMessage());
         }
@@ -207,6 +210,7 @@ public class LibraryFragment extends Fragment {
     private void setImage(String imgURL, ImageView image, String append){
         Log.d(TAG, "setImage: setting image");
 
+        String test = append + imgURL;
         imageLoader.displayImage(append + imgURL, image, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
