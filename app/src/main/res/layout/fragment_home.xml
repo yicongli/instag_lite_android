@@ -48,6 +48,15 @@
         android:layout_height="1px"
         android:background="#d9d9d9"/>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/post_empty_label"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No user activity to display, try to follow someone."/>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/refresh_layout"

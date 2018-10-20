@@ -18,10 +18,17 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.unimelb.activity.SearchActivity;
 import com.unimelb.adapter.SearchListAdapter;
 import com.unimelb.adapter.SquareImageAdapter;
+import com.unimelb.constants.CommonConstants;
 import com.unimelb.entity.BasicUserProfile;
 import com.unimelb.instagramlite.R;
+import com.unimelb.net.ErrorHandler;
 import com.unimelb.net.HttpRequest;
 import com.unimelb.net.IResponseHandler;
+import com.unimelb.net.ResponseModel;
+import com.unimelb.net.model.User;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +37,14 @@ import java.util.List;
  * Discover fragment.
  */
 public class DiscoverFragment extends Fragment {
+    /* context */
+    private DiscoverFragment context;
+
     /* suggestionList for search input */
-    private List<BasicUserProfile> suggestionList;
+    private List<BasicUserProfile> suggestionList = new ArrayList<>();
+
+    /* list view */
+    private RecyclerView listView;
 
     public DiscoverFragment() {
     }
@@ -39,36 +52,42 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        context = this;
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
-        initData();
         initView(view);
+        initData();
 
         return view;
     }
 
     private void initData() {
-        suggestionList = new ArrayList<>();
-        String[] imageUrls = new String[]{
-                "http://pf3on5bei.sabkt.gdipper.com/profile18.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile20.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile25.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile17.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile30.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile31.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile28.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile27.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile26.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile14.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile15.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile13.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile9.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile2.jpg",
-                "http://pf3on5bei.sabkt.gdipper.com/profile10.jpg",
-        };
-        for (String url : imageUrls) {
-            BasicUserProfile profile = new BasicUserProfile("0", url, "Test", "test username");
-            suggestionList.add(profile);
-        }
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/search/suggest", null, new IResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, String errJson) {
+                new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
+            }
+
+            @Override
+            public void onSuccess(String json) {
+                System.out.println(json);
+                ResponseModel rm = new ResponseModel(json);
+                JSONObject data = rm.getData();
+                JSONArray users = (JSONArray) data.get("suggest_users");
+                List<User> userList = new ArrayList<>();
+                for (int i = 0; i < users.size(); i++) {
+                    User user = new User(users.get(i).toString());
+                    userList.add(user);
+                }
+
+                context.getActivity().runOnUiThread(() -> {
+                    for (User user : userList) {
+                        BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
+                        suggestionList.add(profile);
+                    }
+                    listView.setAdapter(new SearchListAdapter(context.getActivity(), suggestionList));
+                });
+            }
+        });
     }
 
     /*
@@ -83,13 +102,12 @@ public class DiscoverFragment extends Fragment {
         refreshLayout.setOnRefreshListener(layout -> {
             layout.finishRefresh(2000/*,false*/);// false means false
         });
-        refreshLayout.setOnLoadMoreListener(layout -> {
-            layout.finishLoadMore(2000/*,false*/);// false means false
-        });
+//        refreshLayout.setOnLoadMoreListener(layout -> {
+//            layout.finishLoadMore(2000/*,false*/);// false means false
+//        });
 
-        RecyclerView listView = view.findViewById(R.id.search_suggestion_list);
+        listView = view.findViewById(R.id.search_suggestion_list);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        listView.setAdapter(new SearchListAdapter(this.getActivity(), suggestionList));
     }
 
 

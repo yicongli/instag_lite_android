@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.scwang.smartrefresh.header.WaterDropHeader;
@@ -36,11 +37,14 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
+    /* context */
     private HomeFragment homeFragment;
 
     private RecyclerView postListView;
 
     private boolean sortDateOrder = true;
+
+    private TextView emptyTipTv;
 
     /**
      * List of posts
@@ -73,6 +77,7 @@ public class HomeFragment extends Fragment {
 //        });
 
         postListView = view.findViewById(R.id.post_list);
+        emptyTipTv = view.findViewById(R.id.post_empty_label);
 
         // Sort button onClick listener
         view.findViewById(R.id.home_sort_btn).setOnClickListener((btnView) -> {
@@ -126,6 +131,10 @@ public class HomeFragment extends Fragment {
                     }
                     postListView.setLayoutManager(new LinearLayoutManager(context));
                     postListView.setAdapter(new PostImageAdapter(context, postList));
+
+                    if(postList.size() == 0){
+                        emptyTipTv.setVisibility(View.VISIBLE);
+                    }
                 });
             }
         });
