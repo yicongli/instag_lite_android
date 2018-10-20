@@ -1,32 +1,19 @@
 package com.unimelb.fragment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.unimelb.adapter.SquareImageAdapter;
-import com.unimelb.constants.FilePaths;
 import com.unimelb.instagramlite.R;
-import com.unimelb.utils.FIleSearch;
 
-import java.util.ArrayList;
+import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,8 +63,20 @@ public class PostFragment extends Fragment {
             // TODO post data to the server
         });
 
+        postEditText.setOnClickListener(View -> {
+            String text = postEditText.getText().toString();
+            String hint = getResources().getString(R.string.string_post_hint);
+            if (text.equals(hint)) {
+                postEditText.getText().clear();
+            }
+        });
+
         Log.d(TAG, "create view");
         return view;
+    }
+
+    public void setImageViewWithImagePath (String imagePath) {
+        postImageView.setImageURI(Uri.fromFile(new File(imagePath)));
     }
 
 

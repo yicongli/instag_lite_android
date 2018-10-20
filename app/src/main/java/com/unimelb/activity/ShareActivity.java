@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.unimelb.adapter.ViewPagerAdapter;
 import com.unimelb.fragment.CameraFragment;
@@ -265,6 +266,13 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         if (type.ordinal() < FragmentType.Effects.ordinal()) {
             navigationView.setVisibility(View.VISIBLE);
         }
+
+        // close keyboard
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     /**
@@ -276,7 +284,7 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         viewPager.setCurrentItem(FragmentType.Post.ordinal(),false);
 
         if(postFragment != null) {
-            // TODO initiate post fragment
+            postFragment.setImageViewWithImagePath(imagePath);
         }
 
         mViewStack.add(FragmentType.Post);

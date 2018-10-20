@@ -23,7 +23,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20">
+            android:layout_weight="60">
 
             <ImageView
                 android:id="@+id/post_image_view"
@@ -32,14 +32,21 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/string_post_image"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                android:contentDescription="@string/string_post_image" />
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40">
 
             <EditText
                 android:id="@+id/post_image_caption"
-                android:layout_width="261dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
@@ -51,13 +58,12 @@
                 android:maxLines="10"
                 android:minLines="6"
                 android:scrollbars="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/string_post_hint"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/post_image_view"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            
         </android.support.constraint.ConstraintLayout>
+
 
     </LinearLayout>
 
