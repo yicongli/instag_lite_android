@@ -1,5 +1,9 @@
 package com.unimelb.entity;
 
+/*
+* Comment class for each comment to show
+*
+* */
 public class Comment {
 
     /**
@@ -11,9 +15,13 @@ public class Comment {
      * user who writes the comment
      */
     private String username;
-
+    /*
+    * User head image url
+    * */
     private String avatarUrl;
-
+    /*
+    * date time String
+    * */
     private String date;
 
     public Comment(String comment, String username, String avatarUrl, String date) {

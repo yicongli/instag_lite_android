@@ -1,7 +1,10 @@
 package com.unimelb.entity;
 
 import android.location.Location;
-
+/*
+* Post Class for each posted picture
+*
+* */
 public class Post {
 
     /** post id*/
