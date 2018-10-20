@@ -21,6 +21,8 @@ import com.unimelb.net.IResponseHandler;
 import com.unimelb.net.ResponseModel;
 import com.unimelb.utils.ImageUtils;
 
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
@@ -46,7 +48,9 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
         ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(), holder.avatarImageView);
         holder.followBtn.setOnClickListener((view) -> {
             holder.followBtn.setEnabled(false);
-            HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/users/self/follows", null, new IResponseHandler() {
+            JSONObject obj = new JSONObject();
+            obj.put("user_id", list.get(position).getUserId());
+            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/users/self/follows", obj.toJSONString(), new IResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, String errJson) {
                     new ErrorHandler(context).handle(statusCode, errJson);
