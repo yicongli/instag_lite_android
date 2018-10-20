@@ -26,12 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
+/*
+*  an activity for searching any user by userName
+*
+* */
 public class SearchActivity extends AppCompatActivity {
+    /* context */
     private SearchActivity context;
-
+    /* ListView to show a list of users */
     private RecyclerView listView;
-
+    /* a editText for input search */
     private EditText editText;
 
     @Override
@@ -42,14 +46,14 @@ public class SearchActivity extends AppCompatActivity {
         initView();
         initData();
     }
-
+    /* initialize Views by R.id */
     private void initView() {
         findViewById(R.id.search_back).setOnClickListener((view) -> finish());
         editText = findViewById(R.id.search_edit_text);
         listView = findViewById(R.id.search_list);
         listView.setLayoutManager(new LinearLayoutManager(this));
     }
-
+    /*initialize the data for communicate to the server */
     private void initData() {
         editText.addTextChangedListener(new TextWatcher() {
             @Override

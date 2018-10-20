@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     private RegisterActivity context;
     /* Button for submit complete registration */
     private Button registerBtn;
-
+    /* Prevent user press registerButton for multiple time */
     private boolean isEnableBtn = true;
 
     @Override
@@ -75,7 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
+    /*
+    * Switch the state of Login Button from "Register" to "Loading..."
+    * */
     private void toggleLoginButton() {
         if (isEnableBtn) {
             registerBtn.setText("Loading...");
