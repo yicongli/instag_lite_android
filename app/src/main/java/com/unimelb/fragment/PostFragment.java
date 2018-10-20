@@ -52,8 +52,8 @@ public class PostFragment extends Fragment {
         // close the activity when touch the back button
         ImageView backButton = view.findViewById(R.id.post_toolbar_back);
         backButton.setOnClickListener(View -> {
-                Log.d(TAG, "go back to effect view");
-                mListener.backToPreviousView();
+            Log.d(TAG, "go back to effect view");
+            mListener.backToPreviousView();
         });
 
         // go to filter view after touch next
@@ -77,6 +77,14 @@ public class PostFragment extends Fragment {
 
     public void setImageViewWithImagePath (String imagePath) {
         postImageView.setImageURI(Uri.fromFile(new File(imagePath)));
+    }
+
+    /**
+     * Extract the tags in the caption before send the
+     * @param captionStr
+     */
+    public void extractTags(String captionStr) {
+
     }
 
 
