@@ -8,9 +8,13 @@ import android.widget.ImageView;
 
 import com.unimelb.component.GridViewItem;
 import com.unimelb.utils.ImageUtils;
-
+/*
+* a adapter to build a square image for showing
+* */
 public class SquareImageAdapter extends BaseAdapter {
+    /* context */
     private Context context;
+    /* image path String array */
     private String[] images;
 
     public SquareImageAdapter(Context context, String[] images) {

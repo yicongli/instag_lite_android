@@ -14,10 +14,13 @@ import com.unimelb.instagramlite.R;
 import com.unimelb.utils.ImageUtils;
 
 import java.util.List;
-
+/*
+*  CommentList Adapter for show the comments of each post in a list
+* */
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
-
+    /* context */
     private Context context;
+    /* comments list */
     private List<Comment> commentList;
 
     public CommentListAdapter(Context context, List<Comment> commentList) {
@@ -28,14 +31,16 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_comment_list_item,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(
+                R.layout.view_comment_list_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.commentTv.setText(commentList.get(position).getComment());
         holder.dateTv.setText(commentList.get(position).getDate());
-        ImageUtils.loadRoundedImage(context, commentList.get(position).getAvatarUrl(), holder.avatarIv);
+        ImageUtils.loadRoundedImage(context, commentList.get(position).getAvatarUrl(),
+                holder.avatarIv);
     }
 
     @Override
@@ -45,8 +50,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
+        /* comment TextView */
         private TextView commentTv;
+        /* User picture ImageView */
         private ImageView avatarIv;
+        /* data and time TextView */
         private TextView dateTv;
 
         public ViewHolder(View itemView) {

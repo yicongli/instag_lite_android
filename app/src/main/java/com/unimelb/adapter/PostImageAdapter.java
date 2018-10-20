@@ -28,10 +28,14 @@ import com.unimelb.utils.ImageUtils;
 import org.json.simple.JSONObject;
 
 import java.util.List;
-
+/*
+* an adapter to show the list of post pictures from users
+*
+* */
 public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
-
+    /* context */
     private Activity context;
+    /* posts list */
     private List<Post> postList;
 
     public PostImageAdapter(Activity context, List<Post> postList) {
@@ -80,12 +84,12 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
         });
 
         holder.postBtn.setOnClickListener((view) -> {
-            //close keyboard
+            /* close keyboard */
             holder.commentEditText.clearFocus();
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-            //get edit text value and send data
+            /* get edit text value and send data */
             final String comment = holder.commentEditText.getText().toString();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("content", comment);
@@ -128,17 +132,27 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
      * the item to hold the image in the post
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        /* picture of user head ImageView */
         private ImageView avatarImageView;
+        /* user name TextView */
         private TextView usernameTextView;
+        /* picture location textView */
         private TextView locationTextView;
+        /* picture of post imageView */
         private ImageView postImageView;
+        /* date and time textView */
         private TextView dateView;
+        /* Like Button ImageView */
         private ImageView likeBtn;
+        /* the numer of likes testView */
         private TextView likeCountLabel;
+        /* user head picture to show myself */
         private ImageView ownerImageView;
+        /* comment button to post a comment under a picture */
         private TextView commentBtn;
+        /* comment EditText */
         private EditText commentEditText;
+        /* post button to post a picture */
         private TextView postBtn;
 
         public ViewHolder(Context context, View itemView) {
@@ -155,7 +169,7 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             commentEditText = itemView.findViewById(R.id.post_list_item_comment_edit);
             postBtn = itemView.findViewById(R.id.post_list_item_post_btn);
 
-            // detect edit text focus event, when it focused, display post button
+            /* detect edit text focus event, when it focused, display post button */
             commentEditText.setOnFocusChangeListener((view, hasFocus) -> {
                 if (hasFocus) {
                     postBtn.setVisibility(View.VISIBLE);

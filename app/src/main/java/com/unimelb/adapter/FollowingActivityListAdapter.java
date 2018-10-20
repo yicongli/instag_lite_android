@@ -14,10 +14,14 @@ import com.unimelb.instagramlite.R;
 import com.unimelb.utils.ImageUtils;
 
 import java.util.List;
-
+/*
+*
+* A adapter to show the posts of whom user following
+* */
 public class FollowingActivityListAdapter extends RecyclerView.Adapter<FollowingActivityListAdapter.ViewHolder> {
-
+    /* context */
     private Context context;
+    /* list of Following Activity Item */
     private List<FollowingActivityItem> list;
 
     public FollowingActivityListAdapter(Context context, List<FollowingActivityItem> list) {
@@ -48,9 +52,11 @@ public class FollowingActivityListAdapter extends RecyclerView.Adapter<Following
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
+        /* user picture ImageView */
         private ImageView avatarImageView;
+        /* profile of user TextView */
         private TextView descTextView;
+        /* posted photos ImageView */
         private ImageView photoImageView;
 
         public ViewHolder(View itemView) {
