@@ -1,5 +1,7 @@
 package com.unimelb.net.model;
 
+import android.graphics.Point;
+import android.location.Location;
 import android.text.format.DateUtils;
 
 import org.json.simple.JSONArray;
@@ -23,6 +25,9 @@ public class Medium {
     private List<String> likes = new ArrayList<>();
     private Date postDate;
     private User user;
+    private String locationString;
+    private double lat = 0;
+    private double lng = 0;
 
     public Medium(String json) {
         JSONParser parser = new JSONParser();
@@ -61,6 +66,10 @@ public class Medium {
             if (userObj != null) {
                 user = new User(userObj.toJSONString());
             }
+
+            JSONObject loc = (JSONObject) obj.get("location");
+            lat = Double.valueOf(loc.get("lat").toString());
+            lng = Double.valueOf(loc.get("lng").toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,11 +101,25 @@ public class Medium {
     }
 
     public String getPostDateString() {
-        return DateUtils.getRelativeTimeSpanString(postDate.getTime()).toString();
+        return new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(postDate) + " (" + DateUtils.getRelativeTimeSpanString(postDate.getTime()).toString() + ")";
     }
 
     public User getUser() {
         return user;
     }
 
+    public String getLocation() {
+        if (lat == 0 && lng == 0) {
+            return "No location information";
+        }
+        return "Lat: " + lat + ", Lng: " + lng;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
 }

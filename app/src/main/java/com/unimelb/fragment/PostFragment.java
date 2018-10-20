@@ -81,7 +81,6 @@ public class PostFragment extends Fragment {
         TextView nextView = view.findViewById(R.id.post_share);
         nextView.setOnClickListener(View -> {
             loadingDialog = LoadingDialog.showWaitDialog(context.getActivity(), "Loading");
-
             String tags = extractTags(postEditText.getText().toString());
 
             // TODO post data to the server
@@ -90,7 +89,7 @@ public class PostFragment extends Fragment {
             Map<String, Object> hashBodyMap = new HashMap<>();
             hashBodyMap.put("image", file);
             hashBodyMap.put("tags", tags);
-            hashBodyMap.put("location", "132, 92");
+            hashBodyMap.put("location", CommonConstants.latitude + ", " + CommonConstants.longitude);
 
             HttpRequest.getInstance().doFilePostRequestAsync(CommonConstants.IP + "/api/v1/media/self", hashBodyMap, new IResponseHandler() {
                 @Override

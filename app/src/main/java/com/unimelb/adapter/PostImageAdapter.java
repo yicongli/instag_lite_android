@@ -51,12 +51,12 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
 
         ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
         holder.usernameTextView.setText(postList.get(position).getUsername());
-//        holder.locationTextView.setText(postList.get(position).getLocation().toString());
+        holder.locationTextView.setText(postList.get(position).getLocation());
 
         ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
-        holder.dateView.setText(postList.get(position).getDate());
+        holder.dateView.setText(postList.get(position).getDateString());
 
-        ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/di.jpg", holder.ownerImageView);
+        ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg", holder.ownerImageView);
 
         holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
         holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");

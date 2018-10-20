@@ -10,12 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.unimelb.adapter.ViewPagerAdapter;
+import com.unimelb.constants.CommonConstants;
 import com.unimelb.fragment.ActivityFragment;
 import com.unimelb.fragment.DiscoverFragment;
 import com.unimelb.fragment.HomeFragment;
 import com.unimelb.fragment.ProfileFragment;
 import com.unimelb.instagramlite.R;
 import com.unimelb.utils.BottomNavigationViewHelper;
+import com.unimelb.utils.LocationUtils;
 import com.unimelb.utils.TokenHelper;
 
 /**
@@ -95,22 +97,21 @@ public class MainActivity extends AppCompatActivity {
     /**
      * user login logic, if there is not access token, navigate to login page
      */
-    private void loginAuth(){
+    private void loginAuth() {
         TokenHelper th = new TokenHelper(this);
 //        th.deleteToken();
-        if(!th.isValidToken()){
+        if (!th.isValidToken()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }
 
-    /* Setup a ViewPager including:
-    * HomeFragment
-    * DiscoverFragment
-    * ActivityFragment
-    * ProfileFragment
-    * */
-
+    /** Setup a ViewPager including:
+     * HomeFragment
+     * DiscoverFragment
+     * ActivityFragment
+     * ProfileFragment
+     * */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -120,10 +121,15 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new ProfileFragment());
         viewPager.setAdapter(adapter);
     }
-    /*
-    * Initialize Gps function
-    * */
-    private void initGPS(){
 
+    /*
+     * Initialize Gps function
+     * */
+    private void initGPS() {
+        LocationUtils.initLocation(this);
+        CommonConstants.latitude = LocationUtils.latitude;
+        CommonConstants.longitude = LocationUtils.longitude;
+//        Toast.makeText(this, LocationUtils.longitude + "", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, LocationUtils.latitude + "", Toast.LENGTH_LONG).show();
     }
 }
