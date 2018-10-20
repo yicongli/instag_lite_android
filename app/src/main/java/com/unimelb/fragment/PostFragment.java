@@ -1,5 +1,6 @@
 package com.unimelb.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.unimelb.instagramlite.R;
 import com.unimelb.net.ErrorHandler;
 import com.unimelb.net.HttpRequest;
 import com.unimelb.net.IResponseHandler;
+import com.unimelb.plugin.LoadingDialog;
 
 import java.io.File;
 import java.util.HashMap;
@@ -44,6 +46,8 @@ public class PostFragment extends Fragment {
     private ShareFragmentsListener mListener;
 
     private String imagePath;
+
+    private Dialog loadingDialog;
 
     /**
      * Use this factory method to create a new instance of
@@ -76,6 +80,8 @@ public class PostFragment extends Fragment {
         // go to filter view after touch next
         TextView nextView = view.findViewById(R.id.post_share);
         nextView.setOnClickListener(View -> {
+            loadingDialog = LoadingDialog.showWaitDialog(context.getActivity(), "Loading");
+
             String tags = extractTags(postEditText.getText().toString());
 
             // TODO post data to the server
@@ -90,12 +96,14 @@ public class PostFragment extends Fragment {
                 @Override
                 public void onFailure(int statusCode, String errJson) {
                     new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
+                    LoadingDialog.closeDialog(loadingDialog);
                 }
 
                 @Override
                 public void onSuccess(String json) {
                     System.out.println(json);
                     context.getActivity().runOnUiThread(() -> {
+                        LoadingDialog.closeDialog(loadingDialog);
                         Toast.makeText(context.getActivity(), "Share successful", Toast.LENGTH_LONG).show();
                         context.getActivity().finish();
                     });
