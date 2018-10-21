@@ -35,7 +35,7 @@ import java.util.List;
 public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
     /* context */
     private Activity context;
-    /* posts list */
+    /* list of posts*/
     private List<Post> postList;
 
     public PostImageAdapter(Activity context, List<Post> postList) {
