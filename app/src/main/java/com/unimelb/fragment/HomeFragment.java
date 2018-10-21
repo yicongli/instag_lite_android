@@ -104,7 +104,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         homeFragment = this;
         initView(view);
-        initData();
 
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -113,46 +112,37 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         // If BT is not on, request that it be enabled.
         // setupPicture() will then be called during onActivityResult
-        if (!mBluetoothAdapter.isEnabled())
-        {
+        if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
             // Otherwise, setup the picture session
-        }
-        else if (mPictureService == null)
-        {
+        } else if (mPictureService == null) {
             setupPicture();
         }
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-        if (mPictureService != null)
-        {
+        if (mPictureService != null) {
             mPictureService.stop();
         }
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         // Performing this check in onResume() covers the case in which BT was
         // not enabled during onStart(), so we were paused to enable it...
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (mPictureService != null)
-        {
+        if (mPictureService != null) {
             // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mPictureService.getState() == BluetoothPictureServices.STATE_NONE)
-            {
+            if (mPictureService.getState() == BluetoothPictureServices.STATE_NONE) {
                 // Start the Bluetooth picture services
                 mPictureService.start();
             }
@@ -168,13 +158,18 @@ public class HomeFragment extends Fragment {
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
         refreshLayout.setOnRefreshListener(layout -> {
-            layout.finishRefresh(2000);// false means false
+            initData(layout);
         });
 //        refreshLayout.setOnLoadMoreListener(layout -> {
 //            layout.finishLoadMore(2000/*,false*/);// false means false
 //        });
 
+        refreshLayout.autoRefresh();
+
         postListView = view.findViewById(R.id.post_list);
+        postListView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        postListAdapter = new PostImageAdapter(this.getActivity(), postList);
+        postListView.setAdapter(postListAdapter);
         emptyTipTv = view.findViewById(R.id.post_empty_label);
 
         // Sort button onClick listener
@@ -203,7 +198,7 @@ public class HomeFragment extends Fragment {
     /**
      * Initialize post data
      */
-    private void initData() {
+    private void initData(RefreshLayout layout) {
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
@@ -229,11 +224,11 @@ public class HomeFragment extends Fragment {
                         Post post = new Post(medium.getMediumId(), medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), medium.getLocation(), medium.getPostDateString(), medium.getPostDate(), medium.getLikes().size(), medium.getComments().size(), medium.getLat(), medium.getLng());
                         postList.add(post);
                     }
-                    postListView.setLayoutManager(new LinearLayoutManager(context));
-                    postListAdapter = new PostImageAdapter(context, postList);
-                    postListView.setAdapter(postListAdapter);
 
-                    if(postList.size() == 0){
+                    layout.finishRefresh();
+                    postListAdapter.notifyDataSetChanged();
+
+                    if (postList.size() == 0) {
                         emptyTipTv.setVisibility(View.VISIBLE);
                     }
                 });
@@ -263,33 +258,26 @@ public class HomeFragment extends Fragment {
         postListAdapter.notifyDataSetChanged();
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch (requestCode)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case REQUEST_CONNECT_DEVICE_SECURE:
                 // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                     connectDevice(data, true);
                 }
                 break;
             case REQUEST_CONNECT_DEVICE_INSECURE:
                 // When DeviceListActivity returns with a device to connect
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                     connectDevice(data, false);
                 }
                 break;
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up picture
                     setupPicture();
-                }
-                else
-                {
+                } else {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
                     Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving,
@@ -298,8 +286,7 @@ public class HomeFragment extends Fragment {
                 }
 
             case CODE_SELECT_IMAGE:
-                if (resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
 
                     selectPic(data);
                 }
@@ -313,8 +300,7 @@ public class HomeFragment extends Fragment {
      * @param data   An {@link Intent} with {@link DeviceListActivity#EXTRA_DEVICE_ADDRESS} extra.
      * @param secure Socket Security type - Secure (true) , Insecure (false)
      */
-    private void connectDevice(Intent data, boolean secure)
-    {
+    private void connectDevice(Intent data, boolean secure) {
         // Get the device MAC address
         String address = data.getExtras()
                 .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
@@ -325,26 +311,22 @@ public class HomeFragment extends Fragment {
         startActivityForResult(albumIntent, CODE_SELECT_IMAGE);
 
 
-
         Log.d(TAG, "Device connect");
     }
 
     /**
      * Makes this device discoverable for 300 seconds (5 minutes).
      */
-    private void ensureDiscoverable()
-    {
+    private void ensureDiscoverable() {
         if (mBluetoothAdapter.getScanMode() !=
-                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)
-        {
+                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
             startActivity(discoverableIntent);
         }
     }
 
-    private void selectPic(Intent intent)
-    {
+    private void selectPic(Intent intent) {
 
         //uri=content://media/external/images/media/767
         Uri selectImageUri = intent.getData();
@@ -362,25 +344,19 @@ public class HomeFragment extends Fragment {
     /**
      * Set up the UI and background operations for picture.
      */
-    private void setupPicture()
-    {
+    private void setupPicture() {
         Log.d(TAG, "setupPicture()");
 
         /**
          * The Handler that gets information back from the BluetoothPictureServices
          */
-        @SuppressLint("HandlerLeak")
-        final Handler mHandler = new Handler()
-        {
+        @SuppressLint("HandlerLeak") final Handler mHandler = new Handler() {
             @Override
-            public void handleMessage(Message msg)
-            {
+            public void handleMessage(Message msg) {
                 FragmentActivity activity = getActivity();
-                switch (msg.what)
-                {
+                switch (msg.what) {
                     case BluetoothConstants.MESSAGE_STATE_CHANGE:
-                        switch (msg.arg1)
-                        {
+                        switch (msg.arg1) {
                             case BluetoothPictureServices.STATE_CONNECTED:
                                 break;
                             case BluetoothPictureServices.STATE_CONNECTING:
@@ -411,15 +387,13 @@ public class HomeFragment extends Fragment {
                     case BluetoothConstants.MESSAGE_DEVICE_NAME:
                         // save the connected device's name
                         mConnectedDeviceName = msg.getData().getString(BluetoothConstants.DEVICE_NAME);
-                        if (null != activity)
-                        {
+                        if (null != activity) {
                             Toast.makeText(activity, "Connected to "
                                     + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case BluetoothConstants.MESSAGE_TOAST:
-                        if (null != activity)
-                        {
+                        if (null != activity) {
                             Toast.makeText(activity, msg.getData().getString(BluetoothConstants.TOAST),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -437,18 +411,15 @@ public class HomeFragment extends Fragment {
      *
      * @param picture A bitmap picture to send.
      */
-    private void sendPicture(Bitmap picture)
-    {
+    private void sendPicture(Bitmap picture) {
         // Check that we're actually connected before trying anything
-        if (mPictureService.getState() != BluetoothPictureServices.STATE_CONNECTED)
-        {
+        if (mPictureService.getState() != BluetoothPictureServices.STATE_CONNECTED) {
             Toast.makeText(getActivity(), R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Check that there's actually something to send
-        if (picture != null)
-        {
+        if (picture != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
             // Get the picture bytes and tell the BluetoothPictureServices to write
@@ -456,9 +427,7 @@ public class HomeFragment extends Fragment {
             mPictureService.write(send);
 
             Toast.makeText(getActivity(), "Successfully send.", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
+        } else {
             Toast.makeText(getActivity(), "You have not choose any image.", Toast.LENGTH_LONG).show();
         }
 
