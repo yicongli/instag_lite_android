@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.unimelb.activity.EditProfileActivity;
 import com.unimelb.activity.LoginActivity;
 import com.unimelb.adapter.SquareImageAdapter;
 import com.unimelb.constants.CommonConstants;
@@ -34,7 +35,9 @@ import java.util.List;
  * Profile fragment to show the information of user himself
  */
 public class ProfileFragment extends Fragment {
-    /** Context */
+    /**
+     * Context
+     */
     private ProfileFragment profileFragment;
 
     /* the number of user's post */
@@ -59,6 +62,7 @@ public class ProfileFragment extends Fragment {
 
     /**
      * Initialise view
+     *
      * @param view
      */
     public void initView(View view) {
@@ -75,6 +79,10 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("No", null)
                     .create()
                     .show();
+        });
+
+        view.findViewById(R.id.profile_edit_profile).setOnClickListener((btnView) -> {
+            startActivity(new Intent(this.getActivity(), EditProfileActivity.class));
         });
 
 

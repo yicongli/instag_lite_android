@@ -83,7 +83,7 @@ public class PostFragment extends Fragment {
             loadingDialog = LoadingDialog.showWaitDialog(context.getActivity(), "Loading");
             String tags = extractTags(postEditText.getText().toString());
 
-            // TODO post data to the server
+            // post data to the server
             File file = new File(imagePath);
             System.out.println(file);
             Map<String, Object> hashBodyMap = new HashMap<>();
