@@ -58,12 +58,11 @@ public class DiscoverFragment extends Fragment {
         context = this;
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
         initView(view);
-        initData();
 
         return view;
     }
 
-    private void initData() {
+    private void initData(RefreshLayout refreshLayout) {
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/search/suggest", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
@@ -90,6 +89,7 @@ public class DiscoverFragment extends Fragment {
                         suggestionList.add(profile);
                     }
                     searchListAdapter.notifyDataSetChanged();
+                    refreshLayout.finishRefresh();
                 });
             }
         });
@@ -103,10 +103,9 @@ public class DiscoverFragment extends Fragment {
         linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(), SearchActivity.class)));
 
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
+        refreshLayout.autoRefresh();
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
-        refreshLayout.setOnRefreshListener(layout -> {
-            layout.finishRefresh(2000/*,false*/);// false means false
-        });
+        refreshLayout.setOnRefreshListener(this::initData);
 //        refreshLayout.setOnLoadMoreListener(layout -> {
 //            layout.finishLoadMore(2000/*,false*/);// false means false
 //        });
