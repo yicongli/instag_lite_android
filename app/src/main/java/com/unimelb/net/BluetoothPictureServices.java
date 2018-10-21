@@ -485,49 +485,20 @@ public class BluetoothPictureServices {
         }
 
         public void run() {
-//            Log.i(TAG, "BEGIN mConnectedThread");
-//            byte[] buffer = new byte[1024];
-//            int bytes;
-//
-//            // Keep listening to the InputStream while connected
-//            while (mState == STATE_CONNECTED) {
-//                try {
-//                    // Read from the InputStream
-//                    bytes = mmInStream.read(buffer);
-//
-//                    // Send the obtained bytes to the UI Activity
-//                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-//                            .sendToTarget();
-//                } catch (IOException e) {
-//                    Log.e(TAG, "disconnected", e);
-//                    connectionLost();
-//                    break;
-//                }
-//            }
-            //Jinge 修改bug
+            Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
             int bytes;
-            String readMessage;
-            // Keep listening to the InputStream while connected
-            while (true)
-            {
-                try
-                {
-                    int availableBytes = mmInStream.available();
-                    if (availableBytes > 0)
-                    {
-                        bytes = mmInStream.read(buffer);
-                        Message msg = new Message();
-                        Bundle data = new Bundle();
-                        readMessage = new String(buffer, 0, bytes);
-                        data.putString("BTdata", readMessage);
-                        msg.what = BluetoothConstants.MESSAGE_READ;
-                        msg.setData(data);
-                        mHandler.sendMessage(msg);
-                    }
 
-                } catch (IOException e)
-                {
+            // Keep listening to the InputStream while connected
+            while (mState == STATE_CONNECTED) {
+                try {
+                    // Read from the InputStream
+                    bytes = mmInStream.read(buffer);
+
+                    // Send the obtained bytes to the UI Activity
+                    mHandler.obtainMessage(BluetoothConstants.MESSAGE_READ, bytes, -1, buffer)
+                            .sendToTarget();
+                } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
                     break;
