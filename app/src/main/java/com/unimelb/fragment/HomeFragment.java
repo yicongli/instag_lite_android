@@ -111,43 +111,43 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // If BT is not on, request that it be enabled.
-        // setupPicture() will then be called during onActivityResult
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the picture session
-        } else if (mPictureService == null) {
-            setupPicture();
-        }
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // If BT is not on, request that it be enabled.
+//        // setupPicture() will then be called during onActivityResult
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//            // Otherwise, setup the picture session
+//        } else if (mPictureService == null) {
+//            setupPicture();
+//        }
+//    }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mPictureService != null) {
-            mPictureService.stop();
-        }
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        if (mPictureService != null) {
+//            mPictureService.stop();
+//        }
+//    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Performing this check in onResume() covers the case in which BT was
-        // not enabled during onStart(), so we were paused to enable it...
-        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (mPictureService != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mPictureService.getState() == BluetoothPictureServices.STATE_NONE) {
-                // Start the Bluetooth picture services
-                mPictureService.start();
-            }
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        // Performing this check in onResume() covers the case in which BT was
+//        // not enabled during onStart(), so we were paused to enable it...
+//        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
+//        if (mPictureService != null) {
+//            // Only if the state is STATE_NONE, do we know that we haven't started already
+//            if (mPictureService.getState() == BluetoothPictureServices.STATE_NONE) {
+//                // Start the Bluetooth picture services
+//                mPictureService.start();
+//            }
+//        }
+//    }
 
     /**
      * Initialise views
