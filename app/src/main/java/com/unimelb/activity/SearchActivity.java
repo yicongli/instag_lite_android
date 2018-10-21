@@ -80,7 +80,6 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                searchResultList.clear();
                 timer.cancel();
                 timer = new Timer();
                 timer.schedule(
@@ -106,6 +105,7 @@ public class SearchActivity extends AppCompatActivity {
                                                 userList.add(user);
                                             }
 
+                                            searchResultList.clear();
                                             context.runOnUiThread(() -> {
                                                 for (User user : userList) {
                                                     BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
