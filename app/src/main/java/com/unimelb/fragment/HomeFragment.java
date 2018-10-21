@@ -365,9 +365,12 @@ public class HomeFragment extends Fragment {
                         break;
                     case BluetoothConstants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,0,readBuf.length);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf, 0, readBuf.length);
 
-                        // TODO add it to the userfeed
+                        // add it to the userfeed
+                        Post post = new Post(bitmap);
+                        postList.add(post);
+                        postListAdapter.notifyDataSetChanged();
                         Toast.makeText(getActivity(), "Receive completed", Toast.LENGTH_SHORT).show();
                         break;
                     case BluetoothConstants.MESSAGE_DEVICE_NAME:

@@ -1,8 +1,13 @@
 package com.unimelb.entity;
 
+import android.graphics.Bitmap;
+import android.text.format.DateUtils;
+
 import com.unimelb.constants.CommonConstants;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Post Class for each posted picture
@@ -65,6 +70,16 @@ public class Post {
     private double lng;
 
     /**
+     * identify the display mode
+     */
+    private boolean inRangeMode;
+
+    /**
+     * image for in range mode;
+     */
+    private Bitmap inRangeBitmpImage;
+
+    /**
      * Constructor
      *
      * @param postId
@@ -80,6 +95,7 @@ public class Post {
      * @param lng
      */
     public Post(String postId, String avatarUrl, String username, String imageUrl, String location, String dateString, Date date, int likesCount, int commentsCount, double lat, double lng) {
+        this.inRangeMode = false;
         this.postId = postId;
         this.avatarUrl = avatarUrl;
         this.username = username;
@@ -91,6 +107,14 @@ public class Post {
         this.commentsCount = commentsCount;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public Post(Bitmap inRangeBitmpImage){
+        this.inRangeMode = true;
+        this.avatarUrl = "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg";
+        this.inRangeBitmpImage = inRangeBitmpImage;
+        this.location =  "Lat: " + CommonConstants.latitude + ", Lng: " + CommonConstants.longitude;
+        this.dateString = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date()) + " (" + DateUtils.getRelativeTimeSpanString(new Date().getTime()).toString() + ")";
     }
 
     public String getPostId() {
@@ -171,5 +195,13 @@ public class Post {
      */
     public double getDistance() {
         return Math.sqrt((lat - CommonConstants.latitude) * (lat - CommonConstants.latitude) + (lng - CommonConstants.longitude) * (lng - CommonConstants.longitude));
+    }
+
+    public boolean isInRangeMode() {
+        return inRangeMode;
+    }
+
+    public Bitmap getInRangeBitmpImage() {
+        return inRangeBitmpImage;
     }
 }

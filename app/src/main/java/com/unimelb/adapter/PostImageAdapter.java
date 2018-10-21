@@ -28,10 +28,11 @@ import com.unimelb.utils.ImageUtils;
 import org.json.simple.JSONObject;
 
 import java.util.List;
+
 /*
-* an adapter to show the list of post pictures from users
-*
-* */
+ * an adapter to show the list of post pictures from users
+ *
+ * */
 public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.ViewHolder> {
     /* context */
     private Activity context;
@@ -54,73 +55,84 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
-        holder.usernameTextView.setText(postList.get(position).getUsername());
         holder.locationTextView.setText(postList.get(position).getLocation());
-
-        ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
         holder.dateView.setText(postList.get(position).getDateString());
 
-        ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg", holder.ownerImageView);
+        //if it's in range mode, hide unnecessary view
+        if (postList.get(position).isInRangeMode()) {
+            holder.usernameTextView.setText("(In Range) mode");
+            holder.postImageView.setImageBitmap(postList.get(position).getInRangeBitmpImage());
+            holder.likeCountLabel.setVisibility(View.GONE);
+            holder.commentBtn.setVisibility(View.GONE);
+            holder.likeBtn.setVisibility(View.GONE);
+            holder.postBtn.setVisibility(View.GONE);
+            holder.likeCountLabel.setVisibility(View.GONE);
+            holder.commentBtn.setVisibility(View.GONE);
+        } else {
+            holder.usernameTextView.setText(postList.get(position).getUsername());
+            ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
+            ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg", holder.ownerImageView);
 
-        holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
-        holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");
+            holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
+            holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");
 
-        holder.likeBtn.setOnClickListener((view) -> {
-            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/likes", null, new IResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, String errJson) {
-                    new ErrorHandler(context).handle(statusCode, errJson);
-                }
+            holder.likeBtn.setOnClickListener((view) -> {
+                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/likes", null, new IResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, String errJson) {
+                        new ErrorHandler(context).handle(statusCode, errJson);
+                    }
 
-                @Override
-                public void onSuccess(String json) {
-                    context.runOnUiThread(() -> {
-                        Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
-                        holder.likeCountLabel.setText(postList.get(position).getLikesCount() + 1 + " likes");
-                        holder.likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    });
-                }
+                    @Override
+                    public void onSuccess(String json) {
+                        context.runOnUiThread(() -> {
+                            Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
+                            holder.likeCountLabel.setText(postList.get(position).getLikesCount() + 1 + " likes");
+                            holder.likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
+                        });
+                    }
+                });
             });
-        });
 
-        holder.postBtn.setOnClickListener((view) -> {
-            /* close keyboard */
-            holder.commentEditText.clearFocus();
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            holder.postBtn.setOnClickListener((view) -> {
+                /* close keyboard */
+                holder.commentEditText.clearFocus();
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-            /* get edit text value and send data */
-            final String comment = holder.commentEditText.getText().toString();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("content", comment);
-            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/comments", jsonObject.toJSONString(), new IResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, String errJson) {
-                    new ErrorHandler(context).handle(statusCode, errJson);
-                }
+                /* get edit text value and send data */
+                final String comment = holder.commentEditText.getText().toString();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("content", comment);
+                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/comments", jsonObject.toJSONString(), new IResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, String errJson) {
+                        new ErrorHandler(context).handle(statusCode, errJson);
+                    }
 
-                @Override
-                public void onSuccess(String json) {
-                    context.runOnUiThread(() -> {
-                        Toast.makeText(context, "Leave comments successful", Toast.LENGTH_LONG).show();
-                        holder.commentBtn.setText("View all " + (postList.get(position).getCommentsCount() + 1) + " comments");
-                        holder.commentEditText.setText("");
-                    });
-                }
+                    @Override
+                    public void onSuccess(String json) {
+                        context.runOnUiThread(() -> {
+                            Toast.makeText(context, "Leave comments successful", Toast.LENGTH_LONG).show();
+                            holder.commentBtn.setText("View all " + (postList.get(position).getCommentsCount() + 1) + " comments");
+                            holder.commentEditText.setText("");
+                        });
+                    }
+                });
             });
-        });
 
-        holder.likeCountLabel.setOnClickListener((view) -> {
-            Intent intent = new Intent(context, LikesActivity.class);
-            intent.putExtra("postId", postList.get(position).getPostId());
-            context.startActivity(intent);
-        });
+            holder.likeCountLabel.setOnClickListener((view) -> {
+                Intent intent = new Intent(context, LikesActivity.class);
+                intent.putExtra("postId", postList.get(position).getPostId());
+                context.startActivity(intent);
+            });
 
-        holder.commentBtn.setOnClickListener((view) -> {
-            Intent intent = new Intent(context, CommentsActivity.class);
-            intent.putExtra("postId", postList.get(position).getPostId());
-            context.startActivity(intent);
-        });
+            holder.commentBtn.setOnClickListener((view) -> {
+                Intent intent = new Intent(context, CommentsActivity.class);
+                intent.putExtra("postId", postList.get(position).getPostId());
+                context.startActivity(intent);
+            });
+        }
     }
 
     @Override
