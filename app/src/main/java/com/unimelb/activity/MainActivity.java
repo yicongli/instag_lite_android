@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Check permission
             ActivityCompat.requestPermissions(this,
-            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}
+            , REQUEST_LOCATION);
         } else {
             initGPS();
         }
