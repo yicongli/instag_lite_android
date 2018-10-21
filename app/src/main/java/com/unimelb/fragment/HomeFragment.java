@@ -365,6 +365,7 @@ public class HomeFragment extends Fragment {
                         break;
                     case BluetoothConstants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
+                        Log.d(TAG, "Receive new picture");
                         Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,0,readBuf.length);
 
                         // TODO add it to the userfeed
