@@ -191,6 +191,7 @@ public class HomeFragment extends Fragment {
      * Initialize post data
      */
     private void initData(RefreshLayout layout) {
+        postList.clear();
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {

@@ -80,6 +80,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                searchResultList.clear();
                 timer.cancel();
                 timer = new Timer();
                 timer.schedule(
