@@ -46,6 +46,9 @@ public class DiscoverFragment extends Fragment {
     /* list view */
     private RecyclerView listView;
 
+    /* search adapter */
+    private SearchListAdapter searchListAdapter;
+
     public DiscoverFragment() {
     }
 
@@ -70,6 +73,7 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onSuccess(String json) {
                 System.out.println(json);
+
                 ResponseModel rm = new ResponseModel(json);
                 JSONObject data = rm.getData();
                 JSONArray users = (JSONArray) data.get("suggest_users");
@@ -79,12 +83,13 @@ public class DiscoverFragment extends Fragment {
                     userList.add(user);
                 }
 
+                suggestionList.clear();
                 context.getActivity().runOnUiThread(() -> {
                     for (User user : userList) {
                         BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
                         suggestionList.add(profile);
                     }
-                    listView.setAdapter(new SearchListAdapter(context.getActivity(), suggestionList));
+                    searchListAdapter.notifyDataSetChanged();
                 });
             }
         });
@@ -108,6 +113,8 @@ public class DiscoverFragment extends Fragment {
 
         listView = view.findViewById(R.id.search_suggestion_list);
         listView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        searchListAdapter = new SearchListAdapter(context.getActivity(), suggestionList);
+        listView.setAdapter(searchListAdapter);
     }
 
 

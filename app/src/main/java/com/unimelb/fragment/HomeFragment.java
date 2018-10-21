@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         homeFragment = this;
         initView(view);
-        initData();
+//        initData();
         return view;
     }
 
@@ -71,16 +71,20 @@ public class HomeFragment extends Fragment {
      */
     public void initView(View view) {
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
+        refreshLayout.autoRefresh();
         refreshLayout.setRefreshHeader(new WaterDropHeader(this.getContext()));
         refreshLayout.setOnRefreshListener(layout -> {
-            layout.finishRefresh(2000);// false means false
+            initData(layout);// false means false
         });
 //        refreshLayout.setOnLoadMoreListener(layout -> {
 //            layout.finishLoadMore(2000/*,false*/);// false means false
 //        });
 
-        postListView = view.findViewById(R.id.post_list);
         emptyTipTv = view.findViewById(R.id.post_empty_label);
+        postListView = view.findViewById(R.id.post_list);
+        postListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        postListAdapter = new PostImageAdapter(this.getActivity(), postList);
+        postListView.setAdapter(postListAdapter);
 
         // Sort button onClick listener
         view.findViewById(R.id.home_sort_btn).setOnClickListener((btnView) -> {
@@ -106,7 +110,8 @@ public class HomeFragment extends Fragment {
     /**
      * Initialize post data
      */
-    private void initData() {
+    private void initData(RefreshLayout layout) {
+        postList.clear();
         HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
@@ -132,9 +137,8 @@ public class HomeFragment extends Fragment {
                         Post post = new Post(medium.getMediumId(), medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), medium.getLocation(), medium.getPostDateString(), medium.getPostDate(), medium.getLikes().size(), medium.getComments().size(), medium.getLat(), medium.getLng());
                         postList.add(post);
                     }
-                    postListView.setLayoutManager(new LinearLayoutManager(context));
-                    postListAdapter = new PostImageAdapter(context, postList);
-                    postListView.setAdapter(postListAdapter);
+                    postListAdapter.notifyDataSetChanged();
+                    layout.finishRefresh();
 
                     if(postList.size() == 0){
                         emptyTipTv.setVisibility(View.VISIBLE);
