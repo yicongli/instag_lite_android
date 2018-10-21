@@ -29,6 +29,8 @@ import android.util.Log;
 
 import com.unimelb.constants.BluetoothConstants;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -486,23 +488,26 @@ public class BluetoothPictureServices {
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
-            int bytes;
+
+            DataInputStream in = new DataInputStream(new BufferedInputStream(mmInStream));
 
             // Keep listening to the InputStream while connected
-            while (mState == STATE_CONNECTED) {
-                try {
-                    // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
+            while (true) {
 
-                    // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(BluetoothConstants.MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
+                int count;
+                byte[] buffer = new byte[8192]; // or 4096, or more
+
+                try {
+                    while ((count = in.read(buffer)) > 0) {
+                        //TODO connect data
+                    }
                 } catch (IOException e) {
-                    Log.e(TAG, "disconnected", e);
-                    connectionLost();
-                    break;
+                    Log.e(TAG, "Exception during read", e);
                 }
+
+
+                //TODO send data
+
             }
         }
 
