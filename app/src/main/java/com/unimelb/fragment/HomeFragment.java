@@ -1,23 +1,18 @@
 package com.unimelb.fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,12 +21,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.scwang.smartrefresh.header.WaterDropHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.unimelb.activity.DeviceListActivity;
@@ -282,7 +274,6 @@ public class HomeFragment extends Fragment {
                     Log.d(TAG, "BT not enabled");
                     Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving,
                             Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
                 }
 
             case CODE_SELECT_IMAGE:
@@ -372,17 +363,11 @@ public class HomeFragment extends Fragment {
                         String writeMessage = new String(writeBuf);
                         break;
                     case BluetoothConstants.MESSAGE_READ:
-//                    byte[] readBuf = (byte[]) msg.obj;
-//                    // construct a string from the valid bytes in the buffer
-//                    String readMessage = new String(readBuf, 0, msg.arg1);
-                        //Jinge 修改bug
-                        Bundle data = msg.getData();
-                        String readMessage = data.getString("BTdata");
-                        //Jinge 组合传入的字符串
-                        //receivedImageString += readMessage;
-                        Toast.makeText(getActivity(), "接受中/接收完成，点击“BYTE转图片”", Toast.LENGTH_SHORT).show();
-//                    Log.i("Jinge","readMessage="+readMessage);
-//                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                        byte[] readBuf = (byte[]) msg.obj;
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,0,readBuf.length);
+
+                        // TODO add it to the userfeed
+                        Toast.makeText(getActivity(), "Receive completed", Toast.LENGTH_SHORT).show();
                         break;
                     case BluetoothConstants.MESSAGE_DEVICE_NAME:
                         // save the connected device's name
