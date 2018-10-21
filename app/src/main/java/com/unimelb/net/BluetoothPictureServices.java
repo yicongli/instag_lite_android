@@ -266,7 +266,11 @@ public class BluetoothPictureServices {
         r.write(out);
     }
 
-    //send image
+    /**
+     * send picture through bluetooth
+     * @param data picture data
+     * @param str  action identity
+     */
     public void send(byte[] data, String str) {
 
         int headInfoLength = 14;
@@ -321,6 +325,13 @@ public class BluetoothPictureServices {
         write(sendMsg);
     }
 
+
+    /**
+     * chang int into byte array
+     * @param i int figure
+     * @return byte array
+     * @throws Exception error exception
+     */
     public static byte[] intToByteArray(int i) throws Exception {
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         DataOutputStream dos= new DataOutputStream(buf);
@@ -628,6 +639,12 @@ public class BluetoothPictureServices {
             }
         }
 
+        /**
+         * change byte array into int
+         * @param b byte array
+         * @return int figure
+         * @throws Exception erro exception
+         */
         public int ByteArrayToInt(byte b[]) throws Exception {
             ByteArrayInputStream buf = new ByteArrayInputStream(b);
 
