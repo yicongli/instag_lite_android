@@ -30,11 +30,17 @@ import android.util.Log;
 import com.unimelb.constants.BluetoothConstants;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.UUID;
+
+import static com.unimelb.constants.BluetoothConstants.MESSAGE_READ;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -258,6 +264,71 @@ public class BluetoothPictureServices {
         }
         // Perform the write unsynchronized
         r.write(out);
+    }
+
+    //Jinge
+    public void send(byte[] data, String str) {
+
+        int headInfoLength = 14;
+        int length = data.length;
+        byte[] length_b = null;
+        try {
+            length_b = intToByteArray(length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (length_b == null) return;
+
+        //获得一个字节长度为14的byte数组 headInfoLength为14
+        byte[] headerInfo = new byte[headInfoLength];
+
+        //前六位添加012345的标志位
+        for (int i = 0; i < headInfoLength - 8; i++) {
+            headerInfo[i] = (byte) i;
+        }
+
+        //7到10位添加图片大小的字节长度
+        for (int i = 0; i < 4; i++) {
+            headerInfo[6 + i] = length_b[i];
+        }
+
+        //11到14位添加动作信息
+        if (str.equals("text")) {
+            for (int i = 0; i < 4; i++) {
+                headerInfo[10 + i] = (byte) 0;
+            }
+        } else if (str.equals("photo")) {
+            for (int i = 0; i < 4; i++) {
+                headerInfo[10 + i] = (byte) 1;
+            }
+        } else if (str.equals("video")) {
+            for (int i = 0; i < 4; i++) {
+                headerInfo[10 + i] = (byte) 2;
+            }
+        }
+
+        //将对应信息添加到图片前面
+        byte[] sendMsg = new byte[length + headInfoLength];
+        for (int i = 0; i < sendMsg.length; i++) {
+            if (i < headInfoLength) {
+                sendMsg[i] = headerInfo[i];
+            } else {
+                sendMsg[i] = data[i - headInfoLength];
+            }
+
+        }
+
+        write(sendMsg);
+    }
+
+    public static byte[] intToByteArray(int i) throws Exception {
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        DataOutputStream dos= new DataOutputStream(buf);
+        dos.writeInt(i);
+        byte[] b = buf.toByteArray();
+        dos.close();
+        buf.close();
+        return b;
     }
 
     /**
@@ -486,30 +557,87 @@ public class BluetoothPictureServices {
             mState = STATE_CONNECTED;
         }
 
+
         public void run() {
-            Log.i(TAG, "BEGIN mConnectedThread");
-
-            DataInputStream in = new DataInputStream(new BufferedInputStream(mmInStream));
-
-            // Keep listening to the InputStream while connected
+            byte[] buffer;
+            ArrayList<Integer> arr_byte = new ArrayList<Integer>();
             while (true) {
-
-                int count;
-                byte[] buffer = new byte[8192]; // or 4096, or more
-
                 try {
-                    while ((count = in.read(buffer)) > 0) {
-                        //TODO connect data
+                    boolean valid = true;
+                    //判断前六位是不是012345
+                    for (int i = 0; i < 6; i++) {
+                        int t = mmInStream.read();
+                        if (t != i) {
+                            valid = false;
+                            //前六位判断完了跳出循环
+                            break;
+                        }
                     }
+                    if (valid) {
+                        //获取图片大小
+                        byte[] bufLength = new byte[4];
+                        for (int i = 0; i < 4; i++) {
+                            bufLength[i] = ((Integer) mmInStream.read()).byteValue();
+                        }
+
+                        int TextCount = 0;
+                        int PhotoCount = 0;
+                        int VideoCount = 0;
+                        //获取动作信息
+                        for (int i = 0; i < 4; i++) {
+                            int read = mmInStream.read();
+                            if (read == 0) {
+                                TextCount++;
+                            } else if (read == 1) {
+                                PhotoCount++;
+                            } else if (read == 2) {
+                                VideoCount++;
+                            }
+                        }
+
+                        //获取图片的字节
+                        int length = ByteArrayToInt(bufLength);
+                        buffer = new byte[length];
+                        for (int i = 0; i < length; i++) {
+                            buffer[i] = ((Integer) mmInStream.read()).byteValue();
+                        }
+
+                        //通过handler发出去
+                        Message msg = Message.obtain();
+                        msg.what = BluetoothConstants.MESSAGE_READ;
+                        msg.obj = buffer;
+
+                        if (TextCount == 4) {
+                            msg.arg1 = 0;
+                            mHandler.sendMessage(msg);
+                        } else if (PhotoCount == 4) {
+                            msg.arg1 = 1;
+                            mHandler.sendMessage(msg);
+                        } else if (VideoCount == 4) {
+                            msg.arg1 = 2;
+                            mHandler.sendMessage(msg);
+                        }
+
+                    }
+
                 } catch (IOException e) {
-                    Log.e(TAG, "Exception during read", e);
+                    connectionLost();
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-
-                //TODO send data
-
             }
         }
+
+        public int ByteArrayToInt(byte b[]) throws Exception {
+            ByteArrayInputStream buf = new ByteArrayInputStream(b);
+
+            DataInputStream dis= new DataInputStream(buf);
+            return dis.readInt();
+
+        }
+
+
 
         /**
          * Write to the connected OutStream.

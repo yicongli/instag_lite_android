@@ -410,7 +410,7 @@ public class HomeFragment extends Fragment {
             picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
             // Get the picture bytes and tell the BluetoothPictureServices to write
             byte[] send = stream.toByteArray();
-            mPictureService.write(send);
+            mPictureService.send(send,"photo");
 
             Toast.makeText(getActivity(), "Successfully send.", Toast.LENGTH_LONG).show();
         } else {
