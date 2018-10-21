@@ -136,11 +136,13 @@ public class CameraFragment extends Fragment {
                 String fileName = "IMG_" + formatter.format(now) + ".png";
                 final File file = new File(FilePaths.CAMERA_PATH, fileName);
 
-                // get the result and rotate 90 degrees before save to local (the original one is not in correct direction)
+                // get the result and rotate 90 degrees before save to local
+                // (the original one is not in correct direction)
                 Bitmap result = BitmapFactory.decodeByteArray(picture, 0, picture.length);
                 Matrix matrix = new Matrix();
                 matrix.postRotate(90);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(result, 0, 0, result.getWidth(), result.getHeight(), matrix, true);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(result, 0, 0, result.getWidth(),
+                        result.getHeight(), matrix, true);
 
                 // save to local
                 saveBitmapToPng(rotatedBitmap,file);
@@ -305,7 +307,8 @@ public class CameraFragment extends Fragment {
             // get context (parent activity)
             mListener = (ShareFragmentsListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() +
+                    " must implement OnFragmentInteractionListener");
         }
     }
 

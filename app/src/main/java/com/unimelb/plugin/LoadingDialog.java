@@ -32,7 +32,8 @@ public class LoadingDialog {
         ImageView spaceshipImage = v.findViewById(R.id.img);
         TextView tipTextView = v.findViewById(R.id.tipTextView);
         //display animation
-        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context, R.anim.rotate_animation);
+        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(context,
+                R.anim.rotate_animation);
 
         spaceshipImage.startAnimation(hyperspaceJumpAnimation);
         tipTextView.setText(msg);

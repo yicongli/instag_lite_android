@@ -60,7 +60,8 @@ public class CommentsActivity extends AppCompatActivity {
         System.out.println(postId);
         List<CommentMo> commentMoList = new ArrayList<>();
 
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/" + postId + "/comments", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP +
+                "/api/v1/media/" + postId + "/comments", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 new ErrorHandler(context).handle(statusCode, errJson);
@@ -79,7 +80,9 @@ public class CommentsActivity extends AppCompatActivity {
                 context.runOnUiThread(() -> {
                     List<Comment> commentList = new ArrayList<>();
                     for(CommentMo commentMo : commentMoList){
-                        Comment comment = new Comment(commentMo.getContent(), commentMo.getUser().getUsername(), commentMo.getUser().getAvatarUrl(), commentMo.getCreatedAt());
+                        Comment comment = new Comment(commentMo.getContent(),
+                                commentMo.getUser().getUsername(),
+                                commentMo.getUser().getAvatarUrl(), commentMo.getCreatedAt());
                         commentList.add(comment);
                     }
                     listView.setAdapter(new CommentListAdapter(context, commentList));

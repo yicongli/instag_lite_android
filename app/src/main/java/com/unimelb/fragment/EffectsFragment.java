@@ -187,7 +187,8 @@ public class EffectsFragment extends Fragment {
                 Filter myFilter = new Filter();
                 myFilter.addSubFilter(new BrightnessSubfilter(seekBar.getProgress() - progress));
                 Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
-                Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+                Bitmap ouputShowingImage =
+                        myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
                 bindDataToAdapter(ouputOriginalImage);
                 setImage(ouputShowingImage);
@@ -219,9 +220,11 @@ public class EffectsFragment extends Fragment {
                 Log.d(TAG, "Stopped Constrast tracking seekbar");
 
                 Filter myFilter = new Filter();
-                myFilter.addSubFilter(new ContrastSubfilter((float)((seekBar.getProgress() - progress) / 10.0)));
+                myFilter.addSubFilter(
+                        new ContrastSubfilter((float)((seekBar.getProgress() - progress) / 10.0)));
                 Bitmap ouputOriginalImage = myFilter.processFilter(originalImage);
-                Bitmap ouputShowingImage = myFilter.processFilter(((BitmapDrawable)mImageView.getDrawable()).getBitmap());
+                Bitmap ouputShowingImage = myFilter.processFilter(
+                        ((BitmapDrawable)mImageView.getDrawable()).getBitmap());
 
                 bindDataToAdapter(ouputOriginalImage);
                 setImage(ouputShowingImage);
@@ -245,11 +248,16 @@ public class EffectsFragment extends Fragment {
         Handler handler = new Handler();
         Runnable r = () -> {
             ThumbnailItem t1 = new ThumbnailItem("Original",bmp,null);
-            ThumbnailItem t2 = new ThumbnailItem("Star Lit", bmp,SampleFilters.getStarLitFilter());
-            ThumbnailItem t3 = new ThumbnailItem("Blue Mess", bmp,SampleFilters.getBlueMessFilter());
-            ThumbnailItem t4 = new ThumbnailItem("Awe Struck Vibe", bmp,SampleFilters.getAweStruckVibeFilter());
-            ThumbnailItem t5 = new ThumbnailItem("Lime Stutter", bmp, SampleFilters.getLimeStutterFilter());
-            ThumbnailItem t6 = new ThumbnailItem("Night Wisper", bmp,SampleFilters.getNightWhisperFilter());
+            ThumbnailItem t2 = new ThumbnailItem(
+                    "Star Lit", bmp,SampleFilters.getStarLitFilter());
+            ThumbnailItem t3 = new ThumbnailItem(
+                    "Blue Mess", bmp,SampleFilters.getBlueMessFilter());
+            ThumbnailItem t4 = new ThumbnailItem(
+                    "Awe Struck Vibe", bmp,SampleFilters.getAweStruckVibeFilter());
+            ThumbnailItem t5 = new ThumbnailItem(
+                    "Lime Stutter", bmp, SampleFilters.getLimeStutterFilter());
+            ThumbnailItem t6 = new ThumbnailItem(
+                    "Night Wisper", bmp,SampleFilters.getNightWhisperFilter());
 
             images.clear();
             images.add(t1); // Original Image
@@ -332,12 +340,14 @@ public class EffectsFragment extends Fragment {
 
             try {
                 ExifInterface exif = new ExifInterface(path);
-                int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int rotation = exif.getAttributeInt(
+                        ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 int rotationInDegrees = exifToDegrees(rotation);
                 Matrix matrix = new Matrix();
                 if (rotation != 0f) {
                     matrix.preRotate(rotationInDegrees);
-                    originaBitmap = Bitmap.createBitmap(originaBitmap,0,0,opts.outWidth,opts.outHeight,matrix,true);
+                    originaBitmap = Bitmap.createBitmap(
+                            originaBitmap,0,0,opts.outWidth,opts.outHeight,matrix,true);
                 }
 
             } catch (IOException e) {
@@ -403,7 +413,8 @@ public class EffectsFragment extends Fragment {
         if (context instanceof ShareFragmentsListener) {
             mListener = (ShareFragmentsListener) context; // get context
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() +
+                    " must implement OnFragmentInteractionListener");
         }
     }
 

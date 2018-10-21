@@ -87,7 +87,10 @@ public class SearchActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (editable.toString().length() > 0) {
-                                    HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/search/users/" + editable.toString(), null, new IResponseHandler() {
+                                    HttpRequest.getInstance().doGetRequestAsync(
+                                            CommonConstants.IP + "/api/v1/search/users/" +
+                                                    editable.toString(), null,
+                                            new IResponseHandler() {
                                         @Override
                                         public void onFailure(int statusCode, String errJson) {
                                             new ErrorHandler(context).handle(statusCode, errJson);
@@ -108,7 +111,9 @@ public class SearchActivity extends AppCompatActivity {
                                             searchResultList.clear();
                                             context.runOnUiThread(() -> {
                                                 for (User user : userList) {
-                                                    BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
+                                                    BasicUserProfile profile = new BasicUserProfile(
+                                                            user.getId(), user.getAvatarUrl(),
+                                                            user.getUsername(), user.getBio());
                                                     searchResultList.add(profile);
                                                 }
                                                 searchListAdapter.notifyDataSetChanged();

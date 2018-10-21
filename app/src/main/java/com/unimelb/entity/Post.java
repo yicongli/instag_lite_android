@@ -94,7 +94,9 @@ public class Post {
      * @param lat
      * @param lng
      */
-    public Post(String postId, String avatarUrl, String username, String imageUrl, String location, String dateString, Date date, int likesCount, int commentsCount, double lat, double lng) {
+    public Post(String postId, String avatarUrl, String username, String imageUrl,
+                String location, String dateString, Date date,
+                int likesCount, int commentsCount, double lat, double lng) {
         this.inRangeMode = false;
         this.postId = postId;
         this.avatarUrl = avatarUrl;
@@ -113,8 +115,11 @@ public class Post {
         this.inRangeMode = true;
         this.avatarUrl = "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg";
         this.inRangeBitmpImage = inRangeBitmpImage;
-        this.location =  "Lat: " + CommonConstants.latitude + ", Lng: " + CommonConstants.longitude;
-        this.dateString = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date()) + " (" + DateUtils.getRelativeTimeSpanString(new Date().getTime()).toString() + ")";
+        this.location =  "Lat: " + CommonConstants.latitude +
+                ", Lng: " + CommonConstants.longitude;
+        this.dateString = new SimpleDateFormat(
+                "dd/MM/yyyy, HH:mm", Locale.getDefault()).format(new Date()) +
+                " (" + DateUtils.getRelativeTimeSpanString(new Date().getTime()).toString() + ")";
     }
 
     public String getPostId() {
@@ -194,7 +199,8 @@ public class Post {
      * @return
      */
     public double getDistance() {
-        return Math.sqrt((lat - CommonConstants.latitude) * (lat - CommonConstants.latitude) + (lng - CommonConstants.longitude) * (lng - CommonConstants.longitude));
+        return Math.sqrt((lat - CommonConstants.latitude) * (lat - CommonConstants.latitude)
+                + (lng - CommonConstants.longitude) * (lng - CommonConstants.longitude));
     }
 
     public boolean isInRangeMode() {

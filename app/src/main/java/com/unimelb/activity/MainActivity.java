@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Check permission
             ActivityCompat.requestPermissions(this,
             new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager);
         navigationView = findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(navigationView);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -85,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
 
             }
 

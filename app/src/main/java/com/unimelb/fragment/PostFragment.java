@@ -60,7 +60,8 @@ public class PostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         context = this;
         // initiate the properties of the class
         View view = inflater.inflate(R.layout.fragment_post, container, false);
@@ -89,9 +90,12 @@ public class PostFragment extends Fragment {
             Map<String, Object> hashBodyMap = new HashMap<>();
             hashBodyMap.put("image", file);
             hashBodyMap.put("tags", tags);
-            hashBodyMap.put("location", CommonConstants.latitude + ", " + CommonConstants.longitude);
+            hashBodyMap.put("location", CommonConstants.latitude +
+                    ", " + CommonConstants.longitude);
 
-            HttpRequest.getInstance().doFilePostRequestAsync(CommonConstants.IP + "/api/v1/media/self", hashBodyMap, new IResponseHandler() {
+            HttpRequest.getInstance().doFilePostRequestAsync(
+                    CommonConstants.IP +
+                            "/api/v1/media/self", hashBodyMap, new IResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, String errJson) {
                     new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
@@ -103,7 +107,8 @@ public class PostFragment extends Fragment {
                     System.out.println(json);
                     context.getActivity().runOnUiThread(() -> {
                         LoadingDialog.closeDialog(loadingDialog);
-                        Toast.makeText(context.getActivity(), "Share successful", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context.getActivity(),
+                                "Share successful", Toast.LENGTH_LONG).show();
                         context.getActivity().finish();
                     });
                 }
@@ -164,7 +169,8 @@ public class PostFragment extends Fragment {
         if (context instanceof ShareFragmentsListener) {
             mListener = (ShareFragmentsListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() +
+                    " must implement OnFragmentInteractionListener");
         }
     }
 

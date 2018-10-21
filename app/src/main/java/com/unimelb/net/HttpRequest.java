@@ -24,7 +24,8 @@ import okhttp3.Response;
  * Encapsulate the OkHttp library
  * <p>
  * usage example:
- * HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test", null, new IResponseHandler(){
+ * HttpRequest.getInstance().doGetRequestAsync("http://192.168.1.12:8080/api/v1/test",
+ * null, new IResponseHandler(){
  *
  * @Override public void onFailure(int statusCode, String errMsg) {
  * Log.d("TAG", statusCode + "");
@@ -79,7 +80,8 @@ public class HttpRequest {
      * @param paramsMap
      * @param responseHandler
      */
-    public void doGetRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler) {
+    public void doGetRequestAsync(String url, Map<String, String> paramsMap,
+                                  final IResponseHandler responseHandler) {
         String requestUrl = handleGetParams(url, paramsMap);
         Request request = new Request.Builder().url(requestUrl).build();
 
@@ -93,9 +95,11 @@ public class HttpRequest {
      * @param jsonBody
      * @param responseHandler
      */
-    public void doPostRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler) {
+    public void doPostRequestAsync(String url, String jsonBody,
+                                   final IResponseHandler responseHandler) {
         RequestBody body = RequestBody.create(JSON, jsonBody == null ? "" : jsonBody);
-        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(body).build();
+        Request request = new Request.Builder().url(url + "?access_token=" +
+                CommonConstants.token).post(body).build();
         newCall(request, responseHandler);
     }
 
@@ -107,7 +111,8 @@ public class HttpRequest {
      * @param paramsMap
      * @param responseHandler
      */
-    public void doFilePostRequestAsync(String url, Map<String, Object> paramsMap, final IResponseHandler responseHandler) {
+    public void doFilePostRequestAsync(String url, Map<String, Object> paramsMap,
+                                       final IResponseHandler responseHandler) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
 
@@ -117,11 +122,13 @@ public class HttpRequest {
                 builder.addFormDataPart(key, object.toString());
             } else {
                 File file = (File) object;
-                builder.addFormDataPart(key, file.getName(), RequestBody.create(MediaType.parse("image/png"), file));
+                builder.addFormDataPart(key, file.getName(),
+                        RequestBody.create(MediaType.parse("image/png"), file));
             }
         }
         RequestBody body = builder.build();
-        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).post(body).build();
+        Request request = new Request.Builder().url(url + "?access_token=" +
+                CommonConstants.token).post(body).build();
         newCall(request, responseHandler);
     }
 
@@ -132,9 +139,11 @@ public class HttpRequest {
      * @param jsonBody
      * @param responseHandler
      */
-    public void doPutRequestAsync(String url, String jsonBody, final IResponseHandler responseHandler) {
+    public void doPutRequestAsync(String url, String jsonBody,
+                                  final IResponseHandler responseHandler) {
         RequestBody body = RequestBody.create(JSON, jsonBody);
-        Request request = new Request.Builder().url(url + "?access_token=" + CommonConstants.token).put(body).build();
+        Request request = new Request.Builder().url(url + "?access_token=" +
+                CommonConstants.token).put(body).build();
         newCall(request, responseHandler);
     }
 
@@ -145,7 +154,8 @@ public class HttpRequest {
      * @param paramsMap
      * @param responseHandler
      */
-    public void doDeleteRequestAsync(String url, Map<String, String> paramsMap, final IResponseHandler responseHandler) {
+    public void doDeleteRequestAsync(String url, Map<String, String> paramsMap,
+                                     final IResponseHandler responseHandler) {
         String requestUrl = handleGetParams(url, paramsMap);
         Request request = new Request.Builder().url(requestUrl).delete().build();
 
@@ -194,7 +204,8 @@ public class HttpRequest {
                 tempParams.append("&");
                 //handle URLEncoder for the params
                 try {
-                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+                    tempParams.append(String.format("%s=%s", key,
+                            URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

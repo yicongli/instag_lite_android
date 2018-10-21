@@ -36,7 +36,8 @@ public class ActivityFragment extends Fragment {
     private RecyclerView listView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
         context = this;
         initView(view);
@@ -50,7 +51,8 @@ public class ActivityFragment extends Fragment {
     }
 
     private void initData() {
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/event/self", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP +
+                "/api/v1/event/self", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
@@ -72,10 +74,13 @@ public class ActivityFragment extends Fragment {
                 context.getActivity().runOnUiThread(() -> {
                     List<BasicUserProfile> likeList = new ArrayList<>();
                     for (EventMo eventMo : eventMoList) {
-                        FollowingActivityItem activity = new FollowingActivityItem(eventMo.getSourceAvatar(), eventMo.getEvent(), eventMo.getTargetPhoto());
+                        FollowingActivityItem activity =
+                                new FollowingActivityItem(eventMo.getSourceAvatar(),
+                                        eventMo.getEvent(), eventMo.getTargetPhoto());
                         activities.add(activity);
                     }
-                    listView.setAdapter(new FollowingActivityListAdapter(context.getActivity(), activities));
+                    listView.setAdapter(new FollowingActivityListAdapter(context.getActivity(),
+                            activities));
                 });
             }
         });

@@ -56,7 +56,8 @@ public class LikesActivity extends AppCompatActivity {
 //        System.out.println(postId);
         List<User> userList = new ArrayList<>();
 
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/" + postId + "/likes", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/" +
+                postId + "/likes", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 new ErrorHandler(context).handle(statusCode, errJson);
@@ -75,7 +76,8 @@ public class LikesActivity extends AppCompatActivity {
                 context.runOnUiThread(() -> {
                     List<BasicUserProfile> likeList = new ArrayList<>();
                     for (User user : userList) {
-                        BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
+                        BasicUserProfile profile = new BasicUserProfile(user.getId(),
+                                user.getAvatarUrl(), user.getUsername(), user.getBio());
                         likeList.add(profile);
                     }
                     listView.setAdapter(new SearchListAdapter(context, likeList));

@@ -62,7 +62,8 @@ public class LibraryFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // initiate the properties of the class
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         gridView = view.findViewById(R.id.libraryGridVIew);
@@ -90,7 +91,8 @@ public class LibraryFragment extends Fragment {
 
         // initiate data source
         directories = initDataSource();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, folderName(directories));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, folderName(directories));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         directorySpinner.setAdapter(adapter);
 
@@ -241,7 +243,8 @@ public class LibraryFragment extends Fragment {
         if (context instanceof ShareFragmentsListener) {
             mListener = (ShareFragmentsListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() +
+                    " must implement OnFragmentInteractionListener");
         }
     }
 

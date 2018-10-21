@@ -8,7 +8,9 @@ import org.json.simple.parser.JSONParser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+/*
+* a Class to convert jason string to comment model
+* */
 public class CommentMo {
     private String content;
 
@@ -22,7 +24,8 @@ public class CommentMo {
             JSONObject obj = (JSONObject) parser.parse(json);
             content = obj.get("content").toString();
             String createdAt = obj.get("createdAt").toString();
-            postDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(createdAt);
+            postDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                    Locale.getDefault()).parse(createdAt);
 
             JSONObject userObj = (JSONObject) obj.get("user");
             if (userObj != null) {

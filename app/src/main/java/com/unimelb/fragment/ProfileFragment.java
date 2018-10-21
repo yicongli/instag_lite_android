@@ -52,9 +52,11 @@ public class ProfileFragment extends Fragment {
     private ExpandableGridView gridView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         profileFragment = this;
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(
+                R.layout.fragment_profile, container, false);
         initView(view);
         initData();
         return view;
@@ -98,7 +100,8 @@ public class ProfileFragment extends Fragment {
      */
     public void initData() {
         // get user basic info
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/users/self", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP +
+                "/api/v1/users/self", null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 Activity context = profileFragment.getActivity();
@@ -133,7 +136,8 @@ public class ProfileFragment extends Fragment {
                         imageUrls.add(medium.getPhotoUrl());
                     }
 
-                    SquareImageAdapter adapter = new SquareImageAdapter(context, imageUrls.toArray(new String[0]));
+                    SquareImageAdapter adapter = new SquareImageAdapter(
+                            context, imageUrls.toArray(new String[0]));
                     gridView.setAdapter(adapter);
                 });
             }

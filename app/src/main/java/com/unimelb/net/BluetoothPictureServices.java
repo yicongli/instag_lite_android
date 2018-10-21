@@ -100,7 +100,8 @@ public class BluetoothPictureServices {
         mNewState = mState;
 
         // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(BluetoothConstants.MESSAGE_STATE_CHANGE, mNewState, -1).sendToTarget();
+        mHandler.obtainMessage(BluetoothConstants.MESSAGE_STATE_CHANGE,
+                mNewState, -1).sendToTarget();
     }
 
     /**

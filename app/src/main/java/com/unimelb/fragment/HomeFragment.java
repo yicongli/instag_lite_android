@@ -92,7 +92,8 @@ public class HomeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         homeFragment = this;
         initView(view);
@@ -192,7 +193,8 @@ public class HomeFragment extends Fragment {
      */
     private void initData(RefreshLayout layout) {
         postList.clear();
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/media/recent",
+                null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 new ErrorHandler(homeFragment.getActivity()).handle(statusCode, errJson);
@@ -214,7 +216,11 @@ public class HomeFragment extends Fragment {
                 Activity context = homeFragment.getActivity();
                 context.runOnUiThread(() -> {
                     for (Medium medium : mediumList) {
-                        Post post = new Post(medium.getMediumId(), medium.getUser().getAvatarUrl(), medium.getUser().getUsername(), medium.getPhotoUrl(), medium.getLocation(), medium.getPostDateString(), medium.getPostDate(), medium.getLikes().size(), medium.getComments().size(), medium.getLat(), medium.getLng());
+                        Post post = new Post(medium.getMediumId(), medium.getUser().getAvatarUrl(),
+                                medium.getUser().getUsername(), medium.getPhotoUrl(),
+                                medium.getLocation(), medium.getPostDateString(),
+                                medium.getPostDate(), medium.getLikes().size(),
+                                medium.getComments().size(), medium.getLat(), medium.getLng());
                         postList.add(post);
                     }
 
@@ -247,7 +253,8 @@ public class HomeFragment extends Fragment {
      * Sort by location
      */
     public void sortByLocation() {
-        Collections.sort(postList, (post1, post2) -> (int) (post1.getDistance() - post2.getDistance()));
+        Collections.sort(postList, (post1, post2) -> (int) (post1.getDistance() -
+                post2.getDistance()));
         postListAdapter.notifyDataSetChanged();
     }
 
@@ -273,7 +280,8 @@ public class HomeFragment extends Fragment {
                 } else {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
-                    Toast.makeText(getActivity(), R.string.bt_not_enabled_leaving,
+                    Toast.makeText(getActivity(),
+                            R.string.bt_not_enabled_leaving,
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -299,7 +307,8 @@ public class HomeFragment extends Fragment {
         // Get the BluetoothDevice object
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
 
-        Intent albumIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent albumIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(albumIntent, CODE_SELECT_IMAGE);
         // Attempt to connect to the device
         mPictureService.connect(device, secure);
@@ -325,7 +334,8 @@ public class HomeFragment extends Fragment {
         Uri selectImageUri = intent.getData();
 
         try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectImageUri);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
+                    selectImageUri);
             sendPicture(bitmap);
 
             Toast.makeText(getActivity(), "Send", Toast.LENGTH_LONG).show();
@@ -367,13 +377,15 @@ public class HomeFragment extends Fragment {
                     case BluetoothConstants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
                         Log.d(TAG, "Receive new picture");
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,0,readBuf.length);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,
+                                0,readBuf.length);
 
                         // add it to the userfeed
                         Post post = new Post(bitmap);
                         postList.add(0, post);
                         postListAdapter.notifyDataSetChanged();
-                        Toast.makeText(getActivity(), "Receive completed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Receive completed",
+                                Toast.LENGTH_SHORT).show();
                         break;
                     case BluetoothConstants.MESSAGE_DEVICE_NAME:
                         // save the connected device's name
@@ -405,7 +417,8 @@ public class HomeFragment extends Fragment {
     private void sendPicture(Bitmap picture) {
         // Check that we're actually connected before trying anything
         if (mPictureService.getState() != BluetoothPictureServices.STATE_CONNECTED) {
-            Toast.makeText(getActivity(), R.string.not_connected, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.not_connected,
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -419,7 +432,8 @@ public class HomeFragment extends Fragment {
 
             Toast.makeText(getActivity(), "Successfully send.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getActivity(), "You have not choose any image.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "You have not choose any image.",
+                    Toast.LENGTH_LONG).show();
         }
 
     }

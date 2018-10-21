@@ -18,7 +18,8 @@ import java.util.List;
 *
 * A adapter to show the posts of whom user following
 * */
-public class FollowingActivityListAdapter extends RecyclerView.Adapter<FollowingActivityListAdapter.ViewHolder> {
+public class FollowingActivityListAdapter
+        extends RecyclerView.Adapter<FollowingActivityListAdapter.ViewHolder> {
     /* context */
     private Context context;
     /* list of Following Activity Item */
@@ -32,15 +33,18 @@ public class FollowingActivityListAdapter extends RecyclerView.Adapter<Following
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_activity_list_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(
+                R.layout.view_activity_list_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.descTextView.setText(list.get(position).getActivityDesc());
-        ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(), holder.avatarImageView);
+        ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(),
+                holder.avatarImageView);
         if (list.get(position).getPhotoUrl().length() > 0) {
-            ImageUtils.loadImage(context, list.get(position).getPhotoUrl(), holder.photoImageView);
+            ImageUtils.loadImage(context, list.get(position).getPhotoUrl(),
+                    holder.photoImageView);
         } else {
             holder.photoImageView.setVisibility(View.GONE);
         }

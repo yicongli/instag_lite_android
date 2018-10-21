@@ -63,7 +63,8 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void initData(RefreshLayout refreshLayout) {
-        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP + "/api/v1/search/suggest", null, new IResponseHandler() {
+        HttpRequest.getInstance().doGetRequestAsync(CommonConstants.IP +
+                        "/api/v1/search/suggest",null, new IResponseHandler() {
             @Override
             public void onFailure(int statusCode, String errJson) {
                 new ErrorHandler(context.getActivity()).handle(statusCode, errJson);
@@ -85,7 +86,8 @@ public class DiscoverFragment extends Fragment {
                 suggestionList.clear();
                 context.getActivity().runOnUiThread(() -> {
                     for (User user : userList) {
-                        BasicUserProfile profile = new BasicUserProfile(user.getId(), user.getAvatarUrl(), user.getUsername(), user.getBio());
+                        BasicUserProfile profile = new BasicUserProfile(user.getId(),
+                                user.getAvatarUrl(), user.getUsername(), user.getBio());
                         suggestionList.add(profile);
                     }
                     searchListAdapter.notifyDataSetChanged();
@@ -100,7 +102,8 @@ public class DiscoverFragment extends Fragment {
     * */
     public void initView(View view) {
         LinearLayout linearLayout = view.findViewById(R.id.search_bar);
-        linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(), SearchActivity.class)));
+        linearLayout.setOnClickListener((view1) -> startActivity(new Intent(this.getContext(),
+                SearchActivity.class)));
 
         RefreshLayout refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.autoRefresh();

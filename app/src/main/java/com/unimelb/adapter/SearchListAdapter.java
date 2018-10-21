@@ -42,19 +42,22 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_search_list_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(
+                R.layout.view_search_list_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.titleTextView.setText(list.get(position).getUsername());
         holder.subtitleTextView.setText(list.get(position).getBio());
-        ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(), holder.avatarImageView);
+        ImageUtils.loadRoundedImage(context, list.get(position).getAvatarUrl(),
+                holder.avatarImageView);
         holder.followBtn.setOnClickListener((view) -> {
             holder.followBtn.setEnabled(false);
             JSONObject obj = new JSONObject();
             obj.put("user_id", list.get(position).getUserId());
-            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/users/self/follows", obj.toJSONString(), new IResponseHandler() {
+            HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP +
+                    "/api/v1/users/self/follows", obj.toJSONString(), new IResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, String errJson) {
                     new ErrorHandler(context).handle(statusCode, errJson);
@@ -64,8 +67,10 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
                 @Override
                 public void onSuccess(String json) {
                     context.runOnUiThread(() -> {
-                        Toast.makeText(context, "Follow user successful", Toast.LENGTH_LONG).show();
-                        holder.followBtn.setBackgroundColor(context.getResources().getColor(R.color.lightGrey));
+                        Toast.makeText(context, "Follow user successful",
+                                Toast.LENGTH_LONG).show();
+                        holder.followBtn.setBackgroundColor(
+                                context.getResources().getColor(R.color.lightGrey));
                         holder.followBtn.setEnabled(false);
                     });
                 }

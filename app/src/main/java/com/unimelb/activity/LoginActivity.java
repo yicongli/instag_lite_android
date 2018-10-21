@@ -55,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                 obj.put("pwd", password);
                 System.out.println(obj.toJSONString());
 
-                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/login", obj.toJSONString(), new IResponseHandler() {
+                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP +
+                        "/api/v1/login", obj.toJSONString(), new IResponseHandler() {
 
                     @Override
                     public void onFailure(int statusCode, String errJson) {
@@ -80,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         // update UI
                         context.runOnUiThread(() -> {
-                            Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Login successful",
+                                    Toast.LENGTH_SHORT).show();
                         });
                         // close login activity
                         startActivity(new Intent(context, MainActivity.class));
@@ -89,7 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something going wrong, please try later.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Something going wrong, please try later.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -100,7 +103,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param view
      */
     public void goToRegister(View view) {
-        startActivity(new Intent(this, RegisterActivity.class));
+        startActivity(new Intent(this,
+                RegisterActivity.class));
     }
 
     private void toggleLoginButton() {

@@ -26,7 +26,9 @@ public class LocationUtils {
      * @param context
      */
     public static void initLocation(Context context) {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(context, "Permission required", Toast.LENGTH_LONG).show();
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -69,8 +71,10 @@ public class LocationUtils {
 
                 }
             };
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                    1000, 0, locationListener);
+            Location location = locationManager.getLastKnownLocation(
+                    LocationManager.NETWORK_PROVIDER);
             if (location != null) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();

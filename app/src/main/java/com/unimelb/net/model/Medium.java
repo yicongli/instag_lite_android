@@ -39,7 +39,8 @@ public class Medium {
 
             String createdAt = obj.get("createdAt").toString();
             System.out.println(createdAt);
-            postDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).parse(createdAt);
+            postDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                    Locale.getDefault()).parse(createdAt);
 
             JSONArray tagsArr = (JSONArray) obj.get("tags");
             if (tagsArr.size() > 0) {
@@ -101,7 +102,9 @@ public class Medium {
     }
 
     public String getPostDateString() {
-        return new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault()).format(postDate) + " (" + DateUtils.getRelativeTimeSpanString(postDate.getTime()).toString() + ")";
+        return new SimpleDateFormat("dd/MM/yyyy, HH:mm",
+                Locale.getDefault()).format(postDate) +
+                " (" + DateUtils.getRelativeTimeSpanString(postDate.getTime()).toString() + ")";
     }
 
     public User getUser() {

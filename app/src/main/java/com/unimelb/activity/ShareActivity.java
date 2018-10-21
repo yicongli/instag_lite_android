@@ -89,7 +89,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         BottomNavigationViewHelper.disableShiftMode(navigationView);
 
         // the listener to handle the selecting operation of bottom navigation view
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -108,7 +109,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
 
             }
 
@@ -276,7 +278,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
         // close keyboard
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
@@ -303,7 +306,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     @Override
     public void startCrop (Bitmap image) {
         Uri uri = getImageUri(ShareActivity.this, image);
-        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), "temCropImage.png")));
+        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(
+                getCacheDir(), "temCropImage.png")));
         uCrop.useSourceImageAspectRatio();
         uCrop.start(ShareActivity.this, UCrop.REQUEST_CROP);
     }
@@ -317,7 +321,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(
+                inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
@@ -335,7 +340,8 @@ public class ShareActivity extends AppCompatActivity implements ShareFragmentsLi
             if (resultCode == RESULT_OK) {
                 final Uri resultUri = UCrop.getOutput(data);
                 try {
-                    Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                    Bitmap image = MediaStore.Images.Media.getBitmap(
+                            this.getContentResolver(), resultUri);
                     effectsFragment.setImage(image);
                 } catch (IOException e) {
                     e.printStackTrace();

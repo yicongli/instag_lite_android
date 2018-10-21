@@ -50,7 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
                 jsonObject.put("username", username);
                 jsonObject.put("pwd", password);
 
-                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/register", jsonObject.toJSONString(), new IResponseHandler() {
+                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP +
+                        "/api/v1/register", jsonObject.toJSONString(), new IResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, String errJson) {
                         ResponseModel rm = new ResponseModel(errJson);
@@ -63,7 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String json) {
                         context.runOnUiThread(() -> {
-                            Toast.makeText(context, "Register successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Register successful",
+                                    Toast.LENGTH_LONG).show();
                         });
                         // close login activity
                         startActivity(new Intent(context, MainActivity.class));
@@ -71,7 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
             } else {
-                Toast.makeText(this, "Two passwords are not equal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Two passwords are not equal",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

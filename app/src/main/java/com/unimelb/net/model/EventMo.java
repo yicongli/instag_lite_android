@@ -2,7 +2,9 @@ package com.unimelb.net.model;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+/*
+* A class to convert jason string to Event Model
+* */
 public class EventMo {
 
     private String sourceUsername;

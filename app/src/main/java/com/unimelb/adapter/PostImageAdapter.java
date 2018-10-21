@@ -47,14 +47,17 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(context, LayoutInflater.from(context).inflate(R.layout.view_post_list_item, parent, false));
+        return new ViewHolder(context,
+                LayoutInflater.from(context).inflate(R.layout.view_post_list_item, parent,
+                        false));
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(), holder.avatarImageView);
+        ImageUtils.loadRoundedImage(context, postList.get(position).getAvatarUrl(),
+                holder.avatarImageView);
         holder.locationTextView.setText(postList.get(position).getLocation());
         holder.dateView.setText(postList.get(position).getDateString());
 
@@ -70,14 +73,21 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             holder.commentBtn.setVisibility(View.GONE);
         } else {
             holder.usernameTextView.setText(postList.get(position).getUsername());
-            ImageUtils.loadImage(context, postList.get(position).getImageUrl(), holder.postImageView);
-            ImageUtils.loadRoundedImage(context, "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg", holder.ownerImageView);
+            ImageUtils.loadImage(context,
+                    postList.get(position).getImageUrl(), holder.postImageView);
+            ImageUtils.loadRoundedImage(context,
+                    "http://pgr1ie9ou.sabkt.gdipper.com/default_avatar.jpg",
+                    holder.ownerImageView);
 
             holder.likeCountLabel.setText(postList.get(position).getLikesCount() + " likes");
-            holder.commentBtn.setText("View all " + postList.get(position).getCommentsCount() + " comments");
+            holder.commentBtn.setText("View all " +
+                    postList.get(position).getCommentsCount() + " comments");
 
             holder.likeBtn.setOnClickListener((view) -> {
-                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/likes", null, new IResponseHandler() {
+                HttpRequest.getInstance().doPostRequestAsync(
+                        CommonConstants.IP + "/api/v1/media/" +
+                                postList.get(position).getPostId() + "/likes",
+                        null, new IResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, String errJson) {
                         new ErrorHandler(context).handle(statusCode, errJson);
@@ -86,8 +96,10 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
                     @Override
                     public void onSuccess(String json) {
                         context.runOnUiThread(() -> {
-                            Toast.makeText(context, "You like this picture", Toast.LENGTH_SHORT).show();
-                            holder.likeCountLabel.setText(postList.get(position).getLikesCount() + 1 + " likes");
+                            Toast.makeText(context,
+                                    "You like this picture", Toast.LENGTH_SHORT).show();
+                            holder.likeCountLabel.setText(postList.get(position).getLikesCount() +
+                                    1 + " likes");
                             holder.likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp);
                         });
                     }
@@ -97,14 +109,18 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
             holder.postBtn.setOnClickListener((view) -> {
                 /* close keyboard */
                 holder.commentEditText.clearFocus();
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
                 /* get edit text value and send data */
                 final String comment = holder.commentEditText.getText().toString();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("content", comment);
-                HttpRequest.getInstance().doPostRequestAsync(CommonConstants.IP + "/api/v1/media/" + postList.get(position).getPostId() + "/comments", jsonObject.toJSONString(), new IResponseHandler() {
+                HttpRequest.getInstance().doPostRequestAsync(
+                        CommonConstants.IP + "/api/v1/media/" +
+                                postList.get(position).getPostId() + "/comments",
+                        jsonObject.toJSONString(), new IResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, String errJson) {
                         new ErrorHandler(context).handle(statusCode, errJson);
@@ -113,8 +129,10 @@ public class PostImageAdapter extends RecyclerView.Adapter<PostImageAdapter.View
                     @Override
                     public void onSuccess(String json) {
                         context.runOnUiThread(() -> {
-                            Toast.makeText(context, "Leave comments successful", Toast.LENGTH_LONG).show();
-                            holder.commentBtn.setText("View all " + (postList.get(position).getCommentsCount() + 1) + " comments");
+                            Toast.makeText(context, "Leave comments successful",
+                                    Toast.LENGTH_LONG).show();
+                            holder.commentBtn.setText("View all " +
+                                    (postList.get(position).getCommentsCount() + 1) + " comments");
                             holder.commentEditText.setText("");
                         });
                     }
