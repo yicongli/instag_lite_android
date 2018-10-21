@@ -132,6 +132,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/profile_edit_profile"
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
@@ -139,11 +140,9 @@
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/profile_user_avatar"
                     android:background="@color/colorPrimary"
-                    android:onClick="goToEditProfile"
                     android:text="Edit profile"
                     android:textColor="@color/white"
                     android:textSize="12sp"/>
-
 
             </RelativeLayout>
 
