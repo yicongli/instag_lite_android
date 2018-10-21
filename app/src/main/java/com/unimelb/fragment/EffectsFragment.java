@@ -205,7 +205,7 @@ public class EffectsFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                String text = "Brightness: " + progresValue / 10.0;
+                String text = "Contrast: " + progresValue / 10.0;
                 mContrastLabel.setText(text);
             }
 

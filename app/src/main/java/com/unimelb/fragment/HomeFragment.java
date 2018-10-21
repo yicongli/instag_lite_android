@@ -3,6 +3,7 @@ package com.unimelb.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.scwang.smartrefresh.header.WaterDropHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.unimelb.activity.DeviceListActivity;
 import com.unimelb.adapter.PostImageAdapter;
 import com.unimelb.constants.CommonConstants;
 import com.unimelb.entity.Post;
@@ -103,7 +105,8 @@ public class HomeFragment extends Fragment {
 
         // Bluetooth button onClick listener
         view.findViewById(R.id.home_bluetooth_btn).setOnClickListener((bluetoothView) -> {
-
+            Intent intent1 = new Intent(getContext(), DeviceListActivity.class);
+            getContext().startActivity(intent1);
         });
     }
 
