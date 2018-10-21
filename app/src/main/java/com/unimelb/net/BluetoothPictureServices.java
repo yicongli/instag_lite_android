@@ -266,7 +266,7 @@ public class BluetoothPictureServices {
         r.write(out);
     }
 
-    //Jinge
+    //send image
     public void send(byte[] data, String str) {
 
         int headInfoLength = 14;
@@ -279,20 +279,20 @@ public class BluetoothPictureServices {
         }
         if (length_b == null) return;
 
-        //获得一个字节长度为14的byte数组 headInfoLength为14
+        //headInfoLength is 14
         byte[] headerInfo = new byte[headInfoLength];
 
-        //前六位添加012345的标志位
+        //add sign bytes
         for (int i = 0; i < headInfoLength - 8; i++) {
             headerInfo[i] = (byte) i;
         }
 
-        //7到10位添加图片大小的字节长度
+        //add length to the image
         for (int i = 0; i < 4; i++) {
             headerInfo[6 + i] = length_b[i];
         }
 
-        //11到14位添加动作信息
+        //add action info
         if (str.equals("text")) {
             for (int i = 0; i < 4; i++) {
                 headerInfo[10 + i] = (byte) 0;
@@ -307,7 +307,7 @@ public class BluetoothPictureServices {
             }
         }
 
-        //将对应信息添加到图片前面
+        //add info before the image
         byte[] sendMsg = new byte[length + headInfoLength];
         for (int i = 0; i < sendMsg.length; i++) {
             if (i < headInfoLength) {
@@ -564,17 +564,16 @@ public class BluetoothPictureServices {
             while (true) {
                 try {
                     boolean valid = true;
-                    //判断前六位是不是012345
                     for (int i = 0; i < 6; i++) {
                         int t = mmInStream.read();
                         if (t != i) {
                             valid = false;
-                            //前六位判断完了跳出循环
+                            //break after the first 6 byte
                             break;
                         }
                     }
                     if (valid) {
-                        //获取图片大小
+                        //get size of picture
                         byte[] bufLength = new byte[4];
                         for (int i = 0; i < 4; i++) {
                             bufLength[i] = ((Integer) mmInStream.read()).byteValue();
@@ -583,7 +582,7 @@ public class BluetoothPictureServices {
                         int TextCount = 0;
                         int PhotoCount = 0;
                         int VideoCount = 0;
-                        //获取动作信息
+                        //get action information
                         for (int i = 0; i < 4; i++) {
                             int read = mmInStream.read();
                             if (read == 0) {
@@ -595,14 +594,14 @@ public class BluetoothPictureServices {
                             }
                         }
 
-                        //获取图片的字节
+                        //get bytes of picture
                         int length = ByteArrayToInt(bufLength);
                         buffer = new byte[length];
                         for (int i = 0; i < length; i++) {
                             buffer[i] = ((Integer) mmInStream.read()).byteValue();
                         }
 
-                        //通过handler发出去
+                        //send through handler
                         Message msg = Message.obtain();
                         msg.what = BluetoothConstants.MESSAGE_READ;
                         msg.obj = buffer;
