@@ -365,7 +365,8 @@ public class HomeFragment extends Fragment {
                         break;
                     case BluetoothConstants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf, 0, readBuf.length);
+                        Log.d(TAG, "Receive new picture");
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(readBuf,0,readBuf.length);
 
                         // add it to the userfeed
                         Post post = new Post(bitmap);
@@ -413,7 +414,7 @@ public class HomeFragment extends Fragment {
             picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
             // Get the picture bytes and tell the BluetoothPictureServices to write
             byte[] send = stream.toByteArray();
-            mPictureService.write(send);
+            mPictureService.send(send,"photo");
 
             Toast.makeText(getActivity(), "Successfully send.", Toast.LENGTH_LONG).show();
         } else {
